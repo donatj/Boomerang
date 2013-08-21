@@ -5,29 +5,16 @@ namespace Phrisby;
 class Request {
 
 	public $max_redirects = 10;
-
 	private $headers = array();
 	private $endpoint;
 	private $cookies = array();
 
-	public function __construct($endpoint) {
+	public function __construct( $endpoint ) {
 		$this->endpoint = $endpoint;
 	}
 
-	public function setHeaders(array $headers) {
-		$this->headers = $headers;
-	}
-
-	public function setHeader($key, $value) {
-		$this->headers[ $key ] = $value;
-	}
-
-	public function getHeaders() {
-		$headers = $this->headers;
-		if(!isset($headers['Accept'])) {
-			
-		}
-
+	public function setHeader( $key, $value ) {
+		$this->headers[$key] = $value;
 	}
 
 	public function makeRequest() {
@@ -39,28 +26,51 @@ class Request {
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHeaders());
 
-		// curl_setopt($ch, CURLOPT_FILETIME, true);
-		// curl_setopt($ch, CURLOPT_NOBODY, true);
-		if($this->max_redirects) {
+		if( $this->max_redirects ) {
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
 		}
-		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		$response = curl_exec($ch);
+
+		$response   = curl_exec($ch);
 		$this->info = curl_getinfo($ch);
-		
+
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$header = substr($response, 0, $header_size);
-		$body = substr($response, $header_size);
+		$header      = substr($response, 0, $header_size);
+		$body        = substr($response, $header_size);
 
 		print_r($this->info);
 
 		curl_close($ch);
 	}
 
-	private function detectAccept($endpoint) {
+	public function getHeaders() {
+		$headers = $this->headers;
+		if( !isset($headers['Accept']) ) {
+			$headers['Accept'] = $this->detectAccept($this->endpoint);
+		}
 
+		return $headers;
+	}
+
+	public function setHeaders( array $headers ) {
+		$this->headers = $headers;
+	}
+
+	private function detectAccept( $endpoint ) {
+		$url  = parse_url($endpoint);
+		$path = pathinfo($url['path']);
+		switch( strtolower($path['extension']) ) {
+			case 'json':
+				return 'application/json,text/html,application/xhtml+xml,*/*';
+				break;
+			case 'xml':
+				return 'application/xml,application/xhtml+xml,text/html,*/*';
+			default:
+				return 'application/json,application/xml,text/html,application/xhtml+xml,*/*';
+				break;
+		}
+
+		return "application/json,application/xml,text/html,*/*";
 	}
 
 
