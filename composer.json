@@ -3,5 +3,11 @@
 		"donatj/cli-toolkit": "dev-master",
 		"hasbridge/json-schema-validator": "0.1.*",
 		"php": ">=5.3.2"
+	},
+	"require-dev": {
+		"donatj/drop": "dev-master"
+	},
+	"autoload": {
+		"psr-0": { "Phrisby": "src/" }
 	}
 }
