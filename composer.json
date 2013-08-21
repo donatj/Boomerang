@@ -1,0 +1,7 @@
+{
+	"require": {
+		"donatj/cli-toolkit": "dev-master",
+		"hasbridge/json-schema-validator": "0.1.*",
+		"php": ">=5.3.2"
+	}
+}
