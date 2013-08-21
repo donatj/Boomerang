@@ -4,10 +4,13 @@ namespace Phrisby;
 
 class Request {
 
+	public $tmp = "/tmp";
+
 	public $max_redirects = 10;
 	private $headers = array();
 	private $endpoint;
 	private $cookies = array();
+	private $cookiesFollowRedirects = false;
 
 	public function __construct( $endpoint ) {
 		$this->endpoint = $endpoint;
@@ -17,11 +20,28 @@ class Request {
 		$this->headers[$key] = $value;
 	}
 
+	/**
+	 * @param bool $bool
+	 */
+	public function setCookiesFollowRedirects($bool) {
+		$this->cookiesFollowRedirects = $bool;
+	}
+
+	/**
+	 * @return TestCase
+	 */
 	public function makeRequest() {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->endpoint);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+
+		if( $this->cookiesFollowRedirects ) {
+			$cookiejar = tempnam($this->tmp, 'PHB');
+			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiejar);
+			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiejar);
+		}
+		
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHeaders());
