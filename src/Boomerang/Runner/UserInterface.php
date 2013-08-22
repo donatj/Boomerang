@@ -2,9 +2,9 @@
 
 namespace Boomerang\Runner;
 
+use Boomerang\Exceptions\ExpectFailedException;
 use CLI\Output;
 use CLI\Style;
-use Boomerang\Exceptions\ExpectFailedException;
 
 class UserInterface {
 
@@ -13,7 +13,7 @@ class UserInterface {
 
 	static function main( $args ) {
 		self::$boomerangPath = realpath($args[0]);
-		self::$pathInfo    = pathinfo(self::$boomerangPath);
+		self::$pathInfo      = pathinfo(self::$boomerangPath);
 
 		if( count($args) < 2 ) {
 			self::dumpOptions();
@@ -27,14 +27,21 @@ class UserInterface {
 	}
 
 	static function dumpOptions() {
-		Output::string("usage: " . self::$pathInfo['basename'] . " [switches] <directory>" . PHP_EOL);
-		Output::string("       " . self::$pathInfo['basename'] . " [switches] [APISpec]" . PHP_EOL . PHP_EOL);
+		$fname = self::$pathInfo['basename'];
+
+		$options = <<<EOT
+usage: {$fname} [switches] <directory>
+       {$fname} [switches] [APISpec]
+
+
+EOT;
+		Output::string($options);
 		Output::string(PHP_EOL);
 		die(1);
 	}
 
-	static function displayException(ExpectFailedException $ex){
-		Output::string( "[ " . Style::red( $ex->getTest()->getRequest()->getEndpoint() ) . " ]" );
+	static function displayException( ExpectFailedException $ex ) {
+		Output::string("[ " . Style::red($ex->getTest()->getRequest()->getEndpoint()) . " ]");
 		Output::string(PHP_EOL);;
 		Output::string($ex->getMessage());
 		Output::string(PHP_EOL . PHP_EOL);;
