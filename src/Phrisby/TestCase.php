@@ -6,9 +6,9 @@ use Phrisby\Exceptions\ExpectFailedException;
 
 class TestCase {
 
+	public static $exceptions = array();
 	private $response;
 	private $header_sets;
-	private $exceptions = array();
 
 	public function __construct( $response, array $response_headers = null ) {
 		$this->response    = $response;
@@ -65,6 +65,14 @@ class TestCase {
 	public function expectBodyContains( $value ) {
 
 		return $this;
+	}
+
+	private function hopHeaders( $hop = null ) {
+		if( $hop === null ) {
+			return end($this->header_sets);
+		}
+
+		return $this->header_sets[$hop];
 	}
 
 	private function output() {
