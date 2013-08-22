@@ -84,18 +84,17 @@ class Request {
 	private function detectAccept( $endpoint ) {
 		$url  = parse_url($endpoint);
 		$path = pathinfo($url['path']);
-		switch( strtolower($path['extension']) ) {
-			case 'json':
-				return 'application/json';
-				break;
-			case 'xml':
-				return 'application/xml';
-			default:
-				return 'application/json,application/xml,text/html,application/xhtml+xml,*/*';
-				break;
+		if( isset($path['extension']) ) {
+			switch( strtolower($path['extension']) ) {
+				case 'json':
+					return 'application/json';
+					break;
+				case 'xml':
+					return 'application/xml';
+			}
 		}
 
-		return "application/json,application/xml,text/html,*/*";
+		return 'application/json,application/xml,text/html,application/xhtml+xml,*/*';
 	}
 
 	private function http_parse_headers( $raw_headers ) {
