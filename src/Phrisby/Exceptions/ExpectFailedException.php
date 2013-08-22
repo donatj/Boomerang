@@ -1,8 +1,8 @@
 <?php
 
-namespace Phrisby\Exceptions;
+namespace Boomerang\Exceptions;
 
-use Phrisby\TestCase;
+use Boomerang\TestCase;
 
 class ExpectFailedException extends \Exception {
 

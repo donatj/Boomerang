@@ -5,7 +5,7 @@ $path = dirname(__FILE__) . '/';
 $srcRoot = $path . "src";
 $buildRoot = $path . "build";
 
-$fpath = $buildRoot . "/phrisby.phar";
+$fpath = $buildRoot . "/boomerang.phar";
  
 $phar = new Phar($fpath, 
 	FilesystemIterator::CURRENT_AS_FILEINFO |     	FilesystemIterator::KEY_AS_FILENAME, "myapp.phar");

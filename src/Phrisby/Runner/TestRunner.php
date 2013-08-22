@@ -1,8 +1,8 @@
 <?php
 
-namespace Phrisby\Runner;
+namespace Boomerang\Runner;
 
-use Phrisby\TestCase;
+use Boomerang\TestCase;
 
 class TestRunner {
 

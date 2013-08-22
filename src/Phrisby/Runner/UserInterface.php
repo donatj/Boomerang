@@ -8,12 +8,12 @@ use Phrisby\Exceptions\ExpectFailedException;
 
 class UserInterface {
 
-	static $phrisbyPath;
+	static $boomerangPath;
 	static $pathInfo;
 
 	static function main( $args ) {
-		self::$phrisbyPath = realpath($args[0]);
-		self::$pathInfo    = pathinfo(self::$phrisbyPath);
+		self::$boomerangPath = realpath($args[0]);
+		self::$pathInfo    = pathinfo(self::$boomerangPath);
 
 		if( count($args) < 2 ) {
 			self::dumpOptions();

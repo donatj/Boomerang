@@ -1,8 +1,8 @@
 <?php
 
-namespace Phrisby\Test;
+namespace Boomerang\Test;
 
-use Phrisby\Request;
+use Boomerang\Request;
 
 class RequestTest extends \PHPUnit_Framework_TestCase {
 

@@ -4,6 +4,6 @@
 Phar::mapPhar();
 require 'phar://myapp.phar/vendor/autoload.php';
 
-Phrisby\Runner\UserInterface::main($argv);
+Boomerang\Runner\UserInterface::main($argv);
 
 __HALT_COMPILER();
