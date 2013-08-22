@@ -27,23 +27,17 @@ class TestCase {
 		preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $headers[0], $match);
 
 		if( $match[1] != $status ) {
-			$this->exceptions[] = new ExpectFailedException( 'Expected status ' . var_dump($match[1]) . ' to match ' . $status );
+			self::$exceptions[] = new ExpectFailedException('Expected status ' . var_export($match[1], true) . ' to match ' . var_export($status, true));
 		}
 
 		return $this;
 	}
 
-	private function hopHeaders( $hop = null ) {
-		if( $hop === null ) {
-			return end($this->header_sets);
-		}
-
-		return $this->header_sets[$hop];
-	}
-
 	/**
-	 * @param string $key
-	 * @param string $value
+	 * @param string   $key
+	 * @param string   $value
+	 * @param null|int $hop
+	 * @return $this
 	 */
 	public function expectHeader( $key, $value, $hop = null ) {
 		$headers = $this->hopHeaders($hop);
@@ -52,8 +46,10 @@ class TestCase {
 	}
 
 	/**
-	 * @param string $key
-	 * @param string $value
+	 * @param  string  $key
+	 * @param   string $value
+	 * @param null|int $hop
+	 * @return $this
 	 */
 	public function expectHeaderContains( $key, $value, $hop = null ) {
 		$headers = $this->hopHeaders($hop);
