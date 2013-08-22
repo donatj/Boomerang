@@ -65,7 +65,7 @@ class Request {
 
 		curl_close($ch);
 
-		return new TestCase($body, $headers_split);
+		return new TestCase($body, $headers_split, $this);
 	}
 
 	public function getHeaders() {
