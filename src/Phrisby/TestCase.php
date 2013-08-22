@@ -28,9 +28,12 @@ class TestCase {
 		$headers = $this->hopHeaders($hop);
 
 		preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $headers[0], $match);
+		$match[1] = intval($match[1]);
 
 		if( $match[1] != $status ) {
-			self::$exceptions[] = new ExpectFailedException('Expected status ' . var_export($match[1], true) . ' to match ' . var_export($status, true));
+			self::$exceptions[] = new ExpectFailedException("Unexpected HTTP Status " . PHP_EOL .
+			" # Expected: " . PHP_EOL . var_export($match[1], true) . PHP_EOL .
+			' # Actual: ' . PHP_EOL . var_export($status, true), $this);
 		}
 
 		return $this;
@@ -45,6 +48,12 @@ class TestCase {
 	public function expectHeader( $key, $value, $hop = null ) {
 		$headers = $this->hopHeaders($hop);
 
+		if( !isset($headers[$key]) || $headers[$key] != $value ) {
+			self::$exceptions[] = new ExpectFailedException('Unexpected Header Exact Match: ' . var_export($key, true) . PHP_EOL .
+			" # Expected: " . var_export($value, true) . PHP_EOL .
+			" # Actual: " . var_export($headers[$key], true), $this);
+		}
+
 		return $this;
 	}
 
@@ -57,17 +66,39 @@ class TestCase {
 	public function expectHeaderContains( $key, $value, $hop = null ) {
 		$headers = $this->hopHeaders($hop);
 
+		if( !isset($headers[$key]) || strpos($headers[$key], $value) === false ) {
+			self::$exceptions[] = new ExpectFailedException('Unexpected Header Contains: ' . var_export($key, true) . PHP_EOL .
+			" # Expected: " . var_export($value, true) . PHP_EOL .
+			" # Actual: " . var_export($headers[$key], true), $this);
+		}
+
 		return $this;
 	}
 
-	public function expectBody( $value ) {
+	public function expectBody( $response ) {
+
+		if( $this->response != $response ) {
+			self::$exceptions[] = new ExpectFailedException('Unexpected body: ' . PHP_EOL .
+			" # Expected: " . var_export($response, true) . PHP_EOL .
+			" # Actual: " . var_export($this->response, true), $this);
+		}
 
 		return $this;
 	}
 
-	public function expectBodyContains( $value ) {
+	public function expectBodyContains( $response ) {
+
+		if( $this->response != $response ) {
+			self::$exceptions[] = new ExpectFailedException('Unexpected body: ' . PHP_EOL .
+			" # Expected: " . var_export($response, true) . PHP_EOL .
+			" # Actual: " . var_export($this->response, true), $this);
+		}
 
 		return $this;
+	}
+
+	public function getRequest() {
+		return $this->request;
 	}
 
 	private function hopHeaders( $hop = null ) {
@@ -76,10 +107,6 @@ class TestCase {
 		}
 
 		return $this->header_sets[$hop];
-	}
-
-	private function output() {
-
 	}
 
 }
