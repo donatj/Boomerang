@@ -6,6 +6,7 @@ class Request {
 
 	public $tmp = "/tmp";
 	public $max_redirects = 10;
+	
 	private $headers = array();
 	private $endpoint;
 	private $cookies = array();
