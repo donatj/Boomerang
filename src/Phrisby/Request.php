@@ -6,7 +6,7 @@ class Request {
 
 	public $tmp = "/tmp";
 	public $max_redirects = 10;
-	
+
 	private $headers = array();
 	private $endpoint;
 	private $cookies = array();
@@ -79,6 +79,10 @@ class Request {
 
 	public function setHeaders( array $headers ) {
 		$this->headers = $headers;
+	}
+
+	public function getEndpoint() {
+		return $this->endpoint;
 	}
 
 	private function detectAccept( $endpoint ) {

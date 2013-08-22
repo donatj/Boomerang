@@ -2,6 +2,8 @@
 
 namespace Phrisby\Runner;
 
+use Phrisby\TestCase;
+
 class TestRunner {
 
 	private $path;
@@ -13,9 +15,17 @@ class TestRunner {
 	}
 
 	function runTests() {
+		$scope = function($file) { require($file); };
+
 		foreach( $this->files as $file ) {
-			require($file);
-			//echo $file . PHP_EOL;
+			$scope($file);
+			if(TestCase::$exceptions) {
+				foreach( TestCase::$exceptions as $ex ) {
+					UserInterface::displayException( $ex );
+				}
+			}
+
+			TestCase::$exceptions = array();
 		}
 	}
 

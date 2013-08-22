@@ -3,6 +3,8 @@
 namespace Phrisby\Runner;
 
 use CLI\Output;
+use CLI\Style;
+use Phrisby\Exceptions\ExpectFailedException;
 
 class UserInterface {
 
@@ -20,6 +22,8 @@ class UserInterface {
 		$runner = new TestRunner(end($args));
 		$runner->runTests();
 
+		Output::string(PHP_EOL . PHP_EOL);
+
 	}
 
 	static function dumpOptions() {
@@ -27,6 +31,13 @@ class UserInterface {
 		Output::string("       " . self::$pathInfo['basename'] . " [switches] [APISpec]" . PHP_EOL . PHP_EOL);
 		Output::string(PHP_EOL);
 		die(1);
+	}
+
+	static function displayException(ExpectFailedException $ex){
+		Output::string( "[ " . Style::red( $ex->getTest()->getRequest()->getEndpoint() ) . " ]" );
+		Output::string(PHP_EOL);;
+		Output::string($ex->getMessage());
+		Output::string(PHP_EOL . PHP_EOL);;
 	}
 
 	static function dropError( $text, $code = 1 ) {
