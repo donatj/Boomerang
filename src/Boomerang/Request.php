@@ -1,6 +1,6 @@
 <?php
 
-namespace Phrisby;
+namespace Boomerang;
 
 class Request {
 

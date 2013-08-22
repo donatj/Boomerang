@@ -1,6 +1,6 @@
 <?php
 
-$req      = new Phrisby\Request('http://httpbin.org/get');
+$req      = new Boomerang\Request('http://httpbin.org/get');
 $response = $req->makeRequest();
 
 $response->expectStatus(302, 0)

@@ -1,10 +1,10 @@
 <?php
 
-namespace Phrisby\Runner;
+namespace Boomerang\Runner;
 
 use CLI\Output;
 use CLI\Style;
-use Phrisby\Exceptions\ExpectFailedException;
+use Boomerang\Exceptions\ExpectFailedException;
 
 class UserInterface {
 

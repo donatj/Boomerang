@@ -1,8 +1,8 @@
 <?php
 
-namespace Phrisby;
+namespace Boomerang;
 
-use Phrisby\Exceptions\ExpectFailedException;
+use Boomerang\Exceptions\ExpectFailedException;
 
 class TestCase {
 
