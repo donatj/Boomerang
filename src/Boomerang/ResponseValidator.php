@@ -29,7 +29,7 @@ class ResponseValidator implements Validator {
 	 * @return $this
 	 */
 	public function expectStatus( $status = 200, $hop = null ) {
-		$headers = $this->response->headers($hop);
+		$headers = $this->response->getHeaders($hop);
 
 		preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $headers[0], $match);
 		$match[1] = intval($match[1]);
@@ -50,7 +50,7 @@ class ResponseValidator implements Validator {
 	 * @return $this
 	 */
 	public function expectHeader( $key, $value, $hop = null ) {
-		$headers = $this->response->headers($hop);
+		$headers = $this->response->getHeaders($hop);
 
 		if( !isset($headers[$key]) || $headers[$key] != $value ) {
 			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Exact Match: ' . var_export($key, true), $value, $headers[$key]);
@@ -68,7 +68,7 @@ class ResponseValidator implements Validator {
 	 * @return $this
 	 */
 	public function expectHeaderContains( $key, $value, $hop = null ) {
-		$headers = $this->response->headers($hop);
+		$headers = $this->response->getHeaders($hop);
 
 		if( !isset($headers[$key]) || strpos($headers[$key], $value) === false ) {
 			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Contains: ' . var_export($key, true), $value, $headers[$key]);

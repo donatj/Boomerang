@@ -19,7 +19,7 @@ class Response {
 		return $this->request;
 	}
 
-	public function headers( $hop = null ) {
+	public function getHeaders( $hop = null ) {
 		if( $hop === null ) {
 			return end($this->header_sets);
 		}
