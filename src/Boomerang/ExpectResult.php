@@ -18,10 +18,6 @@ class ExpectResult {
 	 * @var Validator
 	 */
 	private $validator;
-//	/**
-//	 * @var bool
-//	 */
-//	private $presented = false;
 	/**
 	 * @var null|string
 	 */
@@ -81,15 +77,5 @@ class ExpectResult {
 		return $this->fail;
 	}
 
-//	public function getPresented() {
-//		return $this->presented;
-//	}
-//
-//	/**
-//	 * @param bool $presented
-//	 */
-//	public function setPresented( $presented = true ) {
-//		$this->presented = $presented;
-//	}
 
 }
