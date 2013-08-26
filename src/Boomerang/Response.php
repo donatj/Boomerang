@@ -18,7 +18,9 @@ class Response {
 		$this->body        = $body;
 		$this->headers_raw = $headers;
 
-		$headers_split = explode("\r\n\r\n", trim($headers));
+		$headers = $this->normalizeHeaders( $headers );
+
+		$headers_split = explode("\r\n\r\n", $headers);
 		foreach( $headers_split as &$h ) {
 			$h = $this->parseHeaders($h);
 		}
@@ -26,6 +28,20 @@ class Response {
 		$this->header_sets = $headers_split;
 
 		$this->request = $request;
+	}
+
+	/**
+	 * Headers need to be \r\n by spec
+	 *
+	 * @param $s
+	 * @return mixed
+	 */
+	private function normalizeHeaders($s) {
+		$s = str_replace("\r\n", "\n", $s);
+		$s = str_replace("\r", "\n", $s);
+		$s = str_replace("\n", "\r\n", $s);
+		trim($s);
+		return $s;
 	}
 
 	private function parseHeaders( $raw_headers ) {
@@ -88,6 +104,13 @@ class Response {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAllHeaders() {
+		return $this->header_sets;
 	}
 
 	/**
