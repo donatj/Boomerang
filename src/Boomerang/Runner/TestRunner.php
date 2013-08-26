@@ -2,7 +2,7 @@
 
 namespace Boomerang\Runner;
 
-use Boomerang\TestCase;
+use Boomerang\Response;
 
 class TestRunner {
 
@@ -19,13 +19,13 @@ class TestRunner {
 
 		foreach( $this->files as $file ) {
 			$scope($file);
-			if(TestCase::$exceptions) {
-				foreach( TestCase::$exceptions as $ex ) {
+			if(Response::$exceptions) {
+				foreach( Response::$exceptions as $ex ) {
 					UserInterface::displayException( $ex );
 				}
 			}
 
-			TestCase::$exceptions = array();
+			Response::$exceptions = array();
 		}
 	}
 

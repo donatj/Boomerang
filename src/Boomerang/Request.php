@@ -28,7 +28,7 @@ class Request {
 	}
 
 	/**
-	 * @return TestCase
+	 * @return Response
 	 */
 	public function makeRequest() {
 		$ch = curl_init();
@@ -65,7 +65,7 @@ class Request {
 
 		curl_close($ch);
 
-		return new TestCase($body, $headers_split, $this);
+		return new Response($body, $headers_split, $this);
 	}
 
 	public function getHeaders() {

@@ -2,13 +2,13 @@
 
 namespace Boomerang\Exceptions;
 
-use Boomerang\TestCase;
+use Boomerang\Response;
 
 class ExpectFailedException extends \Exception {
 
 	private $test;
 
-	public function __construct($message, TestCase $test, $code = 0) {
+	public function __construct($message, Response $test, $code = 0) {
 		parent::__construct($message, $code);
 		$this->test = $test;
 	}

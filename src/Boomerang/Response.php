@@ -4,7 +4,7 @@ namespace Boomerang;
 
 use Boomerang\Exceptions\ExpectFailedException;
 
-class TestCase {
+class Response {
 
 	public static $exceptions = array();
 	private $response;
@@ -107,6 +107,10 @@ class TestCase {
 		}
 
 		return $this->header_sets[$hop];
+	}
+
+	public function getJSONValidator() {
+		return new JSONValidator( $this->response, $this );
 	}
 
 }
