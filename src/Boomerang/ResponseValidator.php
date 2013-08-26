@@ -53,7 +53,7 @@ class ResponseValidator implements Validator {
 		$header = $this->response->getHeader($key, $hop);
 
 		if( $header != $value ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Exact Match: ' . var_export($key, true), $value, $headers[$key]);
+			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Exact Match: ' . var_export($key, true), $value, $header);
 		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
@@ -71,7 +71,7 @@ class ResponseValidator implements Validator {
 		$header = $this->response->getHeader($key, $hop);
 
 		if( !$header || strpos($header, $value) === false ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Contains: ' . var_export($key, true), $value, $headers[$key]);
+			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Contains: ' . var_export($key, true), $value, $header);
 		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
