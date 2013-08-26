@@ -80,13 +80,14 @@ class ResponseValidator implements Validator {
 	}
 
 	/**
-	 * @param string $response
+	 * @param string $expectedContent
 	 * @return $this
 	 */
-	public function expectBody( $response ) {
+	public function expectBody( $expectedContent ) {
+		$content = $this->response->getContent();
 
-		if( $this->response != $response ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $response, $this->response);
+		if( $content != $expectedContent ) {
+			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $expectedContent, $content);
 		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
@@ -95,13 +96,14 @@ class ResponseValidator implements Validator {
 	}
 
 	/**
-	 * @param string $response
+	 * @param string $expectedContent
 	 * @return $this
 	 */
-	public function expectBodyContains( $response ) {
+	public function expectBodyContains( $expectedContent ) {
+		$content = $this->response->getContent();
 
-		if( $this->response != $response ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $response, $this->response);
+		if( $content != $expectedContent ) {
+			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $expectedContent, $content);
 		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
