@@ -2,31 +2,21 @@
 
 namespace Boomerang\Runner;
 
-use Boomerang\Response;
+use Boomerang\Boomerang;
 
 class TestRunner {
 
 	private $path;
 	private $files;
+	/**
+	 * @var UserInterface
+	 */
+	private $ui;
 
-	function __construct( $path ) {
+	function __construct( $path, UserInterface $ui ) {
 		$this->path  = $path;
 		$this->files = $this->getFileList($this->path);
-	}
-
-	function runTests() {
-		$scope = function ( $file ) { require($file); };
-
-		foreach( $this->files as $file ) {
-			$scope($file);
-			if( Response::$exceptions ) {
-				foreach( Response::$exceptions as $ex ) {
-					UserInterface::displayException($ex);
-				}
-			}
-
-			Response::$exceptions = array();
-		}
+		$this->ui    = $ui;
 	}
 
 	/**
@@ -52,6 +42,16 @@ class TestRunner {
 
 		UserInterface::dropError("Cannot find file \"$path\"");
 
+	}
+
+	function runTests() {
+		$scope = function ( $file ) { require($file); };
+
+		foreach( $this->files as $file ) {
+			$scope($file);
+
+			$this->ui->updateExpectationDisplay();
+		}
 	}
 
 }

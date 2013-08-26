@@ -18,21 +18,46 @@ class ExpectResult {
 	 * @var Validator
 	 */
 	private $validator;
+//	/**
+//	 * @var bool
+//	 */
+//	private $presented = false;
+	/**
+	 * @var null|string
+	 */
+	private $expected;
+	/**
+	 * @var null|string
+	 */
+	private $actual;
 
 	/**
-	 * @var bool
+	 * @param             $fail
+	 * @param Validator   $validator
+	 * @param null|string $message
+	 * @param null|string $expected
+	 * @param null|string $actual
 	 */
-	private $presented = false;
-
-	/**
-	 * @param bool      $fail
-	 * @param Validator $validator
-	 * @param null      $message
-	 */
-	public function __construct( $fail, Validator $validator, $message = null ) {
+	public function __construct( $fail, Validator $validator, $message = null, $expected = null, $actual = null ) {
 		$this->fail      = $fail;
 		$this->message   = $message;
 		$this->validator = $validator;
+		$this->expected  = $expected;
+		$this->actual    = $actual;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getActual() {
+		return $this->actual;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getExpected() {
+		return $this->expected;
 	}
 
 	/**
@@ -56,15 +81,15 @@ class ExpectResult {
 		return $this->fail;
 	}
 
-	/**
-	 * @param bool $presented
-	 */
-	public function setPresented($presented = true) {
-		$this->presented = $presented;
-	}
-
-	public function getPresented() {
-		return $this->presented;
-	}
+//	public function getPresented() {
+//		return $this->presented;
+//	}
+//
+//	/**
+//	 * @param bool $presented
+//	 */
+//	public function setPresented( $presented = true ) {
+//		$this->presented = $presented;
+//	}
 
 }

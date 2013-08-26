@@ -2,13 +2,11 @@
 
 namespace Boomerang;
 
-use Boomerang\Exceptions\ExpectFailedException;
 use Boomerang\Interfaces\Validator;
 
 class ResponseValidator implements Validator {
 
 	private $expectations = array();
-
 	/**
 	 * @var Response
 	 */
@@ -16,6 +14,13 @@ class ResponseValidator implements Validator {
 
 	public function __construct( Response $response ) {
 		$this->response = $response;
+	}
+
+	/**
+	 * @return \Boomerang\Response
+	 */
+	public function getResponse() {
+		return $this->response;
 	}
 
 	/**
@@ -30,10 +35,8 @@ class ResponseValidator implements Validator {
 		$match[1] = intval($match[1]);
 
 		if( $match[1] != $status ) {
-			$this->expectations[] = new ExpectResult(true, $this, "Unexpected HTTP Status " . PHP_EOL .
-			" # Expected: " . PHP_EOL . var_export($match[1], true) . PHP_EOL .
-			' # Actual: ' . PHP_EOL . var_export($status, true));
-		}else{
+			$this->expectations[] = new ExpectResult(true, $this, "Unexpected HTTP Status", $status, $match[1]);
+		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
 
@@ -50,10 +53,8 @@ class ResponseValidator implements Validator {
 		$headers = $this->response->headers($hop);
 
 		if( !isset($headers[$key]) || $headers[$key] != $value ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Exact Match: ' . var_export($key, true) . PHP_EOL .
-			" # Expected: " . var_export($value, true) . PHP_EOL .
-			" # Actual: " . var_export($headers[$key], true), $this);
-		}else{
+			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Exact Match: ' . var_export($key, true), $value, $headers[$key]);
+		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
 
@@ -70,10 +71,8 @@ class ResponseValidator implements Validator {
 		$headers = $this->response->headers($hop);
 
 		if( !isset($headers[$key]) || strpos($headers[$key], $value) === false ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Contains: ' . var_export($key, true) . PHP_EOL .
-			" # Expected: " . var_export($value, true) . PHP_EOL .
-			" # Actual: " . var_export($headers[$key], true), $this);
-		}else{
+			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Contains: ' . var_export($key, true), $value, $headers[$key]);
+		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
 
@@ -87,10 +86,8 @@ class ResponseValidator implements Validator {
 	public function expectBody( $response ) {
 
 		if( $this->response != $response ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ' . PHP_EOL .
-			" # Expected: " . var_export($response, true) . PHP_EOL .
-			" # Actual: " . var_export($this->response, true), $this);
-		}else{
+			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $response, $this->response);
+		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
 
@@ -104,10 +101,8 @@ class ResponseValidator implements Validator {
 	public function expectBodyContains( $response ) {
 
 		if( $this->response != $response ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ' . PHP_EOL .
-			" # Expected: " . var_export($response, true) . PHP_EOL .
-			" # Actual: " . var_export($this->response, true), $this);
-		}else{
+			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $response, $this->response);
+		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
 
