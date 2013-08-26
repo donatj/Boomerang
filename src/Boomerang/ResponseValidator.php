@@ -50,9 +50,9 @@ class ResponseValidator implements Validator {
 	 * @return $this
 	 */
 	public function expectHeader( $key, $value, $hop = null ) {
-		$headers = $this->response->getHeaders($hop);
+		$header = $this->response->getHeader($key, $hop);
 
-		if( !isset($headers[$key]) || $headers[$key] != $value ) {
+		if( $header != $value ) {
 			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Exact Match: ' . var_export($key, true), $value, $headers[$key]);
 		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
@@ -68,9 +68,9 @@ class ResponseValidator implements Validator {
 	 * @return $this
 	 */
 	public function expectHeaderContains( $key, $value, $hop = null ) {
-		$headers = $this->response->getHeaders($hop);
+		$header = $this->response->getHeader($key, $hop);
 
-		if( !isset($headers[$key]) || strpos($headers[$key], $value) === false ) {
+		if( !$header || strpos($header, $value) === false ) {
 			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Contains: ' . var_export($key, true), $value, $headers[$key]);
 		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
@@ -84,7 +84,7 @@ class ResponseValidator implements Validator {
 	 * @return $this
 	 */
 	public function expectBody( $expectedContent ) {
-		$content = $this->response->getContent();
+		$content = $this->response->getBody();
 
 		if( $content != $expectedContent ) {
 			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $expectedContent, $content);
@@ -100,7 +100,7 @@ class ResponseValidator implements Validator {
 	 * @return $this
 	 */
 	public function expectBodyContains( $expectedContent ) {
-		$content = $this->response->getContent();
+		$content = $this->response->getBody();
 
 		if( $content != $expectedContent ) {
 			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $expectedContent, $content);

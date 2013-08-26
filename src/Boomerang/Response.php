@@ -4,18 +4,18 @@ namespace Boomerang;
 
 class Response {
 
-	private $content;
+	private $body;
 	private $headers_raw;
 	private $header_sets;
 	private $request;
 
 	/**
-	 * @param string  $response
+	 * @param string  $body
 	 * @param string  $headers
 	 * @param Request $request
 	 */
-	public function __construct( $response, $headers, Request $request = null ) {
-		$this->content    = $response;
+	public function __construct( $body, $headers, Request $request = null ) {
+		$this->body        = $body;
 		$this->headers_raw = $headers;
 
 		$headers_split = explode("\r\n\r\n", trim($headers));
@@ -54,7 +54,32 @@ class Response {
 			}
 		}
 
+		$headers = array_change_key_case($headers);
+
 		return $headers;
+	}
+
+	/**
+	 * @param string   $header
+	 * @param null|int $hop
+	 * @return null|string
+	 */
+	public function getHeader( $header, $hop = null ) {
+		$headers = $this->getHeaders($hop);
+		$header  = strtolower($header);
+		if( isset($headers[$header]) ) {
+			return $headers[$header];
+		}
+
+		return null;
+	}
+
+	public function getHeaders( $hop = null ) {
+		if( $hop === null ) {
+			return end($this->header_sets);
+		}
+
+		return $this->header_sets[$hop];
 	}
 
 	/**
@@ -67,20 +92,12 @@ class Response {
 	/**
 	 * @return string
 	 */
-	public function getContent() {
-		return $this->content;
+	public function getBody() {
+		return $this->body;
 	}
 
 	public function getRequest() {
 		return $this->request;
-	}
-
-	public function getHeaders( $hop = null ) {
-		if( $hop === null ) {
-			return end($this->header_sets);
-		}
-
-		return $this->header_sets[$hop];
 	}
 
 }

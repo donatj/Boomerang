@@ -25,7 +25,7 @@ class Boomerang {
 			$ui->dumpOptions();
 		}
 
-		$ui->outputMsg("Boomerang ".self::VERSION." by Jesse G. Donat" . PHP_EOL);
+		$ui->outputMsg("Boomerang " . self::VERSION . " by Jesse G. Donat" . PHP_EOL);
 
 		$runner = new TestRunner(end($args), $ui);
 		$runner->runTests();
