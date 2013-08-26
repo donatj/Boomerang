@@ -11,7 +11,6 @@ class Boomerang {
 
 	public static $boomerangPath;
 	public static $pathInfo;
-
 	public static $validators = array();
 
 	static function main( $args ) {
