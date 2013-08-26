@@ -1,5 +1,7 @@
 <?php
 
+echo "Building Phar... ";
+
 $path = dirname(__FILE__) . '/';
 
 $srcRoot = $path . "src";
@@ -16,4 +18,4 @@ $phar->setStub(file_get_contents($path . 'build/stub.php'));
 
 chmod($fpath, 0777);
 
-echo "Done!\007" . PHP_EOL;
+echo "Done!\007" . PHP_EOL . PHP_EOL;
