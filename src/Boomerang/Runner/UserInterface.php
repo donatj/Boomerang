@@ -2,32 +2,15 @@
 
 namespace Boomerang\Runner;
 
+use Boomerang\Boomerang;
 use Boomerang\Exceptions\ExpectFailedException;
 use CLI\Output;
 use CLI\Style;
 
 class UserInterface {
 
-	static $boomerangPath;
-	static $pathInfo;
-
-	static function main( $args ) {
-		self::$boomerangPath = realpath($args[0]);
-		self::$pathInfo      = pathinfo(self::$boomerangPath);
-
-		if( count($args) < 2 ) {
-			self::dumpOptions();
-		}
-
-		$runner = new TestRunner(end($args));
-		$runner->runTests();
-
-		Output::string(PHP_EOL . PHP_EOL);
-
-	}
-
 	static function dumpOptions() {
-		$fname = self::$pathInfo['basename'];
+		$fname = Boomerang::$pathInfo['basename'];
 
 		$options = <<<EOT
 usage: {$fname} [switches] <directory>
@@ -48,7 +31,7 @@ EOT;
 	}
 
 	static function dropError( $text, $code = 1 ) {
-		Output::string(self::$pathInfo['basename'] . ": " . $text . PHP_EOL);
+		Output::string(Boomerang::$pathInfo['basename'] . ": " . $text . PHP_EOL);
 		die($code);
 	}
 
