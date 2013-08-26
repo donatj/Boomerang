@@ -74,12 +74,20 @@ class Response {
 		return null;
 	}
 
+	/**
+	 * @param null $hop
+	 * @return array|null
+	 */
 	public function getHeaders( $hop = null ) {
 		if( $hop === null ) {
 			return end($this->header_sets);
 		}
 
-		return $this->header_sets[$hop];
+		if( isset($this->header_sets[$hop]) ) {
+			return $this->header_sets[$hop];
+		}
+
+		return null;
 	}
 
 	/**
@@ -96,8 +104,18 @@ class Response {
 		return $this->body;
 	}
 
+	/**
+	 * @return Request
+	 */
 	public function getRequest() {
 		return $this->request;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getHopCount() {
+		return count($this->header_sets);
 	}
 
 }
