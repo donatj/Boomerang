@@ -4,7 +4,6 @@ namespace Boomerang;
 
 class Response {
 
-	public static $exceptions = array();
 	private $response;
 	private $header_sets;
 	private $request;
