@@ -11,14 +11,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
 		$headers   = $req->getHeaders();
 		$headers_a = explode(",", $headers['Accept']);
 
-		$this->assertEquals($headers_a[0], 'application/json');
+		$this->assertEquals('application/json', $headers_a[0]);
 
 
 		$req       = new Request('http://example.com/test.xml');
 		$headers   = $req->getHeaders();
 		$headers_a = explode(",", $headers['Accept']);
 
-		$this->assertEquals($headers_a[0], 'application/xml');
+		$this->assertEquals('application/xml', $headers_a[0]);
 
 
 		$req = new Request('http://example.com/test.xml');
@@ -26,7 +26,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
 		$headers   = $req->getHeaders();
 		$headers_a = explode(",", $headers['Accept']);
 
-		$this->assertEquals($headers_a[0], 'application/json');
+		$this->assertEquals('application/json', $headers_a[0]);
 	}
 
 }
