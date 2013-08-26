@@ -122,7 +122,7 @@ class Response {
 	 * @param int|null $hop
 	 * @return int|null
 	 */
-	public function getStatus( $hop ) {
+	public function getStatus( $hop = null ) {
 		$headers = $this->getHeaders($hop);
 
 		if( $headers ) {
