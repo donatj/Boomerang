@@ -75,7 +75,7 @@ class Response {
 	}
 
 	/**
-	 * @param null $hop
+	 * @param null|int $hop
 	 * @return array|null
 	 */
 	public function getHeaders( $hop = null ) {
@@ -116,6 +116,23 @@ class Response {
 	 */
 	public function getHopCount() {
 		return count($this->header_sets);
+	}
+
+	/**
+	 * @param int|null $hop
+	 * @return int|null
+	 */
+	public function getStatus( $hop ) {
+		$headers = $this->getHeaders($hop);
+
+		if( $headers ) {
+			preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $headers[0], $match);
+			if( $status = intval($match[1]) ) {
+				return $status;
+			}
+		}
+
+		return null;
 	}
 
 }

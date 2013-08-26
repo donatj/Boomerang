@@ -24,18 +24,16 @@ class ResponseValidator implements Validator {
 	}
 
 	/**
-	 * @param int  $status
+	 * @param int  $expected_status
 	 * @param null $hop
 	 * @return $this
 	 */
-	public function expectStatus( $status = 200, $hop = null ) {
-		$headers = $this->response->getHeaders($hop);
+	public function expectStatus( $expected_status = 200, $hop = null ) {
 
-		preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $headers[0], $match);
-		$match[1] = intval($match[1]);
+		$status = $this->response->getStatus($hop);
 
-		if( $match[1] != $status ) {
-			$this->expectations[] = new ExpectResult(true, $this, "Unexpected HTTP Status", $status, $match[1]);
+		if( $match[1] != $expected_status ) {
+			$this->expectations[] = new ExpectResult(true, $this, "Unexpected HTTP Status", $expected_status, $status);
 		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
 		}
