@@ -5,9 +5,10 @@ namespace Boomerang;
 use Boomerang\Interfaces\Validator;
 use Boomerang\Runner\TestRunner;
 use Boomerang\Runner\UserInterface;
-use CLI\Output;
 
 class Boomerang {
+
+	const VERSION = ".0.1a";
 
 	public static $boomerangPath;
 	public static $pathInfo;
@@ -17,16 +18,19 @@ class Boomerang {
 		self::$boomerangPath = realpath($args[0]);
 		self::$pathInfo      = pathinfo(self::$boomerangPath);
 
+
 		$ui = new UserInterface(STDOUT, STDERR);
 
 		if( count($args) < 2 ) {
 			$ui->dumpOptions();
 		}
 
+		$ui->outputMsg("Boomerang ".self::VERSION." by Jesse G. Donat" . PHP_EOL);
+
 		$runner = new TestRunner(end($args), $ui);
 		$runner->runTests();
 
-		Output::string(PHP_EOL . PHP_EOL);
+		$ui->outputMsg(PHP_EOL . PHP_EOL);
 
 	}
 

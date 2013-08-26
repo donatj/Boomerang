@@ -72,4 +72,8 @@ EOT;
 		die($code);
 	}
 
+	public function outputMsg( $text ) {
+		Output::string($text . PHP_EOL);
+	}
+
 }
