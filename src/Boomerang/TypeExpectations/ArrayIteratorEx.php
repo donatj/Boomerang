@@ -15,8 +15,8 @@ class ArrayIteratorEx implements TypeExpectation {
 
 	public function match( $data ) {
 		$pass = true;
-		foreach($data as $key => $value) {
-			$hv = new HierarchyValidation( $value, $this->structure );
+		foreach( $data as $key => $value ) {
+			$hv   = new HierarchyValidation($value, $this->structure);
 			$pass = $pass && $hv->validate();
 		}
 

@@ -62,9 +62,9 @@ class JSONValidator implements Validator {
 		return $error;
 	}
 
-	public function expectStructure($structure) {
+	public function expectStructure( $structure ) {
 		$hv = new HierarchyValidation($this->result, $structure);
-		drop( $hv->validate() );
+		drop($hv->validate());
 	}
 
 	/**
