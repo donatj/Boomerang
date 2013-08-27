@@ -15,7 +15,7 @@ class NumberEx implements TypeExpectation {
 	}
 
 	public function match( $data ) {
-		// TODO: Implement match() method.
+		return !is_string($data) && is_numeric($data);
 	}
 
 	protected function rangeValidation( $data ) {
