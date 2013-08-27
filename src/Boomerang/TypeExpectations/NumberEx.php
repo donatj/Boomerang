@@ -20,7 +20,7 @@ class NumberEx implements TypeExpectation {
 
 	protected function rangeValidation( $data ) {
 		return ($data >= $this->min || $this->min === null)
-		&& ($data <= $this->max || $this->max === null);
+			   && ($data <= $this->max || $this->max === null);
 	}
 
 }
