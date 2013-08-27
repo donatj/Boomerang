@@ -40,7 +40,7 @@ class Response {
 		$s = str_replace("\r\n", "\n", $s);
 		$s = str_replace("\r", "\n", $s);
 		$s = str_replace("\n", "\r\n", $s);
-		trim($s);
+		$s = trim($s);
 
 		return $s;
 	}
