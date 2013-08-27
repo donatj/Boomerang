@@ -12,7 +12,7 @@ class JSONValidator implements Validator {
 	public function __construct( Response $response ) {
 
 		$result = false;
-		if( $error = $this->jsonDecode($response->getRequest(), $result) ) {
+		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
 			$this->expectations[] = new ExpectResult(true, $this, "Failed to Parse JSON Document");
 			$this->result         = array();
 		} else {
