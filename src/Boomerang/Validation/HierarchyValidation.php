@@ -26,7 +26,7 @@ class HierarchyValidation {
 			$pass = true;
 
 			foreach( $validation as $key => $value ) {
-				$pass = $pass && $this->__validate($data[$key], $value);
+				$pass = $pass && isset($data[$key]) && $this->__validate($data[$key], $value);
 			}
 
 			return $pass;
