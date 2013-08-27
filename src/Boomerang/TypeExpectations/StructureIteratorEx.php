@@ -5,7 +5,11 @@ namespace Boomerang\TypeExpectations;
 use Boomerang\Interfaces\TypeExpectation;
 use Boomerang\Validation\HierarchyValidation;
 
-class ArrayIteratorEx implements TypeExpectation {
+/**
+ * @todo Merge this and HierarchyValidation
+ */
+
+class StructureIteratorEx implements TypeExpectation {
 
 	private $structure;
 
