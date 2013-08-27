@@ -32,7 +32,7 @@ class ResponseValidator implements Validator {
 
 		$status = $this->response->getStatus($hop);
 
-		if( $match[1] != $expected_status ) {
+		if( $status != $expected_status ) {
 			$this->expectations[] = new ExpectResult(true, $this, "Unexpected HTTP Status", $expected_status, $status);
 		} else {
 			$this->expectations[] = new ExpectResult(false, $this);
