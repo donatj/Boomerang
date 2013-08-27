@@ -8,8 +8,14 @@ class JSONValidator implements Validator {
 
 	private $expectations = array();
 	private $result;
+	/**
+	 * @var Response
+	 */
+	private $response;
 
 	public function __construct( Response $response ) {
+
+		$this->response = $response;
 
 		$result = false;
 		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
@@ -53,6 +59,13 @@ class JSONValidator implements Validator {
 		}
 
 		return $error;
+	}
+
+	/**
+	 * @return Response
+	 */
+	public function getResponse() {
+		return $this->response;
 	}
 
 	public function getExpectationResults() {
