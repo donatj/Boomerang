@@ -18,7 +18,7 @@ class Response {
 		$this->body        = $body;
 		$this->headers_raw = $headers;
 
-		$headers = $this->normalizeHeaders( $headers );
+		$headers = $this->normalizeHeaders($headers);
 
 		$headers_split = explode("\r\n\r\n", $headers);
 		foreach( $headers_split as &$h ) {
@@ -36,11 +36,12 @@ class Response {
 	 * @param $s
 	 * @return mixed
 	 */
-	private function normalizeHeaders($s) {
+	private function normalizeHeaders( $s ) {
 		$s = str_replace("\r\n", "\n", $s);
 		$s = str_replace("\r", "\n", $s);
 		$s = str_replace("\n", "\r\n", $s);
 		trim($s);
+
 		return $s;
 	}
 
