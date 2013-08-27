@@ -6,4 +6,6 @@ interface Validator {
 
 	public function getExpectationResults();
 
+	public function getResponse();
+
 }
