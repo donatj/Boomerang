@@ -8,7 +8,11 @@ More info coming soon
 
 ## Compiling a Phar
 
+You will need Composer to fetch the requirements
+
 ```shell
+$ git@github.com:donatj/Boomerang.git
+$ cd Boomerang
 $ composer.phar install
 $ php create-phar.php
 ```
