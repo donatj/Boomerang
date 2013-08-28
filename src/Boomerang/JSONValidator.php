@@ -64,7 +64,11 @@ class JSONValidator implements Validator {
 
 	public function expectStructure( $structure ) {
 		$hv = new HierarchyValidation($this->result, $structure);
-		drop($hv->validate());
+		if( !$hv->validate() ) {
+			$this->expectations[] = new ExpectResult(true, $this, "Structure Validation Error"); //@todo detailed message
+		}else{
+			$this->expectations[] = new ExpectResult(false, $this);
+		}
 	}
 
 	/**
