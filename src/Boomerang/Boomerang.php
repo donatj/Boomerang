@@ -9,15 +9,13 @@ use Boomerang\Runner\UserInterface;
 class Boomerang {
 
 	const VERSION = ".0.1a";
-
 	public static $boomerangPath;
 	public static $pathInfo;
-	private static $validators = array();
+	public static $validators = array();
 
 	static function main( $args ) {
 		self::$boomerangPath = realpath($args[0]);
 		self::$pathInfo      = pathinfo(self::$boomerangPath);
-
 
 		$ui = new UserInterface(STDOUT, STDERR);
 
@@ -30,7 +28,15 @@ class Boomerang {
 		$runner = new TestRunner(end($args), $ui);
 
 		$runner->runTests(function ( $file ) use ( $ui ) {
-			$ui->updateExpectationDisplay($file);
+			$validators = array();
+			foreach( Boomerang::$validators as &$v_data ) {
+				if( !$v_data['displayed'] ) {
+					$v_data['displayed'] = true;
+					$validators[]        = $v_data['validator'];
+				}
+			}
+
+			$ui->updateExpectationDisplay($file, $validators);
 		});
 
 		$ui->outputMsg(PHP_EOL . PHP_EOL);
@@ -41,17 +47,10 @@ class Boomerang {
 	 * @param Validator $validator
 	 */
 	public static function addValidator( Validator $validator ) {
-		self::$validators[] = $validator;
-	}
-
-	/**
-	 * @return array
-	 */
-	public static function popValidators() {
-		$validators       = self::$validators;
-		self::$validators = array();
-
-		return $validators;
+		self::$validators[] = array(
+			'displayed' => false,
+			'validator' => $validator,
+		);
 	}
 
 }

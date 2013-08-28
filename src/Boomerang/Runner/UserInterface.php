@@ -26,9 +26,7 @@ EOT;
 		die(1);
 	}
 
-	public function updateExpectationDisplay( $file ) {
-		$validators = Boomerang::popValidators();
-
+	public function updateExpectationDisplay( $file, $validators ) {
 		$messages = array();
 
 		foreach( $validators as $validator ) {
