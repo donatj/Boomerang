@@ -39,8 +39,22 @@ class Boomerang {
 			$ui->updateExpectationDisplay($file, $validators);
 		});
 
-		$ui->outputMsg(PHP_EOL . PHP_EOL);
+		$tests = 0;
+		$total = 0;
+		$fails = 0;
+		foreach(Boomerang::$validators as $v_data) {
+			$tests++;
+			$ex_res = $v_data['validator']->getExpectationResults();
+			foreach($ex_res as $ex) {
+				$total++;
+				$fails += $ex->getFail();
+			}
+		}
 
+		$ui->outputMsg(PHP_EOL);
+		$ui->outputMsg( "$tests tests, $total assertions, $fails failures" );
+
+		die( $fails ? 2 : 0 );
 	}
 
 	/**
