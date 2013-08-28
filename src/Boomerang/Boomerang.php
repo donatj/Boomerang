@@ -28,7 +28,10 @@ class Boomerang {
 		$ui->outputMsg("Boomerang " . self::VERSION . " by Jesse G. Donat" . PHP_EOL);
 
 		$runner = new TestRunner(end($args), $ui);
-		$runner->runTests();
+
+		$runner->runTests(function ( $file ) use ( $ui ) {
+			$ui->updateExpectationDisplay($file);
+		});
 
 		$ui->outputMsg(PHP_EOL . PHP_EOL);
 

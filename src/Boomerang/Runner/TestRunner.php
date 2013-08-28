@@ -44,13 +44,18 @@ class TestRunner {
 
 	}
 
-	function runTests() {
+	/**
+	 * @param callable $afterExecution
+	 */
+	function runTests( \Closure $afterExecution = null ) {
 		$scope = function ( $file ) { require($file); };
 
 		foreach( $this->files as $file ) {
 			$scope($file);
 
-			$this->ui->updateExpectationDisplay();
+			if($afterExecution !== null) {
+				$afterExecution($file);
+			}
 		}
 	}
 

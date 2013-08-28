@@ -26,7 +26,7 @@ EOT;
 		die(1);
 	}
 
-	public function updateExpectationDisplay() {
+	public function updateExpectationDisplay( $file ) {
 		$validators = Boomerang::popValidators();
 
 		$messages = array();
@@ -46,6 +46,7 @@ EOT;
 			Output::string(PHP_EOL . PHP_EOL);
 
 			foreach( $messages as $expectationResult ) {
+				Output::string($file . ' ');
 				Output::string("[ " . Style::red($expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint(), 'underline') . " ]" . PHP_EOL);
 				Output::string($expectationResult->getMessage() . PHP_EOL . PHP_EOL);
 
