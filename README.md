@@ -11,7 +11,7 @@ More info coming soon
 You will need Composer to fetch the requirements
 
 ```shell
-$ git@github.com:donatj/Boomerang.git
+$ git clone git@github.com:donatj/Boomerang.git Boomerang
 $ cd Boomerang
 $ composer.phar install
 $ php create-phar.php
