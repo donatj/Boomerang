@@ -6,8 +6,7 @@ $req      = new Request('http://httpbin.org/get');
 $response = $req->makeRequest();
 
 $valid = new ResponseValidator($response);
-
-$valid->expectStatus(302, 0)
-	->expectHeader('Content-Type', 'application/xml');
+$valid->expectStatus(200)
+	  ->expectHeader('Content-Type', 'application/json');
 
 Boomerang::addValidator($valid);
