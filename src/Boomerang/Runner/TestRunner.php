@@ -15,8 +15,8 @@ class TestRunner {
 
 	function __construct( $path, UserInterface $ui ) {
 		$this->path  = $path;
-		$this->files = $this->getFileList($this->path);
 		$this->ui    = $ui;
+		$this->files = $this->getFileList($this->path);
 	}
 
 	/**
@@ -40,7 +40,8 @@ class TestRunner {
 			return new \ArrayIterator(array( $path ));
 		}
 
-		UserInterface::dropError("Cannot find file \"$path\"");
+
+		$this->ui->dropError("Cannot find file \"$path\"");
 
 	}
 
