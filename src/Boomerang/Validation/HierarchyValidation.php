@@ -20,7 +20,7 @@ class HierarchyValidation {
 
 	private function __validate( $data, $validation ) {
 
-		see($validation);
+		// see($validation);
 
 		if( is_array($validation) ) {
 			$pass = true;
