@@ -1,6 +1,6 @@
 <?php
 
-namespace Boomerang\TypeExpectations;
+namespace Boomerang\TypeExpectations\Iterate;
 
 use Boomerang\Interfaces\TypeExpectation;
 use Boomerang\Validation\HierarchyValidation;
@@ -9,11 +9,11 @@ use Boomerang\Validation\HierarchyValidation;
  * @todo Merge this and HierarchyValidation
  */
 
-class StructureIteratorEx implements TypeExpectation {
+class IterateStructureEx implements TypeExpectation {
 
-	private $structure;
+	protected $structure;
 
-	function __construct( $structure ) {
+	public function __construct( $structure ) {
 		$this->structure = $structure;
 	}
 
