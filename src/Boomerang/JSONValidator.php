@@ -2,6 +2,8 @@
 
 namespace Boomerang;
 
+use Boomerang\ExpectationResult\FailingResult;
+use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\Validator;
 use Boomerang\TypeExpectations\StructureEx;
 
@@ -20,10 +22,10 @@ class JSONValidator implements Validator {
 
 		$result = false;
 		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
-			$this->expectations[] = new ExpectResult(true, $this, "Failed to Parse JSON Document");
+			$this->expectations[] = new FailingResult($this, "Failed to Parse JSON Document");
 			$this->result         = array();
 		} else {
-			$this->expectations[] = new ExpectResult(false, $this);
+			$this->expectations[] = new PassingResult($this, "Successfully Parsed Document");
 			$this->result         = $result;
 		}
 
@@ -64,12 +66,12 @@ class JSONValidator implements Validator {
 
 	public function expectStructure( $structure ) {
 
-		$sx = new StructureEx( $structure );
+		$sx = new StructureEx($structure);
 
-		if( $sx->match( $this->result ) ) {
-			$this->expectations[] = new ExpectResult(false, $this);
-		}else{
-			$this->expectations[] = new ExpectResult(true, $this, "Structure Validation Error"); //@todo detailed message
+		if( $sx->match($this->result) ) {
+			$this->expectations[] = new PassingResult($this, "JSON Structure as Expected");
+		} else {
+			$this->expectations[] = new FailingResult($this, "Structure Validation Error"); // TODO: Failing message
 		}
 
 	}

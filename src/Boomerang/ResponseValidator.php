@@ -2,6 +2,8 @@
 
 namespace Boomerang;
 
+use Boomerang\ExpectationResult\FailingExpectationResult;
+use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\Interfaces\Validator;
 
 class ResponseValidator implements Validator {
@@ -33,9 +35,9 @@ class ResponseValidator implements Validator {
 		$status = $this->response->getStatus($hop);
 
 		if( $status != $expected_status ) {
-			$this->expectations[] = new ExpectResult(true, $this, "Unexpected HTTP Status", $expected_status, $status);
+			$this->expectations[] = new FailingExpectationResult($this, "Unexpected HTTP Status", $expected_status, $status);
 		} else {
-			$this->expectations[] = new ExpectResult(false, $this);
+			$this->expectations[] = new PassingExpectationResult($this, "Expected HTTP Status", $status);
 		}
 
 		return $this;
@@ -51,9 +53,9 @@ class ResponseValidator implements Validator {
 		$header = $this->response->getHeader($key, $hop);
 
 		if( $header != $value ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Exact Match: ' . var_export($key, true), $value, $header);
+			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected Header Exact Match: ' . var_export($key, true), $value, $header);
 		} else {
-			$this->expectations[] = new ExpectResult(false, $this);
+			$this->expectations[] = new PassingExpectationResult($this, "Expected Header Exact Match: " . var_export($key, true), $header);
 		}
 
 		return $this;
@@ -69,9 +71,9 @@ class ResponseValidator implements Validator {
 		$header = $this->response->getHeader($key, $hop);
 
 		if( !$header || strpos($header, $value) === false ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected Header Contains: ' . var_export($key, true), $value, $header);
+			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected Header Contains: ' . var_export($key, true), $value, $header);
 		} else {
-			$this->expectations[] = new ExpectResult(false, $this);
+			$this->expectations[] = new PassingExpectationResult($this, "Expected Header Contains: " . var_export($key, true), $header);
 		}
 
 		return $this;
@@ -85,9 +87,9 @@ class ResponseValidator implements Validator {
 		$content = $this->response->getBody();
 
 		if( $content != $expectedContent ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $expectedContent, $content);
+			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected body', $expectedContent, $content);
 		} else {
-			$this->expectations[] = new ExpectResult(false, $this);
+			$this->expectations[] = new PassingExpectationResult($this, 'Expected body', $content);
 		}
 
 		return $this;
@@ -101,9 +103,9 @@ class ResponseValidator implements Validator {
 		$content = $this->response->getBody();
 
 		if( $content != $expectedContent ) {
-			$this->expectations[] = new ExpectResult(true, $this, 'Unexpected body: ', $expectedContent, $content);
+			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected body contains: ', $expectedContent, $content);
 		} else {
-			$this->expectations[] = new ExpectResult(false, $this);
+			$this->expectations[] = new PassingExpectationResult($this, 'Expected body contains:', $expectedContent);
 		}
 
 		return $this;
