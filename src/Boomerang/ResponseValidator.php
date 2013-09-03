@@ -2,7 +2,7 @@
 
 namespace Boomerang;
 
-use Boomerang\ExpectationResult\FailingExpectationResult;
+use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\Interfaces\Validator;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Boomerang\ExpectationResult;
+namespace Boomerang\ExpectationResults;
 
 use Boomerang\Interfaces\Validator;
 
