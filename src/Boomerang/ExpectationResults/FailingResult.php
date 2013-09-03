@@ -2,9 +2,9 @@
 
 namespace Boomerang\ExpectationResult;
 
-use Boomerang\ExpectationResults\MessageResult;
+use Boomerang\ExpectationResults\BaseResult;
 
-class FailingResult extends MessageResult {
+class FailingResult extends BaseResult {
 
 	/**
 	 * @return bool

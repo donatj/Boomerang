@@ -5,7 +5,7 @@ namespace Boomerang\ExpectationResults;
 use Boomerang\Interfaces\ExpectationResult;
 use Boomerang\Interfaces\Validator;
 
-class MessageResult implements ExpectationResult {
+abstract class BaseResult implements ExpectationResult {
 
 	/**
 	 * @var string

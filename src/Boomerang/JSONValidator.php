@@ -3,6 +3,7 @@
 namespace Boomerang;
 
 use Boomerang\ExpectationResult\FailingResult;
+use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\Validator;
 use Boomerang\TypeExpectations\StructureEx;
@@ -74,6 +75,8 @@ class JSONValidator implements Validator {
 			$this->expectations[] = new FailingResult($this, "Structure Validation Error"); // TODO: Failing message
 		}
 
+		return $this;
+
 	}
 
 	/**
@@ -85,6 +88,12 @@ class JSONValidator implements Validator {
 
 	public function getExpectationResults() {
 		return $this->expectations;
+	}
+
+	public function inspectJSON() {
+		$this->expectations[] = new InfoResult($this, json_encode($this->result));
+
+		return $this;
 	}
 
 }
