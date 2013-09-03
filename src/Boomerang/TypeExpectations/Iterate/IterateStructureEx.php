@@ -2,26 +2,19 @@
 
 namespace Boomerang\TypeExpectations\Iterate;
 
-use Boomerang\Interfaces\TypeExpectation;
-use Boomerang\Validation\HierarchyValidation;
+use Boomerang\TypeExpectations\StructureEx;
+
 
 /**
  * @todo Merge this and HierarchyValidation
  */
 
-class IterateStructureEx implements TypeExpectation {
-
-	protected $structure;
-
-	public function __construct( $structure ) {
-		$this->structure = $structure;
-	}
+class IterateStructureEx extends StructureEx {
 
 	public function match( $data ) {
 		$pass = true;
 		foreach( $data as $key => $value ) {
-			$hv   = new HierarchyValidation($value, $this->structure);
-			$pass = $pass && $hv->validate();
+			$pass = $pass && $this->__validate($value, $this->structure);
 		}
 
 		return $pass;

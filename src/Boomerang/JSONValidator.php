@@ -3,7 +3,7 @@
 namespace Boomerang;
 
 use Boomerang\Interfaces\Validator;
-use Boomerang\Validation\HierarchyValidation;
+use Boomerang\TypeExpectations\StructureEx;
 
 class JSONValidator implements Validator {
 
@@ -55,7 +55,7 @@ class JSONValidator implements Validator {
 				$error = 'Malformed UTF-8 characters, possibly incorrectly encoded.';
 				break;
 			default:
-				$error = 'Unknown JSON error occured.';
+				$error = 'Unknown JSON error occurred.';
 				break;
 		}
 
@@ -63,12 +63,15 @@ class JSONValidator implements Validator {
 	}
 
 	public function expectStructure( $structure ) {
-		$hv = new HierarchyValidation($this->result, $structure);
-		if( !$hv->validate() ) {
-			$this->expectations[] = new ExpectResult(true, $this, "Structure Validation Error"); //@todo detailed message
-		}else{
+
+		$sx = new StructureEx( $structure );
+
+		if( $sx->match( $this->result ) ) {
 			$this->expectations[] = new ExpectResult(false, $this);
+		}else{
+			$this->expectations[] = new ExpectResult(true, $this, "Structure Validation Error"); //@todo detailed message
 		}
+
 	}
 
 	/**

@@ -1,26 +1,22 @@
 <?php
 
-namespace Boomerang\Validation;
+namespace Boomerang\TypeExpectations;
 
 use Boomerang\Interfaces\TypeExpectation;
 
-class HierarchyValidation {
+class StructureEx implements TypeExpectation {
 
-	private $data;
-	private $validation;
+	protected $structure;
 
-	function __construct( $data, $validation ) {
-		$this->data       = $data;
-		$this->validation = $validation;
+	function __construct( $structure ) {
+		$this->structure = $structure;
 	}
 
-	public function validate() {
-		return $this->__validate($this->data, $this->validation);
+	public function match( $data ) {
+		return $this->__validate($data, $this->structure);
 	}
 
-	private function __validate( $data, $validation ) {
-
-		// see($validation);
+	protected function __validate( $data, $validation ) {
 
 		if( is_array($validation) ) {
 			$pass = true;
@@ -38,7 +34,7 @@ class HierarchyValidation {
 			return $validation == $data;
 		}
 
-
 	}
+
 
 }
