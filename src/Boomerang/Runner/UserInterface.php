@@ -3,6 +3,12 @@
 namespace Boomerang\Runner;
 
 use Boomerang\Boomerang;
+use Boomerang\ExpectationResults\FailingExpectationResult;
+use Boomerang\ExpectationResults\FailingResult;
+use Boomerang\ExpectationResults\InfoResult;
+use Boomerang\ExpectationResults\PassingResult;
+use Boomerang\Interfaces\ExpectationResult;
+use Boomerang\Interfaces\Validator;
 use CLI\Output;
 use CLI\Style;
 
@@ -27,16 +33,25 @@ EOT;
 	}
 
 	public function updateExpectationDisplay( $file, $validators ) {
-		$messages = array();
+		$messages = array(); //store the ones to display so we can show all the .'s / ?'s first
 
 		foreach( $validators as $validator ) {
-			foreach( $validator->getExpectationResults() as $expectationResult ) {
-				if( $expectationResult->getFail() ) {
-					Output::string(Style::red("F"));
-					$messages[] = $expectationResult;
-				} else {
-					Output::string(Style::green("."));
+			if( $validator instanceof Validator ) {
+				foreach( $validator->getExpectationResults() as $expectationResult ) {
+					if( $expectationResult instanceof FailingResult ) {
+						Output::string(Style::red("F"));
+						$messages[] = $expectationResult;
+					} elseif( $expectationResult instanceof PassingResult ) {
+						Output::string(Style::green("."));
+					} elseif( $expectationResult instanceof InfoResult ) {
+						$messages[] = $expectationResult;
+					} else {
+						Output::string(Style::red("?"));
+						$messages[] = "Error: Unexpected ExpectationResults:" . var_export($expectationResult, true);
+					}
 				}
+			} else {
+				$messages[] = "Error: Unexpected Validator:" . var_export($validator, true);
 			}
 		}
 
@@ -44,24 +59,37 @@ EOT;
 			Output::string(PHP_EOL . PHP_EOL);
 
 			foreach( $messages as $expectationResult ) {
+
 				Output::string($file . ' ');
-				Output::string("[ " . Style::red($expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint(), 'underline') . " ]" . PHP_EOL);
-				Output::string($expectationResult->getMessage() . PHP_EOL . PHP_EOL);
 
-				$actual = $expectationResult->getActual();
-				if( $expectationResult->getActual() !== null ) {
-					Output::string("Actual: " . PHP_EOL);
-					Output::string(var_export($actual, true));
-					Output::string(PHP_EOL . PHP_EOL);
-				}
+				if( $expectationResult instanceof ExpectationResult ) {
 
-				$expected = $expectationResult->getExpected();
-				if( $expected !== null ) {
-					Output::string("Expected: " . PHP_EOL);
-					Output::string(Style::red(var_export($expected, true)));
+					Output::string("[ " . Style::red($expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint(), 'underline') . " ]" . PHP_EOL);
+					Output::string($expectationResult->getMessage() . PHP_EOL . PHP_EOL);
+
+					if( $expectationResult instanceof FailingExpectationResult ) {
+						$actual = $expectationResult->getActual();
+						if( $expectationResult->getActual() !== null ) {
+							Output::string("Actual: " . PHP_EOL);
+							Output::string(var_export($actual, true));
+							Output::string(PHP_EOL . PHP_EOL);
+						}
+
+						$expected = $expectationResult->getExpected();
+						if( $expected !== null ) {
+							Output::string("Expected: " . PHP_EOL);
+							Output::string(Style::red(var_export($expected, true)));
+						}
+					}
+
+				} elseif( is_string($expectationResult) ) {
+					Output::string($expectationResult);
+				} else {
+
 				}
 
 				Output::string(PHP_EOL . PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL . PHP_EOL);
+
 			}
 		}
 	}
