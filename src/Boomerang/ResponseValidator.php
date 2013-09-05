@@ -52,9 +52,9 @@ class ResponseValidator implements Interfaces\Validator {
 		$header = $this->response->getHeader($key, $hop);
 
 		if( $header != $value ) {
-			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected Header Exact Match: ' . var_export($key, true), $value, $header);
+			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected header exact match' . var_export($key, true), $value, $header);
 		} else {
-			$this->expectations[] = new PassingExpectationResult($this, "Expected Header Exact Match: " . var_export($key, true), $header);
+			$this->expectations[] = new PassingExpectationResult($this, "Expected header exact match" . var_export($key, true), $header);
 		}
 
 		return $this;
@@ -70,9 +70,9 @@ class ResponseValidator implements Interfaces\Validator {
 		$header = $this->response->getHeader($key, $hop);
 
 		if( !$header || strpos($header, $value) === false ) {
-			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected Header Contains: ' . var_export($key, true), $value, $header);
+			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected header contains' . var_export($key, true), $value, $header);
 		} else {
-			$this->expectations[] = new PassingExpectationResult($this, "Expected Header Contains: " . var_export($key, true), $header);
+			$this->expectations[] = new PassingExpectationResult($this, "Expected header contains" . var_export($key, true), $header);
 		}
 
 		return $this;
@@ -102,9 +102,9 @@ class ResponseValidator implements Interfaces\Validator {
 		$content = $this->response->getBody();
 
 		if( $content != $expectedContent ) {
-			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected body contains: ', $expectedContent, $content);
+			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected body contains', $expectedContent, $content);
 		} else {
-			$this->expectations[] = new PassingExpectationResult($this, 'Expected body contains:', $expectedContent);
+			$this->expectations[] = new PassingExpectationResult($this, 'Expected body contains', $expectedContent);
 		}
 
 		return $this;
