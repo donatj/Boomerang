@@ -16,6 +16,10 @@ abstract class BaseResult implements ExpectationResult {
 	 */
 	protected $validator;
 
+	/**
+	 * @param Validator   $validator
+	 * @param null|string $message
+	 */
 	function __construct( Validator $validator, $message = null ) {
 		$this->message   = $message;
 		$this->validator = $validator;

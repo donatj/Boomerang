@@ -5,25 +5,51 @@ namespace Boomerang;
 class Request {
 
 	public $tmp = "/tmp";
-	public $max_redirects = 10;
-
+	public $maxRedirects = 10;
+	public $info;
 	private $headers = array();
 	private $endpoint;
 	private $cookies = array();
 	private $cookiesFollowRedirects = false;
+	private $postdata = array();
 
 	public function __construct( $endpoint ) {
 		$this->endpoint = $endpoint;
 	}
 
-	public function setHeader( $key, $value ) {
-		$this->headers[$key] = $value;
+	/**
+	 * @param string
+	 * @return string|null
+	 */
+	public function getHeader( $key ) {
+		return isset($this->headers[$key]) ? $this->headers[$key] : null;
 	}
 
 	/**
-	 * @param bool $bool
+	 * Set all post data, whiping past values.
+	 *
+	 * @param array $post
 	 */
-	public function setCookiesFollowRedirects( $bool ) {
+	public function setPostdata( array $post ) {
+		$this->postdata = $post;
+	}
+
+	/**
+	 * Set a named key of the post value
+	 *
+	 * @param $key
+	 * @param $value
+	 */
+	public function setPost( $key, $value ) {
+		$this->postdata[$key] = $post;
+	}
+
+	/**
+	 * @param        $bool
+	 * @param string $tmp_path
+	 */
+	public function setCookiesFollowRedirects( $bool, $tmp_path = '/tmp' ) {
+		$this->tmp                    = $tmp_path;
 		$this->cookiesFollowRedirects = $bool;
 	}
 
@@ -42,13 +68,22 @@ class Request {
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiejar);
 		}
 
+		if( $this->postdata ) {
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postdata);
+		}
+
+		if( $this->cookies ) {
+			curl_setopt($ch, CURLOPT_COOKIE, http_build_cookie($this->cookies));
+		}
+
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHeaders());
 
-		if( $this->max_redirects ) {
+		if( $this->maxRedirects ) {
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-			curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
+			curl_setopt($ch, CURLOPT_MAXREDIRS, $this->maxRedirects);
 		}
 
 		$response   = curl_exec($ch);
@@ -64,6 +99,9 @@ class Request {
 		return new Response($body, $headers, $this);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getHeaders() {
 		$headers = $this->headers;
 		if( !isset($headers['Accept']) ) {
@@ -73,12 +111,11 @@ class Request {
 		return $headers;
 	}
 
+	/**
+	 * @param array $headers
+	 */
 	public function setHeaders( array $headers ) {
 		$this->headers = $headers;
-	}
-
-	public function getEndpoint() {
-		return $this->endpoint;
 	}
 
 	private function detectAccept( $endpoint ) {
@@ -95,6 +132,50 @@ class Request {
 		}
 
 		return 'application/json,application/xml,text/html,application/xhtml+xml,*/*';
+	}
+
+	/**
+	 * @param int $maxRedirects
+	 */
+	public function setMaxRedirects( $maxRedirects ) {
+		$this->maxRedirects = $maxRedirects;
+	}
+
+	/**
+	 * @param array $cookies
+	 */
+	public function setCookies( array $cookies ) {
+		$this->cookies = $cookies;
+	}
+
+	/**
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setCookie( $key, $value ) {
+		$this->cookies[$key] = $value;
+	}
+
+	/**
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setHeader( $key, $value ) {
+		$this->headers[$key] = $value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEndpoint() {
+		return $this->endpoint;
+	}
+
+	/**
+	 * @param string $endpoint
+	 */
+	public function setEndpoint( $endpoint ) {
+		$this->endpoint = $endpoint;
 	}
 
 }

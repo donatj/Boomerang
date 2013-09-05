@@ -7,29 +7,35 @@ use Boomerang\Interfaces\Validator;
 class FailingExpectationResult extends FailingResult {
 
 	/**
-	 * @var null|string
+	 * @var mixed
 	 */
 	protected $expected;
 	/**
-	 * @var null|string
+	 * @var mixed
 	 */
 	protected $actual;
 
+	/**
+	 * @param Validator   $validator
+	 * @param null|string $message
+	 * @param mixed       $expected
+	 * @param mixed       $actual
+	 */
 	public function __construct( Validator $validator, $message = null, $expected = null, $actual = null ) {
 		parent::__construct($validator, $message);
-		$this->expected  = $expected;
-		$this->actual    = $actual;
+		$this->expected = $expected;
+		$this->actual   = $actual;
 	}
 
 	/**
-	 * @return null|string
+	 * @return mixed
 	 */
 	public function getActual() {
 		return $this->actual;
 	}
 
 	/**
-	 * @return null|string
+	 * @return mixed
 	 */
 	public function getExpected() {
 		return $this->expected;
