@@ -2,19 +2,17 @@
 
 namespace Boomerang\Interfaces;
 
-use Boomerang\Interfaces\Validator;
-
 interface ExpectationResult {
 
 	public function __construct( Validator $validator, $message = null );
 
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getMessage();
 
 	/**
-	 * @return Validator
+	 * @return \Boomerang\Interfaces\Validator
 	 */
 	public function getValidator();
 
