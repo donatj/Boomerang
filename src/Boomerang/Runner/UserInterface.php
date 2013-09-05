@@ -32,7 +32,7 @@ EOT;
 		die(1);
 	}
 
-	public function updateExpectationDisplay( $file, $validators ) {
+	public function updateExpectationDisplay( $file, $validators, $verbose = false ) {
 		$messages = array(); //store the ones to display so we can show all the .'s / ?'s first
 
 		foreach( $validators as $validator ) {
@@ -44,10 +44,9 @@ EOT;
 					} elseif( $expectationResult instanceof PassingResult ) {
 						Output::string(Style::green("."));
 					} elseif( $expectationResult instanceof InfoResult ) {
-						$messages[] = $expectationResult;
+						Output::string(Style::normal("I"));
 					} else {
 						Output::string(Style::red("?"));
-						$messages[] = "Error: Unexpected ExpectationResults:" . var_export($expectationResult, true);
 					}
 				}
 			} else {
@@ -55,52 +54,89 @@ EOT;
 			}
 		}
 
-		if( $messages ) {
-			Output::string(PHP_EOL . PHP_EOL);
 
-			foreach( $messages as $expectationResult ) {
+		$lastEndpoint = false;
 
-				Output::string($file . ' ');
+		$fileDisplayed = false;
 
-				if( $expectationResult instanceof ExpectationResult ) {
+		foreach( $validators as $validator ) {
+			if( $validator instanceof Validator ) {
+				foreach( $validator->getExpectationResults() as $expectationResult ) {
 
-					Output::string("[ " . Style::red($expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint(), 'underline') . " ]" . PHP_EOL);
-					Output::string($expectationResult->getMessage() . PHP_EOL . PHP_EOL);
 
-					if( $expectationResult instanceof FailingExpectationResult ) {
-						$actual = $expectationResult->getActual();
-						if( $expectationResult->getActual() !== null ) {
-							Output::string("Actual: " . PHP_EOL);
-							Output::string(var_export($actual, true));
+					if( $expectationResult instanceof ExpectationResult ) {
+
+						if( !($expectationResult instanceof PassingResult)  ) {
+
+							$endpoint = $expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint();
+
 							Output::string(PHP_EOL . PHP_EOL);
+
+							if( !$fileDisplayed ) {
+								Output::string(Style::red($file) . PHP_EOL . PHP_EOL);
+								$fileDisplayed = true;
+							}
+
+							if( $endpoint != $lastEndpoint ) {
+								Output::string("[ " . Style::blue($endpoint, 'underline') . " ]" . PHP_EOL . PHP_EOL);
+							}
+
+							Output::string($expectationResult->getMessage() . PHP_EOL . PHP_EOL);
+
+							if( $expectationResult instanceof FailingExpectationResult ) {
+								$actual   = $expectationResult->getActual();
+								$expected = $expectationResult->getExpected();
+
+								if( $expectationResult->getActual() !== null ) {
+									Output::string("Actual: " . PHP_EOL);
+									Output::string(var_export($actual, true));
+									Output::string(PHP_EOL . PHP_EOL);
+								}
+
+								if( $expected !== null ) {
+									Output::string("Expected: " . PHP_EOL);
+									Output::string(Style::red(var_export($expected, true)));
+								}
+							}
+
+							Output::string(PHP_EOL . PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL . PHP_EOL);
+
+							$lastEndpoint = $endpoint;
 						}
 
-						$expected = $expectationResult->getExpected();
-						if( $expected !== null ) {
-							Output::string("Expected: " . PHP_EOL);
-							Output::string(Style::red(var_export($expected, true)));
-						}
+					} elseif( is_string($expectationResult) ) {
+						$this->outputMsg('MSG: ' . $expectationResult);
+					} else {
+						$this->outputMsg("Error: Unexpected Expectation:" . var_export($expectationResult, true));
 					}
 
-				} elseif( is_string($expectationResult) ) {
-					Output::string($expectationResult);
-				} else {
-
 				}
-
-				Output::string(PHP_EOL . PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL . PHP_EOL);
-
+			} else {
+				$this->dropError("Error: Unexpected Validator", E_USER_ERROR);
 			}
 		}
+
+//		if( $messages ) {
+//			Output::string(PHP_EOL . PHP_EOL);
+//			$lastFile     = false;
+//			$lastEndpoint = false;
+//
+//			foreach( $messages as $expectationResult ) {
+//
+//
+//			}
+//		}
 	}
 
-	public function dropError( $text, $code = 1 ) {
+	public
+	function outputMsg( $text ) {
+		Output::string($text . PHP_EOL);
+	}
+
+	public
+	function dropError( $text, $code = 1 ) {
 		Output::string(Boomerang::$pathInfo['basename'] . ": " . $text . PHP_EOL);
 		die($code);
-	}
-
-	public function outputMsg( $text ) {
-		Output::string($text . PHP_EOL);
 	}
 
 }
