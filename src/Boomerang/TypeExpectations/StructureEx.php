@@ -55,10 +55,11 @@ class StructureEx implements TypeExpectation, Validator {
 
 		if( is_array($validation) ) {
 			foreach( $validation as $key => $value ) {
-				if( isset($data[$key]) ) {
+				if( array_key_exists($key, $data) ) {
 					$pass = $pass && $this->__validate($data[$key], $value, array_merge($path, array( $key )));
 				} else {
-					$this->expectations[] = new FailingResult($this, $pathName);
+					var_export($data);
+					$this->expectations[] = new FailingExpectationResult($this, "Missing Key\n { {$pathName} } ", $key);
 				}
 			}
 		} elseif( $validation instanceof StructureEx ) {
@@ -70,23 +71,23 @@ class StructureEx implements TypeExpectation, Validator {
 		} elseif( $validation instanceof TypeExpectation ) {
 			if( !$pass = $validation->match($data) ) {
 				//@todo we can do better than this
-				$this->expectations[] = new FailingExpectationResult($this, " { {$pathName} } Unexpected structure type check result", get_class($validation), gettype($data));
+				$this->expectations[] = new FailingExpectationResult($this, "Unexpected structure type check result\n { {$pathName} } ", get_class($validation), gettype($data));
 			} else {
-				$this->expectations[] = new PassingExpectationResult($this, " { {$pathName} } Expected structure type check result", $validation);
+				$this->expectations[] = new PassingExpectationResult($this, "Expected structure type check result\n { {$pathName} } ", $validation);
 			}
 
 		} elseif( $validation instanceof \Closure ) {
 			if( !$pass = $validation($data) ) {
-				$this->expectations[] = new FailingResult($this, " { {$pathName} } Unexpected \Closure structure validator result");
+				$this->expectations[] = new FailingResult($this, "Unexpected \Closure structure validator result\n { {$pathName} } ");
 			} else {
-				$this->expectations[] = new PassingResult($this, " { {$pathName} } Expected \Closure structure validator result");
+				$this->expectations[] = new PassingResult($this, "Expected \Closure structure validator result\n { {$pathName} } ");
 			}
 
 		} elseif( is_scalar($validation) ) {
 			if( !$pass = $validation == $data ) {
-				$this->expectations[] = new FailingExpectationResult($this, " { {$pathName} } Unexpected value", $validation, $data);
+				$this->expectations[] = new FailingExpectationResult($this, "Unexpected value\n { {$pathName} } ", $validation, $data);
 			} else {
-				$this->expectations[] = new PassingExpectationResult($this, " { {$pathName} } Expected value", $validation);
+				$this->expectations[] = new PassingExpectationResult($this, "Expected value\n { {$pathName} } ", $validation);
 			}
 
 		}
