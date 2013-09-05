@@ -5,10 +5,9 @@ namespace Boomerang;
 use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingResult;
-use Boomerang\Interfaces\Validator;
 use Boomerang\TypeExpectations\StructureEx;
 
-class JSONValidator implements Validator {
+class JSONValidator implements Interfaces\Validator {
 
 	private $expectations = array();
 	private $result;
@@ -68,12 +67,17 @@ class JSONValidator implements Validator {
 	public function expectStructure( $structure ) {
 
 		$sx = new StructureEx($structure);
+		$sx->setResponse( $this->response );
 
-		if( $sx->match($this->result) ) {
-			$this->expectations[] = new PassingResult($this, "JSON Structure as Expected");
-		} else {
-			$this->expectations[] = new FailingResult($this, "Structure Validation Error"); // TODO: Failing message
-		}
+		$sx->match($this->result);
+
+//		if( $sx->match($this->result) ) {
+//			$this->expectations[] = new PassingResult($this, "JSON Structure as Expected");
+//		} else {
+//			$this->expectations[] = new FailingResult($this, "Structure Validation Error"); // TODO: Failing message
+//		}
+
+		$this->expectations = array_merge($this->expectations, $sx->getExpectationResults());
 
 		return $this;
 
