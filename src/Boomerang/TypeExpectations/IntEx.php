@@ -2,13 +2,11 @@
 
 namespace Boomerang\TypeExpectations;
 
-class IntEx extends NumericEx {
+class IntEx extends NumberEx {
 
 	public function match( $data ) {
-		return !is_string($data)
-			   && is_numeric($data)
-			   && intval($data) == $data
-			   && $this->rangeValidation($data);
+		return intval($data) == $data
+			   && parent::match($data);
 	}
 
 	public function getMatchingTypeName() {
