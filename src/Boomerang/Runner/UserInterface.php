@@ -64,10 +64,9 @@ EOT;
 			}
 		}
 
-		Output::string(PHP_EOL);
-
 		$lastEndpoint  = false;
 		$fileDisplayed = false;
+		$initialWhitespace = false;
 
 		foreach( $validators as $validator ) {
 			if( $validator instanceof Validator ) {
@@ -77,6 +76,11 @@ EOT;
 					if( $expectationResult instanceof ExpectationResult ) {
 
 						if( !($expectationResult instanceof PassingResult) || $verbose ) {
+
+							if(!$initialWhitespace) {
+								Output::string(PHP_EOL);
+								$initialWhitespace = true;
+							}
 
 							$endpoint = $expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint();
 
