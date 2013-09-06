@@ -14,7 +14,8 @@ class AllEx extends StructureEx {
 		$pass = true;
 
 		foreach($this->structures as $struct) {
-			$pass = $pass && $this->__validate($data, $struct);
+			list($passing, $expectations) = $this->__validate($data, $struct);
+			$pass = $pass && $passing;
 		}
 
 		return $pass;
