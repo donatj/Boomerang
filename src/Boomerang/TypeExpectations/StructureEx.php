@@ -69,7 +69,6 @@ class StructureEx implements TypeExpectation, Validator {
 					$expectations = array_merge($expectations, $sub_expectations);
 					$pass = $passing && $pass;
 				} else {
-					var_export($data);
 					$expectations[] = new FailingExpectationResult($this, "Missing Key\n { {$pathName} } ", $key);
 				}
 			}
