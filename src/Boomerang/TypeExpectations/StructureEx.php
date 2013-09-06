@@ -89,8 +89,10 @@ class StructureEx implements TypeExpectation, Validator {
 			}
 
 		} elseif( $validation instanceof \Closure ) {
-			if( !$pass = $validation($data) ) {
-				$expectations[] = new FailingResult($this, "Unexpected \\Closure structure validator result\n { {$pathName} } ");
+			$result = $validation($data);
+			$pass   = $result === true;
+			if( !$pass ) {
+				$expectations[] = new FailingResult($this, "Unexpected \\Closure structure validator result\n { {$pathName} } " . (is_string($result) ? " : " . $result : ''));
 			} else {
 				$expectations[] = new PassingResult($this, "Expected \\Closure structure validator result\n { {$pathName} } ");
 			}
