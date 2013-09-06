@@ -65,7 +65,8 @@ class StructureEx implements TypeExpectation, Validator {
 		if( is_array($validation) ) {
 			foreach( $validation as $key => $value ) {
 				if( array_key_exists($key, $data) ) {
-					list($passing, $expectations) = $this->__validate($data[$key], $value, array_merge($path, array( $key )));
+					list($passing, $sub_expectations) = $this->__validate($data[$key], $value, array_merge($path, array( $key )));
+					$expectations = array_merge($expectations, $sub_expectations);
 					$pass = $passing && $pass;
 				} else {
 					var_export($data);
