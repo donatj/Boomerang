@@ -2,7 +2,7 @@
 
 namespace Boomerang\TypeExpectations;
 
-class IntEx extends NumberEx {
+class IntEx extends NumericEx {
 
 	public function match( $data ) {
 		return !is_string($data)
