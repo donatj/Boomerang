@@ -18,7 +18,7 @@ class UserInterface {
 		Output::$stream = $STDOUT;
 	}
 
-	public function dumpOptions() {
+	public function dumpOptions( array $additional = array() ) {
 		$fname = Boomerang::$pathInfo['basename'];
 
 		$options = <<<EOT
@@ -27,9 +27,14 @@ usage: {$fname} [switches] <directory>
 
 
 EOT;
+
 		Output::string($options);
+
+		foreach($additional as $line) {
+			Output::string($line . PHP_EOL);
+		}
+
 		Output::string(PHP_EOL);
-		die(1);
 	}
 
 	public function updateExpectationDisplay( $file, $validators, $verbose = false ) {
