@@ -101,7 +101,7 @@ class ResponseValidator implements Interfaces\Validator {
 	public function expectBodyContains( $expectedContent ) {
 		$content = $this->response->getBody();
 
-		if( $content != $expectedContent ) {
+		if( strpos($content, $expectedContent) === false ) {
 			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected body contains', $expectedContent, $content);
 		} else {
 			$this->expectations[] = new PassingExpectationResult($this, 'Expected body contains', $expectedContent);
