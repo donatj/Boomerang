@@ -39,24 +39,28 @@ EOT;
 	}
 
 	public function updateExpectationDisplay( $file, $validators, $verbose = false ) {
-		$messages = array(); //store the ones to display so we can show all the .'s / ?'s first
 
 		foreach( $validators as $validator ) {
 			if( $validator instanceof Validator ) {
+				$dot = false;
+
 				foreach( $validator->getExpectationResults() as $expectationResult ) {
 					if( $expectationResult instanceof FailingResult ) {
-						Output::string(Style::red("F"));
-						$messages[] = $expectationResult;
-					} elseif( $expectationResult instanceof PassingResult ) {
-						Output::string(Style::green("."));
+						$dot = Style::red("F");
 					} elseif( $expectationResult instanceof InfoResult ) {
-						Output::string(Style::normal("I"));
-					} else {
-						Output::string(Style::red("?"));
+						$dot = Style::normal("I");
+					} elseif( !$expectationResult instanceof PassingResult ) {
+						$dot = Style::red("?");
+					}
+
+					if( $dot ) {
+						break;
 					}
 				}
+
+				Output::string( $dot ?: Style::green(".") );
 			} else {
-				$messages[] = "Error: Unexpected Validator:" . var_export($validator, true);
+				//@todo: do something?
 			}
 		}
 
