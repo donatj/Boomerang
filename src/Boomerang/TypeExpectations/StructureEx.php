@@ -8,9 +8,7 @@
 namespace Boomerang\TypeExpectations;
 
 use Boomerang\ExpectationResults\FailingExpectationResult;
-use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
-use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\TypeExpectation;
 use Boomerang\Interfaces\Validator;
 
@@ -85,16 +83,16 @@ class StructureEx implements TypeExpectation, Validator {
 				//@todo we can do better than this
 				$expectations[] = new FailingExpectationResult($this, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
 			} else {
-				$expectations[] = new PassingExpectationResult($this, "Expected structure type check result\n { {$pathName} } ", $validation);
+				$expectations[] = new PassingExpectationResult($this, "Expected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName());
 			}
 
 		} elseif( $validation instanceof \Closure ) {
 			$result = $validation($data);
 			$pass   = $result === true;
 			if( !$pass ) {
-				$expectations[] = new FailingResult($this, "Unexpected \\Closure structure validator result\n { {$pathName} } " . (is_string($result) ? " : " . $result : ''));
+				$expectations[] = new FailingExpectationResult($this, "Unexpected \\Closure structure validator result\n { {$pathName} } ", true, $result);
 			} else {
-				$expectations[] = new PassingResult($this, "Expected \\Closure structure validator result\n { {$pathName} } ");
+				$expectations[] = new PassingExpectationResult($this, "Expected \\Closure structure validator result\n { {$pathName} } ", $result);
 			}
 
 		} elseif( is_scalar($validation) ) {

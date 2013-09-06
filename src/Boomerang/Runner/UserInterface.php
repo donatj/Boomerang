@@ -6,6 +6,7 @@ use Boomerang\Boomerang;
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\InfoResult;
+use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\ExpectationResult;
 use Boomerang\Interfaces\Validator;
@@ -71,7 +72,7 @@ EOT;
 
 					if( $expectationResult instanceof ExpectationResult ) {
 
-						if( !($expectationResult instanceof PassingResult)  ) {
+						if( !($expectationResult instanceof PassingResult) || $verbose ) {
 
 							$endpoint = $expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint();
 
@@ -102,9 +103,17 @@ EOT;
 									Output::string("Expected: " . PHP_EOL);
 									Output::string(Style::red(var_export($expected, true)));
 								}
+							} elseif( $expectationResult instanceof PassingExpectationResult ) {
+								$actual = $expectationResult->getActual();
+
+								if( $expectationResult->getActual() !== null ) {
+									Output::string("Actual as Expected: " . PHP_EOL);
+									Output::string(var_export($actual, true));
+									Output::string(PHP_EOL . PHP_EOL);
+								}
 							}
 
-							Output::string( PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL);
+							Output::string(PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL);
 
 							$lastEndpoint = $endpoint;
 						}
