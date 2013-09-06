@@ -84,7 +84,7 @@ class StructureEx implements TypeExpectation, Validator {
 				//@todo we can do better than this
 				$expectations[] = new FailingExpectationResult($this, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
 			} else {
-				$expectations[] = new PassingExpectationResult($this, "Expected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName());
+				$expectations[] = new PassingExpectationResult($this, "Expected structure type check result\n { {$pathName} } ", gettype($data));
 			}
 
 		} elseif( $validation instanceof \Closure ) {

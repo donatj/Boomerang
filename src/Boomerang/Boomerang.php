@@ -67,8 +67,10 @@ class Boomerang {
 			}
 		}
 
+		$peakMem = number_format( memory_get_peak_usage() / 1048576, 2);
+
 		$ui->outputMsg(PHP_EOL);
-		$ui->outputMsg("$tests tests, $total assertions, $fails failures");
+		$ui->outputMsg("{$tests} tests, {$total} assertions, {$fails} failures, {$peakMem}mb peak memory use");
 
 		die($fails ? 2 : 0);
 	}

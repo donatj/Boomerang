@@ -31,7 +31,7 @@ EOT;
 
 		Output::string($options);
 
-		foreach($additional as $line) {
+		foreach( $additional as $line ) {
 			Output::string($line . PHP_EOL);
 		}
 
@@ -60,9 +60,9 @@ EOT;
 			}
 		}
 
+		Output::string(PHP_EOL);
 
-		$lastEndpoint = false;
-
+		$lastEndpoint  = false;
 		$fileDisplayed = false;
 
 		foreach( $validators as $validator ) {
@@ -76,7 +76,7 @@ EOT;
 
 							$endpoint = $expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint();
 
-							Output::string(PHP_EOL . PHP_EOL);
+							Output::string(PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL . PHP_EOL);
 
 							if( !$fileDisplayed ) {
 								Output::string(Style::red($file) . PHP_EOL);
@@ -96,24 +96,26 @@ EOT;
 								if( $expectationResult->getActual() !== null ) {
 									Output::string("Actual: " . PHP_EOL);
 									Output::string(var_export($actual, true));
-									Output::string(PHP_EOL . PHP_EOL);
+									Output::string(PHP_EOL);
 								}
 
 								if( $expected !== null ) {
+									Output::string(PHP_EOL);
 									Output::string("Expected: " . PHP_EOL);
 									Output::string(Style::red(var_export($expected, true)));
+									Output::string(PHP_EOL);
 								}
+
 							} elseif( $expectationResult instanceof PassingExpectationResult ) {
 								$actual = $expectationResult->getActual();
 
 								if( $expectationResult->getActual() !== null ) {
 									Output::string("Actual as Expected: " . PHP_EOL);
-									Output::string(var_export($actual, true));
-									Output::string(PHP_EOL . PHP_EOL);
+									Output::string(Style::green(var_export($actual, true)));
+									Output::string(PHP_EOL);
 								}
 							}
 
-							Output::string(PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL);
 
 							$lastEndpoint = $endpoint;
 						}
