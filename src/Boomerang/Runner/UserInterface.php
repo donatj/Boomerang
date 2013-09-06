@@ -73,7 +73,7 @@ EOT;
 							Output::string(PHP_EOL . PHP_EOL);
 
 							if( !$fileDisplayed ) {
-								Output::string(Style::red($file) . PHP_EOL . PHP_EOL);
+								Output::string(Style::red($file) . PHP_EOL);
 								$fileDisplayed = true;
 							}
 
@@ -99,7 +99,7 @@ EOT;
 								}
 							}
 
-							Output::string(PHP_EOL . PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL . PHP_EOL);
+							Output::string( PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL);
 
 							$lastEndpoint = $endpoint;
 						}
