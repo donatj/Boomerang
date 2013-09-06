@@ -10,4 +10,8 @@ class NullEx implements TypeExpectation {
 		return is_null($data);
 	}
 
+	public function getMatchingTypeName() {
+		return 'NULL';
+	}
+
 }

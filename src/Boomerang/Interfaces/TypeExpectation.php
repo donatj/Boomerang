@@ -10,4 +10,6 @@ interface TypeExpectation {
 	 */
 	public function match( $data );
 
+	public function getMatchingTypeName();
+
 }

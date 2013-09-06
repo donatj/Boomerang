@@ -10,4 +10,8 @@ class StringEx implements TypeExpectation {
 		return is_string($data);
 	}
 
+	public function getMatchingTypeName() {
+		return 'string';
+	}
+
 }

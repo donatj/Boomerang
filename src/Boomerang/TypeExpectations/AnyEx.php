@@ -27,4 +27,8 @@ class AnyEx extends AllEx {
 		return false;
 	}
 
+	public function getMatchingTypeName() {
+		return 'Any (||) Matcher';
+	}
+
 }

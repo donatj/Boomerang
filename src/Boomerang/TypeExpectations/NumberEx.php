@@ -25,4 +25,8 @@ class NumberEx implements TypeExpectation {
 			   && ($data <= $this->max || $this->max === null);
 	}
 
+	public function getMatchingTypeName() {
+		return 'int|float';
+	}
+
 }

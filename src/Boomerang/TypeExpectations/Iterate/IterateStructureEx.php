@@ -23,4 +23,8 @@ class IterateStructureEx extends StructureEx {
 		return $pass;
 	}
 
+	public function getMatchingTypeName() {
+		return 'object|array iterate';
+	}
+
 }

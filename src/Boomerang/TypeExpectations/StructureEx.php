@@ -83,16 +83,16 @@ class StructureEx implements TypeExpectation, Validator {
 		} elseif( $validation instanceof TypeExpectation ) {
 			if( !$pass = $validation->match($data) ) {
 				//@todo we can do better than this
-				$expectations[] = new FailingExpectationResult($this, "Unexpected structure type check result\n { {$pathName} } ", get_class($validation), gettype($data));
+				$expectations[] = new FailingExpectationResult($this, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
 			} else {
 				$expectations[] = new PassingExpectationResult($this, "Expected structure type check result\n { {$pathName} } ", $validation);
 			}
 
 		} elseif( $validation instanceof \Closure ) {
 			if( !$pass = $validation($data) ) {
-				$expectations[] = new FailingResult($this, "Unexpected \Closure structure validator result\n { {$pathName} } ");
+				$expectations[] = new FailingResult($this, "Unexpected \\Closure structure validator result\n { {$pathName} } ");
 			} else {
-				$expectations[] = new PassingResult($this, "Expected \Closure structure validator result\n { {$pathName} } ");
+				$expectations[] = new PassingResult($this, "Expected \\Closure structure validator result\n { {$pathName} } ");
 			}
 
 		} elseif( is_scalar($validation) ) {
@@ -142,5 +142,8 @@ class StructureEx implements TypeExpectation, Validator {
 		$this->expectations = array_merge($this->expectations, $expectations);
 	}
 
+	public function getMatchingTypeName() {
+		return 'structure';
+	}
 
 }

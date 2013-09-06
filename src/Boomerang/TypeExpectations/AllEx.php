@@ -21,4 +21,7 @@ class AllEx extends StructureEx {
 		return $pass;
 	}
 
+	public function getMatchingTypeName() {
+		return 'All (&&) Matcher';
+	}
 }

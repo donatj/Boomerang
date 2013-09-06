@@ -11,4 +11,8 @@ class IntEx extends NumberEx {
 			   && $this->rangeValidation($data);
 	}
 
+	public function getMatchingTypeName() {
+		return 'int';
+	}
+
 }

@@ -19,5 +19,9 @@ class IterateArrayEx extends IterateStructureEx {
 		return array_keys($arr) !== range(0, count($arr) - 1);
 	}
 
+	public function getMatchingTypeName() {
+		return 'array iterate';
+	}
+
 }
 
