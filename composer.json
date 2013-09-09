@@ -1,28 +1,35 @@
 {
-    "name": "boomerang/boomerang",
-    "type": "library",
-    "description": "The Boomerang API Endpoint Testing framework.",
-    "license": "MIT",
-    "require": {
-        "donatj/cli-toolkit": "dev-master",
-        "justinrainbow/json-schema": "1.3.*",
-        "corneltek/getoptionkit": "~1.2",
-        "php": ">=5.3.2"
-    },
-    "require-dev": {
-        "donatj/drop": "dev-master"
-    },
-    "authors": [
-        {
-            "name": "Jesse G. Donat",
-            "email": "donatj@gmail.com",
-            "homepage": "http://donatstudios.com",
-            "role": "Lead"
-        }
-    ],
-    "autoload": {
-        "psr-0": {
-            "Boomerang": "src/"
-        }
-    }
+	"name": "boomerang/boomerang",
+	"type": "library",
+	"description": "The Boomerang API Endpoint Testing framework.",
+	"keywords": [
+		"api",
+		"testing"
+	],
+	"license": "MIT",
+	"minimum-stability": "dev",
+	"support": {
+		"issues": "https://github.com/donatj/Boomerang/issues"
+	},
+	"require": {
+		"donatj/cli-toolkit": "dev-master",
+		"corneltek/getoptionkit": "~1.2",
+		"php": ">=5.3.2"
+	},
+	"require-dev": {
+		"donatj/drop": "dev-master"
+	},
+	"authors": [
+		{
+			"name": "Jesse G. Donat",
+			"email": "donatj@gmail.com",
+			"homepage": "http://donatstudios.com",
+			"role": "Lead"
+		}
+	],
+	"autoload": {
+		"psr-0": {
+			"Boomerang": "src/"
+		}
+	}
 }
