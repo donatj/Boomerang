@@ -7,7 +7,11 @@ $path = dirname(__FILE__) . '/';
 $srcRoot = $path . "src";
 $buildRoot = $path . "build";
 
-$fpath = $buildRoot . "/boomerang.phar";
+if( isset($argv[1]) ) {
+	$fpath = $argv[1];
+}else{
+	$fpath = $buildRoot . "/boomerang.phar";
+}
  
 $phar = new Phar($fpath, 
 	FilesystemIterator::CURRENT_AS_FILEINFO |     	FilesystemIterator::KEY_AS_FILENAME, "myapp.phar");
