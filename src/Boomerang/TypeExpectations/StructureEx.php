@@ -67,7 +67,7 @@ class StructureEx implements TypeExpectation, Validator {
 				if( array_key_exists($key, $data) ) {
 					list($passing, $sub_expectations) = $this->__validate($data[$key], $value, array_merge($path, array( $key )));
 					$expectations = array_merge($expectations, $sub_expectations);
-					$pass = $passing && $pass;
+					$pass         = $passing && $pass;
 				} else {
 					$expectations[] = new FailingExpectationResult($this, "Missing Key\n { {$pathName} } ", $key);
 				}
@@ -80,7 +80,6 @@ class StructureEx implements TypeExpectation, Validator {
 			$expectations = array_merge($expectations, $validation->getExpectationResults());
 		} elseif( $validation instanceof TypeExpectation ) {
 			if( !$pass = $validation->match($data) ) {
-				//@todo we can do better than this
 				$expectations[] = new FailingExpectationResult($this, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
 			} else {
 				$expectations[] = new PassingExpectationResult($this, "Expected structure type check result\n { {$pathName} } ", gettype($data));

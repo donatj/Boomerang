@@ -32,10 +32,8 @@ class JSONValidator implements Interfaces\Validator {
 	}
 
 	private function jsonDecode( $json, &$result ) {
-		// decode the JSON data
 		$result = json_decode($json, true);
 
-		// switch and check possible JSON errors
 		switch( json_last_error() ) {
 			case JSON_ERROR_NONE:
 				$error = false; // JSON is valid
@@ -70,12 +68,6 @@ class JSONValidator implements Interfaces\Validator {
 		$sx->setResponse( $this->response );
 
 		$sx->match($this->result);
-
-//		if( $sx->match($this->result) ) {
-//			$this->expectations[] = new PassingResult($this, "JSON Structure as Expected");
-//		} else {
-//			$this->expectations[] = new FailingResult($this, "Structure Validation Error"); // TODO: Failing message
-//		}
 
 		$this->expectations = array_merge($this->expectations, $sx->getExpectationResults());
 
