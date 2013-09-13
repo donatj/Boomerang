@@ -8,15 +8,17 @@ class TestRunner {
 
 	private $path;
 	private $files;
+	private $bootstrap;
 	/**
 	 * @var UserInterface
 	 */
 	private $ui;
 
-	function __construct( $path, UserInterface $ui ) {
-		$this->path  = $path;
-		$this->ui    = $ui;
-		$this->files = $this->getFileList($this->path);
+	function __construct( $path, $bootstrap, UserInterface $ui ) {
+		$this->path      = $path;
+		$this->bootstrap = $bootstrap;
+		$this->ui        = $ui;
+		$this->files     = $this->getFileList($this->path);
 	}
 
 	/**
@@ -49,12 +51,23 @@ class TestRunner {
 	 * @param callable $afterExecution
 	 */
 	function runTests( \Closure $afterExecution = null ) {
+		if( $this->bootstrap ) {
+			if( is_readable($this->bootstrap) ) {
+				require($this->bootstrap);
+			}else{
+				/**
+				 * @todo replace UI drop errors with throwing errors
+				 */
+				$this->ui->dropError("Failed to load bootstrap");
+			}
+		}
+
 		$scope = function ( $file ) { require($file); };
 
 		foreach( $this->files as $file ) {
 			$scope($file);
 
-			if($afterExecution !== null) {
+			if( $afterExecution !== null ) {
 				$afterExecution($file);
 			}
 		}

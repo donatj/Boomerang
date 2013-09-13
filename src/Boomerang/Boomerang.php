@@ -25,9 +25,10 @@ class Boomerang {
 		self::$pathInfo      = pathinfo(self::$boomerangPath);
 
 		$opt = new GetOptionKit();
-		$opt->add('h|help', 'verbose message');
+		$opt->add('h|help', 'Display this help message.');
+		$opt->add('version', 'Display this application version.');
 		$opt->add('v|verbose', 'Output in verbose mode');
-		$opt->add('version', 'verbose message');
+		$opt->add('bootstrap:=string', 'A "bootstrap" PHP file that is run before the specs.');
 		$opt->add('selfupdate', 'Update to the latest version of Boomerang!');
 
 		try {
@@ -54,9 +55,14 @@ class Boomerang {
 				break;
 		}
 
+		$bootstrap = null;
+		if( $cliOptions->has('bootstrap') ) {
+			$bootstrap = $cliOptions->bootstrap;
+		}
+
 		self::versionMarker($ui);
 
-		$runner = new TestRunner(end($cliOptions->getArguments()), $ui);
+		$runner = new TestRunner(end($cliOptions->getArguments()), $bootstrap, $ui);
 
 		$displayed = array();
 		$runner->runTests(function ( $file ) use ( $ui, $cliOptions, &$displayed ) {
