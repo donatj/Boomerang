@@ -20,7 +20,7 @@ class IterateArrayEx extends IterateStructureEx {
 	}
 
 	public function getMatchingTypeName() {
-		return 'array iterate';
+		return 'array';
 	}
 
 }

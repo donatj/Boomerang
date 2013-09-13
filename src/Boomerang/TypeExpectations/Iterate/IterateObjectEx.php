@@ -12,7 +12,7 @@ class IterateObjectEx extends IterateArrayEx {
 	}
 
 	public function getMatchingTypeName() {
-		return 'object iterate';
+		return 'object';
 	}
 
 }
