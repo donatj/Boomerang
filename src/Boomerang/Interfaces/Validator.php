@@ -5,7 +5,7 @@ namespace Boomerang\Interfaces;
 interface Validator {
 
 	/**
-	 * @return array
+	 * @return ExpectationResult[]
 	 */
 	public function getExpectationResults();
 

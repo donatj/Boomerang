@@ -13,6 +13,9 @@ class Boomerang {
 	const PHAR_URL = "http://boomerang.donatstudios.com/builds/dev/boomerang.phar";
 	public static $boomerangPath;
 	public static $pathInfo;
+	/**
+	 * @var Validator[]
+	 */
 	public static $validators = array();
 
 	static function main( $args ) {
@@ -30,17 +33,18 @@ class Boomerang {
 		try {
 			$cliOptions = $opt->parse($args);
 		} catch(\Exception $e) {
-			echo $e->getMessage();
-			echo PHP_EOL;
-			die(1);
+			$ui->dropError($e->getMessage());
+
+			return;
 		}
 
 		switch( true ) {
 			case $cliOptions->has('selfupdate'):
 				self::selfUpdate($ui);
+				die(0);
 				break;
 			case $cliOptions->has('version'):
-				$ui->outputMsg("Boomerang! " . self::VERSION . " by Jesse G. Donat" . PHP_EOL);
+				self::versionMarker($ui);
 				die(0);
 				break;
 			case $cliOptions->has('help'):
@@ -50,14 +54,19 @@ class Boomerang {
 				break;
 		}
 
+		self::versionMarker($ui);
+
 		$runner = new TestRunner(end($cliOptions->getArguments()), $ui);
 
-		$runner->runTests(function ( $file ) use ( $ui, $cliOptions ) {
+		$displayed = array();
+		$runner->runTests(function ( $file ) use ( $ui, $cliOptions, &$displayed ) {
 			$validators = array();
-			foreach( Boomerang::$validators as &$v_data ) {
-				if( !$v_data['displayed'] ) {
-					$v_data['displayed'] = true;
-					$validators[]        = $v_data['validator'];
+			foreach( Boomerang::$validators as $validator ) {
+				$hash = spl_object_hash($validator);
+
+				if( !isset($displayed[$hash]) ) {
+					$validators[]     = $validator;
+					$displayed[$hash] = true;
 				}
 			}
 
@@ -69,7 +78,7 @@ class Boomerang {
 		$fails = 0;
 		foreach( Boomerang::$validators as $v_data ) {
 			$tests++;
-			$ex_res = $v_data['validator']->getExpectationResults();
+			$ex_res = $v_data->getExpectationResults();
 			foreach( $ex_res as $ex ) {
 				$total++;
 				$fails += $ex->getFail();
@@ -112,31 +121,29 @@ class Boomerang {
 		try {
 			$phar = new \Phar($tmpFile);
 			unset($phar);
-		}catch (\Exception $e) {
+		} catch(\Exception $e) {
 			unlink($tmpFile);
 			$ui->dropError('Download is corrupted. Try re-running selfupdate.');
 		}
 
 		chmod($tmpFile, 0777 & ~umask());
 
-		if (!@rename( $tmpFile, $localFile )) {
+		if( !@rename($tmpFile, $localFile) ) {
 			$ui->dropError('Failed to replace URL');
 		}
 
 		$ui->outputMsg("Success!");
+	}
 
-		die(0);
-
+	private static function versionMarker( UserInterface $ui ) {
+		$ui->outputMsg("Boomerang! " . self::VERSION . " by Jesse G. Donat" . PHP_EOL);
 	}
 
 	/**
 	 * @param Validator $validator
 	 */
 	public static function addValidator( Validator $validator ) {
-		self::$validators[] = array(
-			'displayed' => false,
-			'validator' => $validator,
-		);
+		self::$validators[] = $validator;
 	}
 
 }
