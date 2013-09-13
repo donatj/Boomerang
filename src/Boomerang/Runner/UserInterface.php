@@ -9,6 +9,7 @@ use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\ExpectationResult;
+use Boomerang\Interfaces\ResponseValidator;
 use Boomerang\Interfaces\Validator;
 use CLI\Output;
 use CLI\Style;
@@ -76,10 +77,7 @@ EOT;
 		foreach( $validators as $validator ) {
 
 			foreach( $validator->getExpectationResults() as $expectationResult ) {
-
-
 				if( $expectationResult instanceof ExpectationResult ) {
-
 					if( !($expectationResult instanceof PassingResult) || $verbose ) {
 
 						if( !$initialWhitespace ) {
@@ -87,7 +85,12 @@ EOT;
 							$initialWhitespace = true;
 						}
 
-						$endpoint = $expectationResult->getValidator()->getResponse()->getRequest()->getEndpoint();
+
+						if( $validator instanceof ResponseValidator ) {
+							$endpoint = $validator->getResponse()->getRequest()->getEndpoint();
+						} else {
+							$endpoint = false;
+						}
 
 						Output::string(PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL . PHP_EOL);
 
@@ -96,7 +99,7 @@ EOT;
 							$fileDisplayed = true;
 						}
 
-						if( $endpoint != $lastEndpoint ) {
+						if( $endpoint && $endpoint != $lastEndpoint ) {
 							Output::string("[ " . Style::blue($endpoint, 'underline') . " ]" . PHP_EOL . PHP_EOL);
 						}
 

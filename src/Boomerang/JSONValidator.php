@@ -7,28 +7,25 @@ use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\TypeExpectations\StructureEx;
 
-class JSONValidator implements Interfaces\Validator {
+class JSONValidator extends StructureValidator implements Interfaces\ResponseValidator {
 
-	private $expectations = array();
-	private $result;
 	/**
 	 * @var Response
 	 */
 	private $response;
 
 	public function __construct( Response $response ) {
-
 		$this->response = $response;
 
 		$result = false;
 		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
 			$this->expectations[] = new FailingResult($this, "Failed to Parse JSON Document");
-			$this->result         = array();
+			$result               = array();
 		} else {
 			$this->expectations[] = new PassingResult($this, "Successfully Parsed Document");
-			$this->result         = $result;
 		}
 
+		parent::__construct($result);
 	}
 
 	private function jsonDecode( $json, &$result ) {
@@ -62,18 +59,7 @@ class JSONValidator implements Interfaces\Validator {
 		return $error;
 	}
 
-	public function expectStructure( $structure ) {
 
-		$sx = new StructureEx($structure);
-		$sx->setResponse( $this->response );
-
-		$sx->match($this->result);
-
-		$this->expectations = array_merge($this->expectations, $sx->getExpectationResults());
-
-		return $this;
-
-	}
 
 	/**
 	 * @return Response
@@ -82,12 +68,8 @@ class JSONValidator implements Interfaces\Validator {
 		return $this->response;
 	}
 
-	public function getExpectationResults() {
-		return $this->expectations;
-	}
-
 	public function inspectJSON() {
-		$this->expectations[] = new InfoResult($this, json_encode($this->result));
+		$this->expectations[] = new InfoResult($this, json_encode($this->data));
 
 		return $this;
 	}

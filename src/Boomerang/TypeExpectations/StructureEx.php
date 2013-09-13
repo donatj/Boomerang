@@ -12,29 +12,32 @@ use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\Interfaces\TypeExpectation;
 use Boomerang\Interfaces\Validator;
 
-class StructureEx implements TypeExpectation, Validator {
+class StructureEx implements TypeExpectation {
 
 	protected $structure;
 	protected $path = array();
 	protected $expectations = array();
-	private $response;
+	/**
+	 * @var Validator
+	 */
+	private $validator;
 
 	function __construct( $structure ) {
 		$this->structure = $structure;
 	}
 
 	/**
-	 * @return mixed
+	 * @return Validator
 	 */
-	public function getResponse() {
-		return $this->response;
+	public function getValidator() {
+		return $this->validator;
 	}
 
 	/**
-	 * @param mixed $response
+	 * @param Validator $validator
 	 */
-	public function setResponse( $response ) {
-		$this->response = $response;
+	public function setValidator( $validator ) {
+		$this->validator = $validator;
 	}
 
 	public function match( $data ) {
@@ -69,36 +72,37 @@ class StructureEx implements TypeExpectation, Validator {
 					$expectations = array_merge($expectations, $sub_expectations);
 					$pass         = $passing && $pass;
 				} else {
-					$expectations[] = new FailingExpectationResult($this, "Missing Key\n { {$pathName} } ", $key);
+					$expectations[] = new FailingExpectationResult($this->validator, "Missing Key\n { {$pathName} } ", $key);
 				}
 			}
 		} elseif( $validation instanceof StructureEx ) {
 			$validation->setPath($path);
-			$validation->setResponse($this->response);
+//			$validation->setResponse($this->response);
+			$validation->setValidator($this->validator);
 
 			$pass         = $validation->match($data);
-			$expectations = array_merge($expectations, $validation->getExpectationResults());
+			$expectations = array_merge($expectations, $validation->getExpectations());
 		} elseif( $validation instanceof TypeExpectation ) {
 			if( !$pass = $validation->match($data) ) {
-				$expectations[] = new FailingExpectationResult($this, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
+				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
 			} else {
-				$expectations[] = new PassingExpectationResult($this, "Expected structure type check result\n { {$pathName} } ", gettype($data));
+				$expectations[] = new PassingExpectationResult($this->validator, "Expected structure type check result\n { {$pathName} } ", gettype($data));
 			}
 
 		} elseif( $validation instanceof \Closure ) {
 			$result = $validation($data);
 			$pass   = $result === true;
 			if( !$pass ) {
-				$expectations[] = new FailingExpectationResult($this, "Unexpected \\Closure structure validator result\n { {$pathName} } ", true, $result);
+				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected \\Closure structure validator result\n { {$pathName} } ", true, $result);
 			} else {
-				$expectations[] = new PassingExpectationResult($this, "Expected \\Closure structure validator result\n { {$pathName} } ", $result);
+				$expectations[] = new PassingExpectationResult($this->validator, "Expected \\Closure structure validator result\n { {$pathName} } ", $result);
 			}
 
 		} elseif( is_scalar($validation) ) {
 			if( !$pass = $validation == $data ) {
-				$expectations[] = new FailingExpectationResult($this, "Unexpected value\n { {$pathName} } ", $validation, $data);
+				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected value\n { {$pathName} } ", $validation, $data);
 			} else {
-				$expectations[] = new PassingExpectationResult($this, "Expected value\n { {$pathName} } ", $validation);
+				$expectations[] = new PassingExpectationResult($this->validator, "Expected value\n { {$pathName} } ", $validation);
 			}
 
 		}
@@ -130,7 +134,7 @@ class StructureEx implements TypeExpectation, Validator {
 	/**
 	 * @return array
 	 */
-	public function getExpectationResults() {
+	public function getExpectations() {
 		return $this->expectations;
 	}
 
