@@ -29,7 +29,10 @@ class Boomerang {
 		$opt->add('version', 'Display this application version.');
 		$opt->add('v|verbose', 'Output in verbose mode');
 		$opt->add('bootstrap:=string', 'A "bootstrap" PHP file that is run before the specs.');
-		$opt->add('selfupdate', 'Update to the latest version of Boomerang!');
+
+		if( defined('BOOMERANG_IS_PHAR') ) {
+			$opt->add('selfupdate', 'Update to the latest version of Boomerang!');
+		}
 
 		try {
 			$cliOptions = $opt->parse($args);
