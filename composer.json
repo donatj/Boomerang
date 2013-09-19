@@ -36,5 +36,5 @@
 	},
 	"bin": [
         "composer/bin/boomerang"
-    ],
+    ]
 }
