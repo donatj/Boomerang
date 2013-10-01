@@ -2,7 +2,7 @@
 
 namespace Boomerang;
 
-class Request {
+class HttpRequest {
 
 	public $tmp = "/tmp";
 	public $maxRedirects = 10;
@@ -26,7 +26,7 @@ class Request {
 	}
 
 	/**
-	 * Set all post data, whiping past values.
+	 * Set all post data, whipping past values.
 	 *
 	 * @param array $post
 	 */
@@ -41,7 +41,7 @@ class Request {
 	 * @param $value
 	 */
 	public function setPost( $key, $value ) {
-		$this->postdata[$key] = $post;
+		$this->postdata[$key] = $value;
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Request {
 	}
 
 	/**
-	 * @return Response
+	 * @return HttpResponse
 	 */
 	public function makeRequest() {
 		$ch = curl_init();
@@ -96,7 +96,7 @@ class Request {
 
 		curl_close($ch);
 
-		return new Response($body, $headers, $this);
+		return new HttpResponse($body, $headers, $this);
 	}
 
 	/**

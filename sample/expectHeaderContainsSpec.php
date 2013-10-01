@@ -2,10 +2,10 @@
 
 namespace Boomerang;
 
-$req      = new Request('http://httpbin.org/get');
+$req      = new HttpRequest('http://httpbin.org/get');
 $response = $req->makeRequest();
 
-$valid = new ResponseValidator($response);
+$valid = new HttpResponseValidator($response);
 $valid->expectStatus(200)
 	  ->expectHeaderContains('Content-Type', 'json');
 

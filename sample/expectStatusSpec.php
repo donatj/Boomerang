@@ -2,10 +2,10 @@
 
 namespace Boomerang;
 
-$req      = new Request('http://httpbin.org/status/418');
+$req      = new HttpRequest('http://httpbin.org/status/418');
 $response = $req->makeRequest();
 
-$valid = new ResponseValidator($response);
+$valid = new HttpResponseValidator($response);
 $valid->expectStatus(418);
 
 Boomerang::addValidator($valid);

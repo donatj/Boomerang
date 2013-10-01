@@ -9,4 +9,9 @@ interface ValidatorInterface {
 	 */
 	public function getExpectationResults();
 
+	/**
+	 * @return ResponseInterface
+	 */
+	public function getResponse();
+
 }

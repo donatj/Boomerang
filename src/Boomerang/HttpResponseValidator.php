@@ -4,21 +4,22 @@ namespace Boomerang;
 
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
+use Boomerang\Interfaces\HttpResponseInterface;
 
-class ResponseValidator implements Interfaces\ResponseValidatorInterface {
+class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 
 	private $expectations = array();
 	/**
-	 * @var Response
+	 * @var HttpResponseInterface
 	 */
 	private $response;
 
-	public function __construct( Response $response ) {
+	public function __construct( HttpResponseInterface $response ) {
 		$this->response = $response;
 	}
 
 	/**
-	 * @return \Boomerang\Response
+	 * @return \Boomerang\HttpResponse
 	 */
 	public function getResponse() {
 		return $this->response;

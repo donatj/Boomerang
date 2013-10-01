@@ -2,7 +2,9 @@
 
 namespace Boomerang;
 
-class Response {
+use Boomerang\Interfaces\ResponseInterface;
+
+class HttpResponse implements ResponseInterface {
 
 	private $body;
 	private $headers_raw;
@@ -12,9 +14,9 @@ class Response {
 	/**
 	 * @param string  $body
 	 * @param string  $headers
-	 * @param Request $request
+	 * @param HttpRequest $request
 	 */
-	public function __construct( $body, $headers, Request $request = null ) {
+	public function __construct( $body, $headers, HttpRequest $request = null ) {
 		$this->body        = $body;
 		$this->headers_raw = $headers;
 
@@ -129,7 +131,7 @@ class Response {
 	}
 
 	/**
-	 * @return Request
+	 * @return HttpRequest
 	 */
 	public function getRequest() {
 		return $this->request;

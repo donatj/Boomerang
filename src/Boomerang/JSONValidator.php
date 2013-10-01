@@ -5,27 +5,26 @@ namespace Boomerang;
 use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingResult;
-use Boomerang\TypeExpectations\StructureEx;
+use Boomerang\Interfaces\ResponseInterface;
 
 class JSONValidator extends StructureValidator implements Interfaces\ResponseValidatorInterface {
 
 	/**
-	 * @var Response
+	 * @var array|null|int|float|string
 	 */
-	private $response;
+	private $data;
 
-	public function __construct( Response $response ) {
-		$this->response = $response;
+	public function __construct( ResponseInterface $response ) {
+		parent::__construct($response);
 
 		$result = false;
 		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
 			$this->expectations[] = new FailingResult($this, "Failed to Parse JSON Document");
-			$result               = array();
+			$this->data           = array();
 		} else {
 			$this->expectations[] = new PassingResult($this, "Successfully Parsed Document");
+			$this->data           = null;
 		}
-
-		parent::__construct($result);
 	}
 
 	private function jsonDecode( $json, &$result ) {
@@ -57,15 +56,6 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 		}
 
 		return $error;
-	}
-
-
-
-	/**
-	 * @return Response
-	 */
-	public function getResponse() {
-		return $this->response;
 	}
 
 	public function inspectJSON() {

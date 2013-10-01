@@ -5,7 +5,7 @@ namespace Boomerang\Interfaces;
 interface ResponseValidatorInterface extends ValidatorInterface {
 
 	/**
-	 * @return \Boomerang\Response
+	 * @return \Boomerang\HttpResponse
 	 */
 	public function getResponse();
 
