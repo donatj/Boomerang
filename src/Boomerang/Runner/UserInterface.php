@@ -8,9 +8,9 @@ use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\ExpectationResults\PassingResult;
-use Boomerang\Interfaces\ExpectationResult;
-use Boomerang\Interfaces\ResponseValidator;
-use Boomerang\Interfaces\Validator;
+use Boomerang\Interfaces\ExpectationResultInterface;
+use Boomerang\Interfaces\ResponseValidatorInterface;
+use Boomerang\Interfaces\ValidatorInterface;
 use CLI\Output;
 use CLI\Style;
 
@@ -41,13 +41,13 @@ EOT;
 
 	/**
 	 * @param string      $file
-	 * @param Validator[] $validators
+	 * @param ValidatorInterface[] $validators
 	 * @param bool        $verbose
 	 */
 	public function updateExpectationDisplay( $file, $validators, $verbose = false ) {
 
 		foreach( $validators as $validator ) {
-			if( $validator instanceof Validator ) {
+			if( $validator instanceof ValidatorInterface ) {
 				$dot = false;
 
 				foreach( $validator->getExpectationResults() as $expectationResult ) {
@@ -66,7 +66,7 @@ EOT;
 
 				Output::string($dot ? : Style::green("."));
 			} else {
-				$this->dropError("Error: Unexpected Validator", E_USER_ERROR);
+				$this->dropError("Error: Unexpected ValidatorInterface", E_USER_ERROR);
 			}
 		}
 
@@ -77,7 +77,7 @@ EOT;
 		foreach( $validators as $validator ) {
 
 			foreach( $validator->getExpectationResults() as $expectationResult ) {
-				if( $expectationResult instanceof ExpectationResult ) {
+				if( $expectationResult instanceof ExpectationResultInterface ) {
 					if( !($expectationResult instanceof PassingResult) || $verbose ) {
 
 						if( !$initialWhitespace ) {
@@ -86,7 +86,7 @@ EOT;
 						}
 
 
-						if( $validator instanceof ResponseValidator ) {
+						if( $validator instanceof ResponseValidatorInterface ) {
 							$endpoint = $validator->getResponse()->getRequest()->getEndpoint();
 						} else {
 							$endpoint = false;

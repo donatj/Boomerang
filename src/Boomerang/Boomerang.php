@@ -2,7 +2,7 @@
 
 namespace Boomerang;
 
-use Boomerang\Interfaces\Validator;
+use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\Runner\TestRunner;
 use Boomerang\Runner\UserInterface;
 use GetOptionKit\GetOptionKit;
@@ -14,7 +14,7 @@ class Boomerang {
 	public static $boomerangPath;
 	public static $pathInfo;
 	/**
-	 * @var Validator[]
+	 * @var ValidatorInterface[]
 	 */
 	public static $validators = array();
 
@@ -149,9 +149,9 @@ class Boomerang {
 	}
 
 	/**
-	 * @param Validator $validator
+	 * @param ValidatorInterface $validator
 	 */
-	public static function addValidator( Validator $validator ) {
+	public static function addValidator( ValidatorInterface $validator ) {
 		self::$validators[] = $validator;
 	}
 

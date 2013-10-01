@@ -2,15 +2,15 @@
 
 namespace Boomerang;
 
-use Boomerang\Interfaces\ExpectationResult;
-use Boomerang\Interfaces\Validator;
+use Boomerang\Interfaces\ExpectationResultInterface;
+use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\TypeExpectations\StructureEx;
 
-class StructureValidator implements Validator {
+class StructureValidator implements ValidatorInterface {
 
 	protected $data;
 	/**
-	 * @var ExpectationResult[]
+	 * @var ExpectationResultInterface[]
 	 */
 	protected $expectations = array();
 
@@ -19,7 +19,7 @@ class StructureValidator implements Validator {
 	}
 
 	/**
-	 * @return ExpectationResult[]
+	 * @return ExpectationResultInterface[]
 	 */
 	public function getExpectationResults() {
 		return $this->expectations;

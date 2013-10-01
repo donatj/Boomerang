@@ -2,9 +2,9 @@
 
 namespace Boomerang\TypeExpectations;
 
-use Boomerang\Interfaces\TypeExpectation;
+use Boomerang\Interfaces\TypeExpectationInterface;
 
-class StringEx implements TypeExpectation {
+class StringEx implements TypeExpectationInterface {
 
 	public function match( $data ) {
 		return is_string($data);

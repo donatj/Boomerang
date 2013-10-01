@@ -1,24 +1,24 @@
 <?php
 
 /**
- * @todo: Convert this into a Structure Validator or something, this feels goofy
- * @todo: Then make JSON Validator extend this
+ * @todo: Convert this into a Structure ValidatorInterface or something, this feels goofy
+ * @todo: Then make JSON ValidatorInterface extend this
  */
 
 namespace Boomerang\TypeExpectations;
 
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
-use Boomerang\Interfaces\TypeExpectation;
-use Boomerang\Interfaces\Validator;
+use Boomerang\Interfaces\TypeExpectationInterface;
+use Boomerang\Interfaces\ValidatorInterface;
 
-class StructureEx implements TypeExpectation {
+class StructureEx implements TypeExpectationInterface {
 
 	protected $structure;
 	protected $path = array();
 	protected $expectations = array();
 	/**
-	 * @var Validator
+	 * @var ValidatorInterface
 	 */
 	private $validator;
 
@@ -27,14 +27,14 @@ class StructureEx implements TypeExpectation {
 	}
 
 	/**
-	 * @return Validator
+	 * @return ValidatorInterface
 	 */
 	public function getValidator() {
 		return $this->validator;
 	}
 
 	/**
-	 * @param Validator $validator
+	 * @param ValidatorInterface $validator
 	 */
 	public function setValidator( $validator ) {
 		$this->validator = $validator;
@@ -82,7 +82,7 @@ class StructureEx implements TypeExpectation {
 
 			$pass         = $validation->match($data);
 			$expectations = array_merge($expectations, $validation->getExpectations());
-		} elseif( $validation instanceof TypeExpectation ) {
+		} elseif( $validation instanceof TypeExpectationInterface ) {
 			if( !$pass = $validation->match($data) ) {
 				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
 			} else {

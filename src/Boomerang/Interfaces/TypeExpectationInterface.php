@@ -2,7 +2,7 @@
 
 namespace Boomerang\Interfaces;
 
-interface TypeExpectation {
+interface TypeExpectationInterface {
 
 	/**
 	 * Method to pass data to compare against

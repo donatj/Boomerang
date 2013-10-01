@@ -2,9 +2,9 @@
 
 namespace Boomerang\Interfaces;
 
-interface ExpectationResult {
+interface ExpectationResultInterface {
 
-	public function __construct( Validator $validator, $message = null );
+	public function __construct( ValidatorInterface $validator, $message = null );
 
 	/**
 	 * @return string
@@ -12,7 +12,7 @@ interface ExpectationResult {
 	public function getMessage();
 
 	/**
-	 * @return \Boomerang\Interfaces\Validator
+	 * @return \Boomerang\Interfaces\ValidatorInterface
 	 */
 	public function getValidator();
 

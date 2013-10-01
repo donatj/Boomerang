@@ -2,25 +2,25 @@
 
 namespace Boomerang\ExpectationResults;
 
-use Boomerang\Interfaces\ExpectationResult;
-use Boomerang\Interfaces\Validator;
+use Boomerang\Interfaces\ExpectationResultInterface;
+use Boomerang\Interfaces\ValidatorInterface;
 
-abstract class BaseResult implements ExpectationResult {
+abstract class BaseResult implements ExpectationResultInterface {
 
 	/**
 	 * @var string
 	 */
 	protected $message;
 	/**
-	 * @var Validator
+	 * @var ValidatorInterface
 	 */
 	protected $validator;
 
 	/**
-	 * @param Validator   $validator
+	 * @param ValidatorInterface   $validator
 	 * @param null|string $message
 	 */
-	function __construct( Validator $validator, $message = null ) {
+	function __construct( ValidatorInterface $validator, $message = null ) {
 		$this->message   = $message;
 		$this->validator = $validator;
 	}
@@ -33,7 +33,7 @@ abstract class BaseResult implements ExpectationResult {
 	}
 
 	/**
-	 * @return Validator
+	 * @return ValidatorInterface
 	 */
 	public function getValidator() {
 		return $this->validator;

@@ -2,9 +2,9 @@
 
 namespace Boomerang\TypeExpectations;
 
-use Boomerang\Interfaces\TypeExpectation;
+use Boomerang\Interfaces\TypeExpectationInterface;
 
-class NullEx implements TypeExpectation {
+class NullEx implements TypeExpectationInterface {
 
 	public function match( $data ) {
 		return is_null($data);

@@ -2,9 +2,9 @@
 
 namespace Boomerang\TypeExpectations;
 
-use Boomerang\Interfaces\TypeExpectation;
+use Boomerang\Interfaces\TypeExpectationInterface;
 
-class NumericEx implements TypeExpectation {
+class NumericEx implements TypeExpectationInterface {
 
 	protected $min;
 	protected $max;

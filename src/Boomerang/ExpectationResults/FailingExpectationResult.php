@@ -2,7 +2,7 @@
 
 namespace Boomerang\ExpectationResults;
 
-use Boomerang\Interfaces\Validator;
+use Boomerang\Interfaces\ValidatorInterface;
 
 class FailingExpectationResult extends FailingResult {
 
@@ -16,12 +16,12 @@ class FailingExpectationResult extends FailingResult {
 	protected $actual;
 
 	/**
-	 * @param Validator   $validator
+	 * @param ValidatorInterface   $validator
 	 * @param null|string $message
 	 * @param mixed       $expected
 	 * @param mixed       $actual
 	 */
-	public function __construct( Validator $validator, $message = null, $expected = null, $actual = null ) {
+	public function __construct( ValidatorInterface $validator, $message = null, $expected = null, $actual = null ) {
 		parent::__construct($validator, $message);
 		$this->expected = $expected;
 		$this->actual   = $actual;

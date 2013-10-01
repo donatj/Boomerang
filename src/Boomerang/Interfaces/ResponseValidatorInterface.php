@@ -2,7 +2,7 @@
 
 namespace Boomerang\Interfaces;
 
-interface ResponseValidator extends Validator {
+interface ResponseValidatorInterface extends ValidatorInterface {
 
 	/**
 	 * @return \Boomerang\Response

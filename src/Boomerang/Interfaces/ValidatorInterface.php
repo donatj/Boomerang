@@ -2,10 +2,10 @@
 
 namespace Boomerang\Interfaces;
 
-interface Validator {
+interface ValidatorInterface {
 
 	/**
-	 * @return ExpectationResult[]
+	 * @return ExpectationResultInterface[]
 	 */
 	public function getExpectationResults();
 

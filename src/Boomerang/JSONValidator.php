@@ -7,7 +7,7 @@ use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\TypeExpectations\StructureEx;
 
-class JSONValidator extends StructureValidator implements Interfaces\ResponseValidator {
+class JSONValidator extends StructureValidator implements Interfaces\ResponseValidatorInterface {
 
 	/**
 	 * @var Response

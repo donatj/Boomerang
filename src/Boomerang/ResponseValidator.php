@@ -5,7 +5,7 @@ namespace Boomerang;
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 
-class ResponseValidator implements Interfaces\ResponseValidator {
+class ResponseValidator implements Interfaces\ResponseValidatorInterface {
 
 	private $expectations = array();
 	/**
