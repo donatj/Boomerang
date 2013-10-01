@@ -2,8 +2,13 @@
 
 namespace Boomerang\TypeExpectations;
 
+use Boomerang\Interfaces\TypeExpectationInterface;
+
 class AllEx extends StructureEx {
 
+	/**
+	 * @var TypeExpectationInterface[]
+	 */
 	protected $structures;
 
 	function __construct( /* ... */ ) {
