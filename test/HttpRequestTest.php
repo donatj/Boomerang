@@ -4,7 +4,7 @@ namespace Boomerang\Test;
 
 use Boomerang\HttpRequest;
 
-class RequestTest extends \PHPUnit_Framework_TestCase {
+class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAcceptOverride() {
 		$req       = new HttpRequest('http://example.com/test.json');

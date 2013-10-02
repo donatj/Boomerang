@@ -4,7 +4,7 @@ namespace Boomerang\Test;
 
 use Boomerang\HttpResponse;
 
-class ResponseTest extends \PHPUnit_Framework_TestCase {
+class HttpResponseTest extends \PHPUnit_Framework_TestCase {
 
 	//@todo add just \r's hard, and \r\n's hard
 
