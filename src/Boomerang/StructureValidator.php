@@ -14,6 +14,8 @@ class StructureValidator implements ValidatorInterface {
 	 */
 	protected $response;
 
+	protected $data;
+
 	/**
 	 * @var ExpectationResultInterface[]
 	 */
@@ -21,6 +23,7 @@ class StructureValidator implements ValidatorInterface {
 
 	public function __construct( ResponseInterface $response ) {
 		$this->response = $response;
+		$this->data     = $this->response->getBody();
 	}
 
 	/**
@@ -35,7 +38,7 @@ class StructureValidator implements ValidatorInterface {
 		$sx = new StructureEx($structure);
 		$sx->setValidator($this);
 
-		$sx->match($this->response->getBody());
+		$sx->match($this->data);
 		$this->expectations = array_merge($this->expectations, $sx->getExpectations());
 
 		return $this;

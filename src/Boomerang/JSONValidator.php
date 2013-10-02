@@ -9,21 +9,16 @@ use Boomerang\Interfaces\ResponseInterface;
 
 class JSONValidator extends StructureValidator implements Interfaces\ResponseValidatorInterface {
 
-	/**
-	 * @var array|null|int|float|string
-	 */
-	private $data;
-
 	public function __construct( ResponseInterface $response ) {
 		parent::__construct($response);
 
 		$result = false;
 		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
 			$this->expectations[] = new FailingResult($this, "Failed to Parse JSON Document");
-			$this->data           = array();
+			$this->data           = null;
 		} else {
 			$this->expectations[] = new PassingResult($this, "Successfully Parsed Document");
-			$this->data           = null;
+			$this->data           = $result;
 		}
 	}
 
