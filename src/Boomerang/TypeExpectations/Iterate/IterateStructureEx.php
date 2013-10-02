@@ -6,10 +6,6 @@ use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\TypeExpectations\StructureEx;
 
 
-/**
- * @todo Merge this and HierarchyValidation
- */
-
 class IterateStructureEx extends StructureEx {
 
 	public function match( $data ) {

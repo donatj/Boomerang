@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @todo: Convert this into a Structure ValidatorInterface or something, this feels goofy
- * @todo: Then make JSON ValidatorInterface extend this
- */
-
 namespace Boomerang\TypeExpectations;
 
 use Boomerang\ExpectationResults\FailingExpectationResult;
