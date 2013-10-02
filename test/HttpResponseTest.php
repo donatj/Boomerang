@@ -6,6 +6,20 @@ use Boomerang\HttpResponse;
 
 class HttpResponseTest extends \PHPUnit_Framework_TestCase {
 
+	public function testGetRawHeaders() {
+		$headers = <<<EOT
+HTTP/1.1 200 OK
+Content-Encoding:gzip
+Content-language:en
+
+
+
+EOT;
+		$response = new HttpResponse("", $headers);
+
+		$this->assertEquals( $headers, $response->getRawHeaders() );
+	}
+
 	//@todo add just \r's hard, and \r\n's hard
 
 	public function testBasicHeaderParsing() {
@@ -55,6 +69,9 @@ EOT
 		$this->assertEquals('PHP/5.4.16-dev',
 			$response->getHeader('X-Powered-By'));
 
+		$this->assertEquals(null,
+			$response->getHeader('RandomFakeNotSetHeader', 0));
+
 		//Sometimes you can get trailing newlines. Make sure this doesn't break things
 		$response = new HttpResponse("", <<<EOT
 HTTP/1.1 200 OK
@@ -73,6 +90,9 @@ EOT
 			$response->getHeader('Content-Encoding'));
 		$this->assertEquals('en',
 			$response->getHeader('Content-language'));
+
+		$this->assertEquals(null,
+			$response->getHeader('RandomFakeNotSetHeader', 0));
 
 	}
 
@@ -125,6 +145,10 @@ EOT
 		$this->assertEquals('application/json',
 			$response->getHeader('Content-Type', 0));
 
+		$this->assertEquals(null,
+			$response->getHeader('RandomFakeNotSetHeader', 0));
+
+
 		//second hop
 		$headers_a1 = $response->getHeaders(1);
 
@@ -146,6 +170,13 @@ EOT
 		$this->assertEquals('text/html; charset=utf-8',
 			$response->getHeader('Content-Type', 1));
 
+		$this->assertEquals(null,
+			$response->getHeader('RandomFakeNotSetHeader', 1));
+
+
+		//non-existent third hop
+		$this->assertEquals(null,
+			$response->getHeader(3));
 	}
 
 }
