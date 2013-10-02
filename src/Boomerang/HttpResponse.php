@@ -2,9 +2,9 @@
 
 namespace Boomerang;
 
-use Boomerang\Interfaces\ResponseInterface;
+use Boomerang\Interfaces\HttpResponseInterface;
 
-class HttpResponse implements ResponseInterface {
+class HttpResponse implements HttpResponseInterface {
 
 	private $body;
 	private $headers_raw;
