@@ -1,6 +1,6 @@
 <?php
 
-namespace Boomerang\Test\TypeExpectations;
+namespace Boomerang\TypeExpectations\Test;
 
 use Boomerang\Interfaces\TypeExpectationInterface;
 use Boomerang\TypeExpectations\AnyEx;

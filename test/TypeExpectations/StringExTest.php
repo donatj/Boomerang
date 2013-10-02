@@ -1,6 +1,6 @@
 <?php
 
-namespace Boomerang\Test\TypeExpectations;
+namespace Boomerang\TypeExpectations\Test;
 
 use Boomerang\TypeExpectations\StringEx;
 
