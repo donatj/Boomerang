@@ -53,7 +53,7 @@ class TestRunner {
 	function runTests( \Closure $afterExecution = null ) {
 		if( $this->bootstrap ) {
 			if( is_readable($this->bootstrap) ) {
-				require($this->bootstrap);
+				require_once($this->bootstrap);
 			}else{
 				/**
 				 * @todo replace UI drop errors with throwing errors
