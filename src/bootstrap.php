@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 
+date_default_timezone_set( @date_default_timezone_get() ); //feels hackish
+
 function includeIfExists( $file ) {
 	return file_exists($file) ? include $file : false;
 }
