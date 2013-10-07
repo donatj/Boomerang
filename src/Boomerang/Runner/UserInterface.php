@@ -38,7 +38,7 @@ EOT;
 	/**
 	 * @param string               $file
 	 * @param ValidatorInterface[] $validators
-	 * @param bool                 $verbose
+	 * @param bool|int             $verbose
 	 */
 	public function updateExpectationDisplay( $file, $validators, $verbose = false ) {
 
@@ -59,8 +59,9 @@ EOT;
 						break;
 					}
 				}
-
-				Output::string($dot ? : Style::green("."));
+				if( !$verbose ) {
+					Output::string($dot ? : Style::green("."));
+				}
 			} else {
 				$this->dropError("Error: Unexpected ValidatorInterface", E_USER_ERROR);
 			}
@@ -74,7 +75,8 @@ EOT;
 
 			foreach( $validator->getExpectationResults() as $expectationResult ) {
 				if( $expectationResult instanceof ExpectationResultInterface ) {
-					if( !($expectationResult instanceof PassingResult) || $verbose ) {
+					$notPassing = !($expectationResult instanceof PassingResult);
+					if( $notPassing || $verbose ) {
 
 						if( !$initialWhitespace ) {
 							Output::string(PHP_EOL);
@@ -88,7 +90,9 @@ EOT;
 							$endpoint = false;
 						}
 
-						Output::string(PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL . PHP_EOL);
+						if( $notPassing || $verbose > 1 ) {
+							Output::string(PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL );
+						}
 
 						if( !$fileDisplayed ) {
 							Output::string(Style::red($file) . PHP_EOL);
@@ -96,35 +100,39 @@ EOT;
 						}
 
 						if( $endpoint && $endpoint != $lastEndpoint ) {
-							Output::string("[ " . Style::blue($endpoint, 'underline') . " ]" . PHP_EOL . PHP_EOL);
+							Output::string("[ " . Style::blue($endpoint, 'underline') . " ]" . PHP_EOL);
 						}
 
-						Output::string($expectationResult->getMessage() . PHP_EOL . PHP_EOL);
+						if( $notPassing || $verbose > 1 ) {
+							Output::string(PHP_EOL . $expectationResult->getMessage() . PHP_EOL . PHP_EOL);
 
-						if( $expectationResult instanceof FailingExpectationResult ) {
-							$actual   = $expectationResult->getActual();
-							$expected = $expectationResult->getExpected();
+							if( $expectationResult instanceof FailingExpectationResult ) {
+								$actual   = $expectationResult->getActual();
+								$expected = $expectationResult->getExpected();
 
-							if( $expectationResult->getActual() !== null ) {
-								Output::string("Actual: " . PHP_EOL);
-								Output::string(var_export($actual, true));
-								Output::string(PHP_EOL);
-							}
+								if( $expectationResult->getActual() !== null ) {
+									Output::string("Actual: " . PHP_EOL);
+									Output::string(var_export($actual, true));
+									Output::string(PHP_EOL);
+								}
 
-							if( $expected !== null ) {
-								Output::string(PHP_EOL);
-								Output::string("Expected: " . PHP_EOL);
-								Output::string(Style::red(var_export($expected, true)));
-								Output::string(PHP_EOL);
-							}
+								if( $expected !== null ) {
+									Output::string(PHP_EOL);
+									Output::string("Expected: " . PHP_EOL);
+									Output::string(Style::red(var_export($expected, true)));
+									Output::string(PHP_EOL);
+								}
 
-						} elseif( $expectationResult instanceof PassingExpectationResult ) {
-							$actual = $expectationResult->getActual();
+							} elseif( $expectationResult instanceof PassingExpectationResult ) {
+								$actual = $expectationResult->getActual();
 
-							if( $expectationResult->getActual() !== null ) {
-								Output::string("Actual as Expected: " . PHP_EOL);
-								Output::string(Style::green(var_export($actual, true)));
-								Output::string(PHP_EOL);
+								if( $verbose > 2 ) {
+									if( $expectationResult->getActual() !== null ) {
+										Output::string("Actual as Expected: " . PHP_EOL);
+										Output::string(Style::green(var_export($actual, true)));
+										Output::string(PHP_EOL);
+									}
+								}
 							}
 						}
 
