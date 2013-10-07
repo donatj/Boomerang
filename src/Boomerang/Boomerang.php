@@ -26,13 +26,15 @@ class Boomerang {
 
 	private static function init( $args, UserInterface $ui ) {
 
-		if( file_exists(self::CONFIG_FILE) && is_readable(self::CONFIG_FILE) ) {
+		$flags     = new Flags();
+		$testSuite = & $flags->string('testsuite', 'default', 'Which test suite to run.');
+		$flags->parse($args, true);
+
+		if( is_readable(self::CONFIG_FILE) ) {
 			$config = parse_ini_file(self::CONFIG_FILE, true);
 		} else {
 			$config = array();
 		}
-
-		$testSuite = 'default';
 
 		if( isset($config[$testSuite]) ) {
 			$suite = $config[$testSuite];
@@ -43,8 +45,6 @@ class Boomerang {
 				}
 			}
 		}
-
-		$flags = new Flags();
 
 		self::$bootstrap = & $flags->string('bootstrap', isset($suite['bootstrap']) ? $suite['bootstrap'] : false, 'A "bootstrap" PHP file that is run before the specs.');
 		self::$verbosity = & $flags->short('v', 'Output in verbose mode');
@@ -62,6 +62,14 @@ class Boomerang {
 			$ui->dropError($e->getMessage(), 1, $flags->getDefaults());
 		}
 
+		$paths = array();
+
+		if( $flags->args() ) {
+			$paths = $flags->args();
+		} elseif( isset($suite['paths']) ) {
+			$paths = $suite['paths'];
+		}
+
 		switch( true ) {
 			case isset($selfUpdate) && $selfUpdate:
 				self::selfUpdate($ui);
@@ -72,19 +80,13 @@ class Boomerang {
 				die(0);
 				break;
 			case $displayHelp:
-			case count($flags->args()) < 1: //should come last because of this
+			case count($paths) < 1: //should come last because of this
 				$ui->dumpOptions($flags->getDefaults());
 				die(1);
 				break;
 		}
 
-		if( $flags->args() ) {
-			return $flags->args();
-		} elseif( isset($flags['paths']) ) {
-			return $flags['paths'];
-		} else {
-			return array();
-		}
+		return $paths;
 	}
 
 	static function main( $args ) {
