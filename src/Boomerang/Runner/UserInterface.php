@@ -100,7 +100,14 @@ EOT;
 						}
 
 						if( $endpoint && $endpoint != $lastEndpoint ) {
-							Output::string("[ " . Style::blue($endpoint, 'underline') . " ]" . PHP_EOL);
+							Output::string("[ " . Style::blue($endpoint, 'underline') . " ]");
+							if( $verbose ) {
+								/**
+								 * @var $validator ResponseValidatorInterface
+								 */
+								Output::string( '( ' . $validator->getResponse()->getRequest()->getLastRequestTime() . 's )' );
+							}
+							Output::string(PHP_EOL);
 						}
 
 						if( $notPassing || $verbose > 1 ) {

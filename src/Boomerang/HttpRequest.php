@@ -13,6 +13,8 @@ class HttpRequest {
 	private $cookiesFollowRedirects = false;
 	private $postdata = array();
 
+	private $lastRequestTime = null;
+
 	public function __construct( $endpoint ) {
 		$this->endpoint = $endpoint;
 	}
@@ -86,7 +88,11 @@ class HttpRequest {
 			curl_setopt($ch, CURLOPT_MAXREDIRS, $this->maxRedirects);
 		}
 
-		$response   = curl_exec($ch);
+		$startTime = microtime(true);
+		$response  = curl_exec($ch);
+
+		$this->lastRequestTime = microtime(true) - $startTime;
+
 		$this->info = curl_getinfo($ch);
 
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
@@ -97,6 +103,13 @@ class HttpRequest {
 		curl_close($ch);
 
 		return new HttpResponse($body, $headers, $this);
+	}
+
+	/**
+	 * @return null|float
+	 */
+	public function getLastRequestTime() {
+		return $this->lastRequestTime;
 	}
 
 	/**
