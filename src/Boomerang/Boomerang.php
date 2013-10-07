@@ -13,20 +13,21 @@ class Boomerang {
 	const PHAR_URL = "http://boomerang.donatstudios.com/builds/dev/boomerang.phar";
 	public static $boomerangPath;
 	public static $pathInfo;
+
+	private static $bootstrap;
+	private static $verbosity;
+
 	/**
 	 * @var ValidatorInterface[]
 	 */
 	public static $validators = array();
 
-	static function main( $args ) {
-		$ui = new UserInterface(STDOUT, STDERR);
+	private static function init( $args, UserInterface $ui ) {
+		$flags = new Flags();
 
-		self::$boomerangPath = realpath($args[0]);
-		self::$pathInfo      = pathinfo(self::$boomerangPath);
+		self::$bootstrap = & $flags->string('bootstrap', false, 'A "bootstrap" PHP file that is run before the specs.');
+		self::$verbosity = & $flags->short('v', 'Output in verbose mode');
 
-		$flags          = new Flags();
-		$bootstrap      = & $flags->string('bootstrap', false, 'A "bootstrap" PHP file that is run before the specs.');
-		$displayVerbose = & $flags->short('v', 'Output in verbose mode');
 		$displayHelp    = & $flags->bool('help', false, 'Display this help message.');
 		$displayVersion = & $flags->bool('version', false, 'Display this applications version.');
 
@@ -56,12 +57,24 @@ class Boomerang {
 				break;
 		}
 
+		return $flags->args();
+	}
+
+	static function main( $args ) {
+		$ui = new UserInterface(STDOUT, STDERR);
+
+		self::$boomerangPath = realpath($args[0]);
+		self::$pathInfo      = pathinfo(self::$boomerangPath);
+
+		$scan = self::init($args, $ui);
+
 		self::versionMarker($ui);
 
-		$runner = new TestRunner(end($flags->args()), $bootstrap, $ui);
+		$runner = new TestRunner(end($scan), self::$bootstrap, $ui);
 
+		$verbosity = self::$verbosity;
 		$displayed = array();
-		$runner->runTests(function ( $file ) use ( $ui, $displayVerbose, &$displayed ) {
+		$runner->runTests(function ( $file ) use ( $ui, $verbosity, &$displayed ) {
 			$validators = array();
 			foreach( Boomerang::$validators as $validator ) {
 				$hash = spl_object_hash($validator);
@@ -72,7 +85,7 @@ class Boomerang {
 				}
 			}
 
-			$ui->updateExpectationDisplay($file, $validators, $displayVerbose);
+			$ui->updateExpectationDisplay($file, $validators, $verbosity);
 		});
 
 		$tests = 0;
