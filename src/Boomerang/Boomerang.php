@@ -5,7 +5,7 @@ namespace Boomerang;
 use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\Runner\TestRunner;
 use Boomerang\Runner\UserInterface;
-use GetOptionKit\GetOptionKit;
+use donatj\Flags;
 
 class Boomerang {
 
@@ -24,51 +24,44 @@ class Boomerang {
 		self::$boomerangPath = realpath($args[0]);
 		self::$pathInfo      = pathinfo(self::$boomerangPath);
 
-		$opt = new GetOptionKit();
-		$opt->add('h|help', 'Display this help message.');
-		$opt->add('version', 'Display this application version.');
-		$opt->add('v|verbose', 'Output in verbose mode');
-		$opt->add('bootstrap:=string', 'A "bootstrap" PHP file that is run before the specs.');
+		$flags          = new Flags();
+		$bootstrap      = & $flags->string('bootstrap', false, 'A "bootstrap" PHP file that is run before the specs.');
+		$displayVerbose = & $flags->short('v', 'Output in verbose mode');
+		$displayHelp    = & $flags->bool('help', false, 'Display this help message.');
+		$displayVersion = & $flags->bool('version', false, 'Display this applications version.');
 
 		if( defined('BOOMERANG_IS_PHAR') ) {
-			$opt->add('selfupdate', 'Update to the latest version of Boomerang!');
+			$selfUpdate = & $flags->bool('selfupdate', false, 'Update to the latest version of Boomerang!');
 		}
 
 		try {
-			$cliOptions = $opt->parse($args);
+			$flags->parse($args);
 		} catch(\Exception $e) {
-			$ui->dropError($e->getMessage());
-
-			return;
+			$ui->dropError($e->getMessage(), 1, $flags->getDefaults());
 		}
 
 		switch( true ) {
-			case $cliOptions->has('selfupdate'):
+			case isset($selfUpdate) && $selfUpdate:
 				self::selfUpdate($ui);
 				die(0);
 				break;
-			case $cliOptions->has('version'):
+			case $displayVersion:
 				self::versionMarker($ui);
 				die(0);
 				break;
-			case $cliOptions->has('help'):
-			case count($cliOptions->getArguments()) < 2: //should come last because of this
-				$ui->dumpOptions($opt->specs->outputOptions());
+			case $displayHelp:
+			case count($flags->args()) < 1: //should come last because of this
+				$ui->dumpOptions($flags->getDefaults());
 				die(1);
 				break;
 		}
 
-		$bootstrap = null;
-		if( $cliOptions->has('bootstrap') ) {
-			$bootstrap = $cliOptions->bootstrap;
-		}
-
 		self::versionMarker($ui);
 
-		$runner = new TestRunner(end($cliOptions->getArguments()), $bootstrap, $ui);
+		$runner = new TestRunner(end($flags->args()), $bootstrap, $ui);
 
 		$displayed = array();
-		$runner->runTests(function ( $file ) use ( $ui, $cliOptions, &$displayed ) {
+		$runner->runTests(function ( $file ) use ( $ui, $displayVerbose, &$displayed ) {
 			$validators = array();
 			foreach( Boomerang::$validators as $validator ) {
 				$hash = spl_object_hash($validator);
@@ -79,7 +72,7 @@ class Boomerang {
 				}
 			}
 
-			$ui->updateExpectationDisplay($file, $validators, $cliOptions->has('verbose'));
+			$ui->updateExpectationDisplay($file, $validators, $displayVerbose);
 		});
 
 		$tests = 0;

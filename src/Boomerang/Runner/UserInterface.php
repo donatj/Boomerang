@@ -20,7 +20,7 @@ class UserInterface {
 		Output::$stream = $STDOUT;
 	}
 
-	public function dumpOptions( array $additional = array() ) {
+	public function dumpOptions( $additional ) {
 		$fname = Boomerang::$pathInfo['basename'];
 
 		$options = <<<EOT
@@ -31,18 +31,14 @@ usage: {$fname} [switches] <directory>
 EOT;
 
 		Output::string($options);
-
-		foreach( $additional as $line ) {
-			Output::string($line . PHP_EOL);
-		}
-
+		Output::string($additional);
 		Output::string(PHP_EOL);
 	}
 
 	/**
-	 * @param string      $file
+	 * @param string               $file
 	 * @param ValidatorInterface[] $validators
-	 * @param bool        $verbose
+	 * @param bool                 $verbose
 	 */
 	public function updateExpectationDisplay( $file, $validators, $verbose = false ) {
 
@@ -144,8 +140,8 @@ EOT;
 		}
 	}
 
-	public function dropError( $text, $code = 1 ) {
-		Output::string(Boomerang::$pathInfo['basename'] . ": " . $text . PHP_EOL);
+	public function dropError( $text, $code = 1, $additional = false ) {
+		Output::string(Boomerang::$pathInfo['basename'] . ": " . Style::red($text) . PHP_EOL . ($additional ? $additional . PHP_EOL : ''));
 		die($code);
 	}
 
