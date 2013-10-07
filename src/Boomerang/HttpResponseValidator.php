@@ -111,6 +111,9 @@ class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 		return $this;
 	}
 
+	/**
+	 * @return Interfaces\ExpectationResultInterface[]
+	 */
 	public function getExpectationResults() {
 		return $this->expectations;
 	}
