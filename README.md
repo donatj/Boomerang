@@ -1,23 +1,34 @@
-# Boomerang!
+# Boomerang*!*
 
 [![Build Status](https://travis-ci.org/donatj/Boomerang.png?branch=master)](https://travis-ci.org/donatj/Boomerang)
 
-Simple Frisby.js Inspired API Endpoint Testing
+Boomerang*!* is a simple Frisby.js inspired API endpoint testing framework, providing the tools you need to validate REST responses.
+
+Boomerang*!* consumes your API and validates your defined set of expectations.
 
 More info coming soon
 
-## Building a Phar
+## Development
+
+```bash
+$ git clone https://github.com/donatj/Boomerang.git Boomerang
+$ cd Boomerang
+$ composer.phar install
+```
+
+### Basic Execution
+
+The easiest way to test is simply using the composer executable.
+
+From the root of the cloned project, execute 
+```bash
+$ ./composer/bin/boomerang
+```
+
+### Building a Phar
 
 You will need Composer to fetch the requirements
 
-
-	$ git clone git@github.com:donatj/Boomerang.git Boomerang
-	$ cd Boomerang
-	$ composer.phar install
-	$ php create-phar.php
-
-    {
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*"
-        }
-    }
+```bash
+$ php create-phar.php
+```
