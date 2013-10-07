@@ -9,8 +9,10 @@ use donatj\Flags;
 
 class Boomerang {
 
-	const VERSION  = ".0.1a";
-	const PHAR_URL = "http://boomerang.donatstudios.com/builds/dev/boomerang.phar";
+	const VERSION     = ".0.1a";
+	const PHAR_URL    = "http://boomerang.donatstudios.com/builds/dev/boomerang.phar";
+	const CONFIG_FILE = "boomerang.ini";
+
 	public static $boomerangPath;
 	public static $pathInfo;
 
@@ -23,9 +25,28 @@ class Boomerang {
 	public static $validators = array();
 
 	private static function init( $args, UserInterface $ui ) {
+
+		if( file_exists(self::CONFIG_FILE) && is_readable(self::CONFIG_FILE) ) {
+			$config = parse_ini_file(self::CONFIG_FILE, true);
+		} else {
+			$config = array();
+		}
+
+		$testSuite = 'default';
+
+		if( isset($config[$testSuite]) ) {
+			$suite = $config[$testSuite];
+
+			if( isset($suite['define']) && is_array($suite['define']) ) {
+				foreach( $suite['define'] as $key => $definition ) {
+					define($key, $definition);
+				}
+			}
+		}
+
 		$flags = new Flags();
 
-		self::$bootstrap = & $flags->string('bootstrap', false, 'A "bootstrap" PHP file that is run before the specs.');
+		self::$bootstrap = & $flags->string('bootstrap', isset($suite['bootstrap']) ? $suite['bootstrap'] : false, 'A "bootstrap" PHP file that is run before the specs.');
 		self::$verbosity = & $flags->short('v', 'Output in verbose mode');
 
 		$displayHelp    = & $flags->bool('help', false, 'Display this help message.');
@@ -57,7 +78,13 @@ class Boomerang {
 				break;
 		}
 
-		return $flags->args();
+		if( $flags->args() ) {
+			return $flags->args();
+		} elseif( isset($flags['paths']) ) {
+			return $flags['paths'];
+		} else {
+			return array();
+		}
 	}
 
 	static function main( $args ) {
