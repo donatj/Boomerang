@@ -6,7 +6,7 @@ Boomerang! is a simple Frisby.js inspired API endpoint testing framework, provid
 
 Boomerang! consumes your API and validates your defined set of expectations, alerting you to any problems arising.
 
-More info coming soon
+Boomerang! is still in development and more info is coming soon!
 
 ## Requirements
 
@@ -19,6 +19,16 @@ Using composer, boomerang can be installed globally via:
 
 ```bash
 $ composer global require 'boomerang/boomerang=dev-master'
+```
+
+If you are using composer for the project you wish to test, you can simply add
+
+```json
+{
+  "require-dev": {
+      "boomerang/boomerang": "dev-master"
+  }
+}
 ```
 
 ## Development
