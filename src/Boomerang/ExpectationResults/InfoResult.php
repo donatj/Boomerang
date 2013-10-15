@@ -2,6 +2,6 @@
 
 namespace Boomerang\ExpectationResults;
 
-class InfoResult extends BaseResult {
+class InfoResult extends AbstractResult {
 
 }

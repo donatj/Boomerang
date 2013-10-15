@@ -2,6 +2,6 @@
 
 namespace Boomerang\ExpectationResults;
 
-class PassingResult extends BaseResult {
+class PassingResult extends AbstractResult {
 
 }
