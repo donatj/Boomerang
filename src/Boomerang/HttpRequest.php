@@ -72,7 +72,7 @@ class HttpRequest {
 
 		if( $this->postdata ) {
 			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postdata);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->postdata, '', '&'));
 		}
 
 		if( $this->cookies ) {
