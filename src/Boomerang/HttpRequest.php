@@ -45,6 +45,14 @@ class HttpRequest {
 	}
 
 	/**
+	 * @param $key
+	 * @return string|null
+	 */
+	public function getPost( $key ) {
+		return isset($this->postdata[$key]) ? $this->postdata[$key] : null;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getPostdata() {
