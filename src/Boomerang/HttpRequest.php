@@ -53,6 +53,16 @@ class HttpRequest {
 	}
 
 	/**
+	 * Set a named key of the post value
+	 *
+	 * @param $key
+	 * @param $value
+	 */
+	public function setPost( $key, $value ) {
+		$this->postdata[$key] = $value;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getPostdata() {
@@ -66,16 +76,6 @@ class HttpRequest {
 	 */
 	public function setPostdata( array $post ) {
 		$this->postdata = $post;
-	}
-
-	/**
-	 * Set a named key of the post value
-	 *
-	 * @param $key
-	 * @param $value
-	 */
-	public function setPost( $key, $value ) {
-		$this->postdata[$key] = $value;
 	}
 
 	/**
