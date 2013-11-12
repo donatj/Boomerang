@@ -5,8 +5,9 @@ namespace Boomerang;
 class HttpRequest {
 
 	public $tmp = "/tmp";
-	public $maxRedirects = 10;
+
 	public $info;
+	private $maxRedirects = 10;
 	private $headers = array();
 	private $endpoint;
 	private $cookies = array();
