@@ -2,6 +2,8 @@
 
 namespace Boomerang;
 
+use Boomerang\Factories\HttpResponseFactory;
+
 class HttpRequest {
 
 	public $tmp = "/tmp";
@@ -13,9 +15,17 @@ class HttpRequest {
 	private $cookiesFollowRedirects = false;
 	private $postdata = array();
 	private $lastRequestTime = null;
+	/**
+	 * @var HttpResponseFactory
+	 */
+	private $responseFactory;
 
-	public function __construct( $endpoint ) {
+	public function __construct( $endpoint, HttpResponseFactory $responseFactory = null ) {
 		$this->endpoint = $endpoint;
+
+		if( $responseFactory === null ) {
+			$this->responseFactory = new HttpResponseFactory();
+		}
 	}
 
 	/**
@@ -145,7 +155,7 @@ class HttpRequest {
 
 		curl_close($ch);
 
-		return new HttpResponse($body, $headers, $this);
+		return $this->responseFactory->newInstance($body, $headers, $this);
 	}
 
 	/**
