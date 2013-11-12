@@ -5,7 +5,6 @@ namespace Boomerang;
 class HttpRequest {
 
 	public $tmp = "/tmp";
-
 	public $info;
 	private $maxRedirects = 10;
 	private $headers = array();
@@ -13,7 +12,6 @@ class HttpRequest {
 	private $cookies = array();
 	private $cookiesFollowRedirects = false;
 	private $postdata = array();
-
 	private $lastRequestTime = null;
 
 	public function __construct( $endpoint ) {
@@ -26,6 +24,21 @@ class HttpRequest {
 	 */
 	public function getHeader( $key ) {
 		return isset($this->headers[$key]) ? $this->headers[$key] : null;
+	}
+
+	/**
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setHeader( $key, $value ) {
+		$this->headers[$key] = $value;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getPostdata() {
+		return $this->postdata;
 	}
 
 	/**
@@ -54,6 +67,35 @@ class HttpRequest {
 	public function setCookiesFollowRedirects( $bool, $tmp_path = '/tmp' ) {
 		$this->tmp                    = $tmp_path;
 		$this->cookiesFollowRedirects = $bool;
+	}
+
+	/**
+	 * @param array $cookies
+	 */
+	public function setCookies( array $cookies ) {
+		$this->cookies = $cookies;
+	}
+
+	/**
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setCookie( $key, $value ) {
+		$this->cookies[$key] = $value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEndpoint() {
+		return $this->endpoint;
+	}
+
+	/**
+	 * @param string $endpoint
+	 */
+	public function setEndpoint( $endpoint ) {
+		$this->endpoint = $endpoint;
 	}
 
 	/**
@@ -107,13 +149,6 @@ class HttpRequest {
 	}
 
 	/**
-	 * @return null|float
-	 */
-	public function getLastRequestTime() {
-		return $this->lastRequestTime;
-	}
-
-	/**
 	 * @return array
 	 */
 	public function getHeaders() {
@@ -149,47 +184,17 @@ class HttpRequest {
 	}
 
 	/**
+	 * @return null|float
+	 */
+	public function getLastRequestTime() {
+		return $this->lastRequestTime;
+	}
+
+	/**
 	 * @param int $maxRedirects
 	 */
 	public function setMaxRedirects( $maxRedirects ) {
 		$this->maxRedirects = $maxRedirects;
-	}
-
-	/**
-	 * @param array $cookies
-	 */
-	public function setCookies( array $cookies ) {
-		$this->cookies = $cookies;
-	}
-
-	/**
-	 * @param string $key
-	 * @param string $value
-	 */
-	public function setCookie( $key, $value ) {
-		$this->cookies[$key] = $value;
-	}
-
-	/**
-	 * @param string $key
-	 * @param string $value
-	 */
-	public function setHeader( $key, $value ) {
-		$this->headers[$key] = $value;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getEndpoint() {
-		return $this->endpoint;
-	}
-
-	/**
-	 * @param string $endpoint
-	 */
-	public function setEndpoint( $endpoint ) {
-		$this->endpoint = $endpoint;
 	}
 
 }
