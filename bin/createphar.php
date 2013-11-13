@@ -2,7 +2,7 @@
 
 echo "Building Phar... ";
 
-$path = dirname(__FILE__) . '/';
+$path = realpath(__DIR__ . '/../') . '/';
 
 $srcRoot = $path . "src";
 $buildRoot = $path . "build";
