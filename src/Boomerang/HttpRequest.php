@@ -6,8 +6,10 @@ use Boomerang\Factories\HttpResponseFactory;
 
 class HttpRequest {
 
-	public $tmp = "/tmp";
+
 	public $info;
+
+	private $tmp = "/tmp";
 	private $maxRedirects = 10;
 	private $headers = array();
 	private $endpoint;
@@ -29,7 +31,9 @@ class HttpRequest {
 	}
 
 	/**
-	 * @param string
+	 * Retrieve an outgoing header by name
+	 *
+	 * @param string $key The name of the header.
 	 * @return string|null
 	 */
 	public function getHeader( $key ) {
@@ -37,8 +41,10 @@ class HttpRequest {
 	}
 
 	/**
-	 * @param string $key
-	 * @param string $value
+	 * Set an outgoing header by name.
+	 *
+	 * @param string $key The name of the header.
+	 * @param string $value The value to set the header to.
 	 */
 	public function setHeader( $key, $value ) {
 		$this->headers[$key] = $value;
@@ -63,6 +69,8 @@ class HttpRequest {
 	}
 
 	/**
+	 * Retrieve all enqueued post-data as an array.
+	 *
 	 * @return array
 	 */
 	public function getPostdata() {
@@ -79,8 +87,12 @@ class HttpRequest {
 	}
 
 	/**
-	 * @param        $bool
-	 * @param string $tmp_path
+	 * Allows you to enable cookie's set by server re-posting following a redirect.
+	 *
+	 * Requires file system storage of a "cookie jar" file and is therefore disabled by default.
+	 *
+	 * @param bool   $bool
+	 * @param string $tmp_path Path to save the cookie jar file, defaults to /tmp
 	 */
 	public function setCookiesFollowRedirects( $bool, $tmp_path = '/tmp' ) {
 		$this->tmp                    = $tmp_path;
@@ -202,6 +214,8 @@ class HttpRequest {
 	}
 
 	/**
+	 * Get the time the last request took in seconds a float
+	 *
 	 * @return null|float
 	 */
 	public function getLastRequestTime() {
@@ -209,6 +223,8 @@ class HttpRequest {
 	}
 
 	/**
+	 * Set the maximum number of redirects(hops) a request should follow.
+	 *
 	 * @param int $maxRedirects
 	 */
 	public function setMaxRedirects( $maxRedirects ) {

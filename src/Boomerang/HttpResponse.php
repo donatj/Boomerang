@@ -12,9 +12,9 @@ class HttpResponse implements HttpResponseInterface {
 	private $request;
 
 	/**
-	 * @param string      $body
-	 * @param string      $headers
-	 * @param HttpRequest $request
+	 * @param string           $body The body of the HTTP Request
+	 * @param string           $headers
+	 * @param HttpRequest|null $request
 	 */
 	public function __construct( $body, $headers, HttpRequest $request = null ) {
 		$this->body        = $body;
@@ -81,7 +81,7 @@ class HttpResponse implements HttpResponseInterface {
 	/**
 	 * @param string   $header
 	 * @param null|int $hop
-	 * @return null|string
+	 * @return null|string Header value or null on not found
 	 */
 	public function getHeader( $header, $hop = null ) {
 		$headers = $this->getHeaders($hop);
