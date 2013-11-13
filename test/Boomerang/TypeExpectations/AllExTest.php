@@ -18,7 +18,6 @@ class AllExTest extends \PHPUnit_Framework_TestCase {
 		 */
 		$mockValidator = $this->getMock('Boomerang\\Interfaces\\ValidatorInterface');
 
-
 		$x = new AllEx($mockPass);
 		$x->setValidator($mockValidator);
 
