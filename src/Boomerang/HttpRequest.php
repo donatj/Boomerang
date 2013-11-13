@@ -22,6 +22,10 @@ class HttpRequest {
 	 */
 	private $responseFactory;
 
+	/**
+	 * @param string              $endpoint URI to request.
+	 * @param HttpResponseFactory $responseFactory A factory for creating Response objects.
+	 */
 	public function __construct( $endpoint, HttpResponseFactory $responseFactory = null ) {
 		$this->endpoint = $endpoint;
 
@@ -34,7 +38,7 @@ class HttpRequest {
 	 * Retrieve an outgoing header by name
 	 *
 	 * @param string $key The name of the header.
-	 * @return string|null
+	 * @return string|null Null on failure.
 	 */
 	public function getHeader( $key ) {
 		return isset($this->headers[$key]) ? $this->headers[$key] : null;
@@ -51,6 +55,31 @@ class HttpRequest {
 	}
 
 	/**
+	 * Get all set headers.
+	 *
+	 * @return array
+	 */
+	public function getHeaders() {
+		$headers = $this->headers;
+		if( !isset($headers['Accept']) ) {
+			$headers['Accept'] = $this->detectAccept($this->endpoint);
+		}
+
+		return $headers;
+	}
+
+	/**
+	 * Set outgoing headers as an array of HeaderName => Value
+	 *
+	 * @param array $headers Headers to set
+	 */
+	public function setHeaders( array $headers ) {
+		$this->headers = $headers;
+	}
+
+	/**
+	 * Retrieve an post value by name.
+	 *
 	 * @param $key
 	 * @return string|null
 	 */
@@ -69,7 +98,7 @@ class HttpRequest {
 	}
 
 	/**
-	 * Retrieve all enqueued post-data as an array.
+	 * Retrieve all queued post-data as an array.
 	 *
 	 * @return array
 	 */
@@ -91,7 +120,7 @@ class HttpRequest {
 	 *
 	 * Requires file system storage of a "cookie jar" file and is therefore disabled by default.
 	 *
-	 * @param bool   $bool
+	 * @param bool   $bool true/false to enable/disable respectively
 	 * @param string $tmp_path Path to save the cookie jar file, defaults to /tmp
 	 */
 	public function setCookiesFollowRedirects( $bool, $tmp_path = '/tmp' ) {
@@ -100,13 +129,17 @@ class HttpRequest {
 	}
 
 	/**
-	 * @param array $cookies
+	 * Set outgoing cookies as an array of CookieName => Value
+	 *
+	 * @param array $cookies Cookies to set
 	 */
 	public function setCookies( array $cookies ) {
 		$this->cookies = $cookies;
 	}
 
 	/**
+	 * Set a named cookies outgoing value
+	 *
 	 * @param string $key
 	 * @param string $value
 	 */
@@ -115,6 +148,8 @@ class HttpRequest {
 	}
 
 	/**
+	 * Gets the request URI
+	 *
 	 * @return string
 	 */
 	public function getEndpoint() {
@@ -122,6 +157,8 @@ class HttpRequest {
 	}
 
 	/**
+	 * Sets the request URI
+	 *
 	 * @param string $endpoint
 	 */
 	public function setEndpoint( $endpoint ) {
@@ -129,7 +166,9 @@ class HttpRequest {
 	}
 
 	/**
-	 * @return HttpResponse
+	 * Execute the request
+	 *
+	 * @return HttpResponse An object representing the result of the request
 	 */
 	public function makeRequest() {
 		$ch = curl_init();
@@ -178,25 +217,6 @@ class HttpRequest {
 		return $this->responseFactory->newInstance($body, $headers, $this);
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getHeaders() {
-		$headers = $this->headers;
-		if( !isset($headers['Accept']) ) {
-			$headers['Accept'] = $this->detectAccept($this->endpoint);
-		}
-
-		return $headers;
-	}
-
-	/**
-	 * @param array $headers
-	 */
-	public function setHeaders( array $headers ) {
-		$this->headers = $headers;
-	}
-
 	private function detectAccept( $endpoint ) {
 		$url  = parse_url($endpoint);
 		$path = pathinfo($url['path']);
@@ -216,10 +236,19 @@ class HttpRequest {
 	/**
 	 * Get the time the last request took in seconds a float
 	 *
-	 * @return null|float
+	 * @return null|float null if there is no last request
 	 */
 	public function getLastRequestTime() {
 		return $this->lastRequestTime;
+	}
+
+	/**
+	 * Get the current maximum number of redirects(hops) a request should follow.
+	 *
+	 * @return int
+	 */
+	public function getMaxRedirects() {
+		return $this->maxRedirects;
 	}
 
 	/**

@@ -94,7 +94,9 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
-	 * @param null|int $hop
+	 * Get Response headers as a HeaderName => Value array
+	 *
+	 * @param null|int $hop The zero indexed hop(redirect). Defaults to the final hop.
 	 * @return array|null
 	 */
 	public function getHeaders( $hop = null ) {
@@ -110,6 +112,8 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
+	 * Get all Response headers from all hops as a HopIndex => HeaderName => Value array.
+	 *
 	 * @return array
 	 */
 	public function getAllHeaders() {
@@ -117,6 +121,8 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
+	 * Get the raw unparsed Response header string.
+	 *
 	 * @return string
 	 */
 	public function getRawHeaders() {
@@ -124,6 +130,8 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
+	 * Get the body of the Response.
+	 *
 	 * @return string
 	 */
 	public function getBody() {
@@ -131,6 +139,8 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
+	 * Get the HttpRequest object that made the Response object.
+	 *
 	 * @return HttpRequest
 	 */
 	public function getRequest() {
@@ -138,6 +148,8 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
+	 * Get the number of hops(redirects) the request took
+	 *
 	 * @return int
 	 */
 	public function getHopCount() {
@@ -145,7 +157,9 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
-	 * @param int|null $hop
+	 * Get the HTTP status of a hop
+	 *
+	 * @param int|null $hop The zero indexed hop(redirect). Defaults to the final hop.
 	 * @return int|null
 	 */
 	public function getStatus( $hop = null ) {
