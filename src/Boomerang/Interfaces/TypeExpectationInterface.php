@@ -15,6 +15,7 @@ interface TypeExpectationInterface {
 	/**
 	 * The pretty name of the type for error messages
 	 *
+	 * @access private
 	 * @return string
 	 */
 	public function getMatchingTypeName();
