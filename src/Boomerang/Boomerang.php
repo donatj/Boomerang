@@ -90,7 +90,7 @@ class Boomerang {
 	}
 
 	/**
-	 * @ignore
+	 * @access private
 	 */
 	static function main( $args ) {
 		$ui = new UserInterface(STDOUT, STDERR);
@@ -187,9 +187,9 @@ class Boomerang {
 	}
 
 	/**
-	 * After creating an instance of a Validator, it needs to be registered with Boomerang in order for results to be tallied and displayed.
+	 * Register a Validator with Boomerang
 	 *
-	 * That can be done through this method.
+	 * After creating an instance of a Validator, it needs to be registered with Boomerang in order for results to be tallied and displayed.
 	 *
 	 * @param ValidatorInterface $validator
 	 */
