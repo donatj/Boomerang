@@ -4,6 +4,11 @@ namespace Boomerang;
 
 use Boomerang\Factories\HttpResponseFactory;
 
+/**
+ * Utility for generating HTTP Requests and receiving Responses into `HttpResponse` objects.
+ *
+ * @package Boomerang
+ */
 class HttpRequest {
 
 

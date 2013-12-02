@@ -4,6 +4,13 @@ namespace Boomerang;
 
 use Boomerang\Interfaces\HttpResponseInterface;
 
+/**
+ * Represents an HTTP Response.
+ *
+ * Usually received from an `HttpRequest` object
+ *
+ * @package Boomerang
+ */
 class HttpResponse implements HttpResponseInterface {
 
 	private $body;

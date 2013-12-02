@@ -7,6 +7,11 @@ use Boomerang\Runner\TestRunner;
 use Boomerang\Runner\UserInterface;
 use donatj\Flags;
 
+/**
+ * Boomerang Application
+ *
+ * @package Boomerang
+ */
 class Boomerang {
 
 	const VERSION     = ".0.1a";

@@ -7,6 +7,13 @@ use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\Interfaces\TypeExpectationInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 
+/**
+ * Structure Expectation
+ *
+ * Used to define rules about structure.
+ *
+ * @package Boomerang\TypeExpectations
+ */
 class StructureEx implements TypeExpectationInterface {
 
 	protected $structure;
@@ -17,6 +24,9 @@ class StructureEx implements TypeExpectationInterface {
 	 */
 	private $validator;
 
+	/**
+	 * @param TypeExpectationInterface|callable|mixed $structure
+	 */
 	function __construct( $structure ) {
 		$this->structure = $structure;
 	}
@@ -29,6 +39,7 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
+	 * @access private
 	 * @param ValidatorInterface $validator
 	 */
 	public function setValidator( $validator ) {
@@ -72,7 +83,6 @@ class StructureEx implements TypeExpectationInterface {
 			}
 		} elseif( $validation instanceof StructureEx ) {
 			$validation->setPath($path);
-//			$validation->setResponse($this->response);
 			$validation->setValidator($this->validator);
 
 			$pass         = $validation->match($data);
@@ -119,6 +129,7 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
+	 * @access private
 	 * @param array $path
 	 * @return mixed
 	 */

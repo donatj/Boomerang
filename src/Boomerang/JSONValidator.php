@@ -7,6 +7,13 @@ use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\ResponseInterface;
 
+/**
+ * JSON Validator
+ *
+ * Used to validate JSON encoding and structure.
+ *
+ * @package Boomerang
+ */
 class JSONValidator extends StructureValidator implements Interfaces\ResponseValidatorInterface {
 
 	public function __construct( ResponseInterface $response ) {

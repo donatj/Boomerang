@@ -6,6 +6,13 @@ use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\Interfaces\HttpResponseInterface;
 
+/**
+ * HTTP Validation
+ *
+ * Used to validate expected responses, headers and HTTP statues
+ *
+ * @package Boomerang
+ */
 class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 
 	private $expectations = array();
@@ -14,6 +21,9 @@ class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 	 */
 	private $response;
 
+	/**
+	 * @param HttpResponseInterface $response
+	 */
 	public function __construct( HttpResponseInterface $response ) {
 		$this->response = $response;
 	}

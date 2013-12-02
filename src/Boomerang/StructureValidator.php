@@ -4,6 +4,7 @@ namespace Boomerang;
 
 use Boomerang\Interfaces\ExpectationResultInterface;
 use Boomerang\Interfaces\ResponseInterface;
+use Boomerang\Interfaces\TypeExpectationInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\TypeExpectations\StructureEx;
 
@@ -13,14 +14,15 @@ class StructureValidator implements ValidatorInterface {
 	 * @var ResponseInterface
 	 */
 	protected $response;
-
 	protected $data;
-
 	/**
 	 * @var ExpectationResultInterface[]
 	 */
 	protected $expectations = array();
 
+	/**
+	 * @param ResponseInterface $response
+	 */
 	public function __construct( ResponseInterface $response ) {
 		$this->response = $response;
 		$this->data     = $this->response->getBody();
@@ -33,6 +35,10 @@ class StructureValidator implements ValidatorInterface {
 		return $this->expectations;
 	}
 
+	/**
+	 * @param TypeExpectationInterface|callable|mixed $structure
+	 * @return $this
+	 */
 	public function expectStructure( $structure ) {
 
 		$sx = new StructureEx($structure);
