@@ -9,6 +9,7 @@ class TestRunner {
 	private $path;
 	private $files;
 	private $bootstrap;
+	
 	/**
 	 * @var UserInterface
 	 */

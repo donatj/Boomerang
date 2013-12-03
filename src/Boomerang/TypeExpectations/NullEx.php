@@ -4,6 +4,13 @@ namespace Boomerang\TypeExpectations;
 
 use Boomerang\Interfaces\TypeExpectationInterface;
 
+/**
+ * Null Expectation
+ *
+ * Defines a placeholder expectation of a NULL value.
+ *
+ * @package Boomerang\TypeExpectations
+ */
 class NullEx implements TypeExpectationInterface {
 
 	public function match( $data ) {

@@ -7,6 +7,7 @@ interface TypeExpectationInterface {
 	/**
 	 * Method to pass data to compare against
 	 *
+	 * @access private
 	 * @param $data
 	 * @return bool
 	 */

@@ -4,11 +4,26 @@ namespace Boomerang\TypeExpectations;
 
 use Boomerang\Interfaces\TypeExpectationInterface;
 
+/**
+ * Numeric Expectation
+ *
+ * Defines a placeholder expectation of a "numeric" (int/float/numeric string) with an optional minimum/maximum range.
+ *
+ * See: [php.net/is_numeric](http://php.net/is_numeric)
+ *
+ * **Passes**: `numeric string` / `int` / `float`
+ *
+ * @package Boomerang\TypeExpectations
+ */
 class NumericEx implements TypeExpectationInterface {
 
 	protected $min;
 	protected $max;
 
+	/**
+	 * @param null|int|float $min Optional minimum valid value
+	 * @param null|int|float $max Optional maximum valid value
+	 */
 	public function __construct( $min = null, $max = null ) {
 		$this->min = $min;
 		$this->max = $max;

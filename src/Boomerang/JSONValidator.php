@@ -16,6 +16,9 @@ use Boomerang\Interfaces\ResponseInterface;
  */
 class JSONValidator extends StructureValidator implements Interfaces\ResponseValidatorInterface {
 
+	/**
+	 * @param ResponseInterface $response The response to inspect
+	 */
 	public function __construct( ResponseInterface $response ) {
 		parent::__construct($response);
 
@@ -60,6 +63,11 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 		return $error;
 	}
 
+	/**
+	 * Log the JSON response as an InfoResult in the output.
+	 *
+	 * @return $this
+	 */
 	public function inspectJSON() {
 		$this->expectations[] = new InfoResult($this, json_encode($this->data));
 

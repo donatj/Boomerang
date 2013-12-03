@@ -2,6 +2,20 @@
 
 namespace Boomerang\TypeExpectations;
 
+/**
+ * Any Expectation
+ *
+ * Defines a requirement to match **any** structure definitions expectations.
+ *
+ * Example:
+ *
+ *     new AllEx(
+ *         array(1,2,3),
+ *         function($data) { return count($data) == 4; }
+ *     );
+ *
+ * @package Boomerang\TypeExpectations
+ */
 class AnyEx extends AllEx {
 
 	function match( $data ) {

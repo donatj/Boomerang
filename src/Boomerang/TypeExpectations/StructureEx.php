@@ -138,6 +138,7 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
+	 * @access private
 	 * @return array
 	 */
 	public function getExpectations() {

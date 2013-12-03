@@ -2,10 +2,20 @@
 
 namespace Boomerang\TypeExpectations;
 
+/**
+ * Regex Match Expectation
+ *
+ * Define a regex matching placeholder
+ *
+ * @package Boomerang\TypeExpectations
+ */
 class RegexEx extends StringEx {
 
 	private $pattern;
 
+	/**
+	 * @param string $pattern The preg pattern to search for
+	 */
 	function __construct( $pattern ) {
 		$this->pattern = $pattern;
 	}
