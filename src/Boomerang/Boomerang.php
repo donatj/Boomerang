@@ -15,7 +15,7 @@ use donatj\Flags;
 class Boomerang {
 
 	const VERSION     = ".0.1a";
-	const PHAR_URL    = "http://boomerang.donatstudios.com/builds/dev/boomerang.phar";
+	const PHAR_URL    = "http://phar.boomerang.so/builds/dev/boomerang.phar";
 	const CONFIG_FILE = "boomerang.ini";
 
 	public static $boomerangPath;
