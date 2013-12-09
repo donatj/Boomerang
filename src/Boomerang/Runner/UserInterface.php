@@ -91,7 +91,7 @@ EOT;
 						}
 
 						if( $notPassing || $verbose > 1 ) {
-							Output::string(PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL );
+							Output::string(PHP_EOL . Style::light_gray("# " . str_repeat('-', 25)) . PHP_EOL);
 						}
 
 						if( !$fileDisplayed ) {
@@ -105,7 +105,7 @@ EOT;
 								/**
 								 * @var $validator ResponseValidatorInterface
 								 */
-								Output::string( '( ' . $validator->getResponse()->getRequest()->getLastRequestTime() . 's )' );
+								Output::string('( ' . $validator->getResponse()->getRequest()->getLastRequestTime() . 's )');
 							}
 							Output::string(PHP_EOL);
 						}

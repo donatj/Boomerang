@@ -2,14 +2,11 @@
 
 namespace Boomerang\Runner;
 
-use Boomerang\Boomerang;
-
 class TestRunner {
 
 	private $path;
 	private $files;
 	private $bootstrap;
-	
 	/**
 	 * @var UserInterface
 	 */
@@ -55,7 +52,7 @@ class TestRunner {
 		if( $this->bootstrap ) {
 			if( is_readable($this->bootstrap) ) {
 				require_once($this->bootstrap);
-			}else{
+			} else {
 				/**
 				 * @todo replace UI drop errors with throwing errors
 				 */
