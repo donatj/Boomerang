@@ -15,6 +15,7 @@
 		"donatj/cli-toolkit": "*",
 		"donatj/flags": ">=1.0.1",
 		"php": ">=5.3.2",
+		"ext-curl": "*",
 		"ext-SPL": "*"
 	},
 	"require-dev": {
