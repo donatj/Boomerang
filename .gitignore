@@ -5,3 +5,5 @@ composer.lock
 *.phar
 
 *.sublime-*
+coverage.xml
+coverage_report/
