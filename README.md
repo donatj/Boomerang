@@ -1,6 +1,7 @@
 # Boomerang!
 
 [![Build Status](https://travis-ci.org/donatj/Boomerang.png?branch=master)](https://travis-ci.org/donatj/Boomerang)
+[![Dependency Status](https://www.versioneye.com/php/boomerang:boomerang/dev-master/badge.png)](https://www.versioneye.com/php/boomerang:boomerang/dev-master)
 
 Boomerang! is a simple Frisby.js inspired API endpoint testing framework, providing the tools you need to validate REST responses.
 
