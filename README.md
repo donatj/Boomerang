@@ -56,3 +56,7 @@ You will need Composer to fetch the requirements
 ```bash
 $ php create-phar.php
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/donatj/boomerang/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
