@@ -36,8 +36,10 @@ class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 	}
 
 	/**
+	 * Verify that the HTTP response code is as expected.
+	 *
 	 * @param int  $expected_status
-	 * @param null $hop
+	 * @param null $hop The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
 	public function expectStatus( $expected_status = 200, $hop = null ) {
@@ -54,9 +56,11 @@ class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 	}
 
 	/**
-	 * @param string   $key
-	 * @param string   $value
-	 * @param null|int $hop
+	 * Verify that a header field equals an expected value.
+	 *
+	 * @param string   $key The header field name to verify.
+	 * @param string   $value The expected value.
+	 * @param null|int $hop The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
 	public function expectHeader( $key, $value, $hop = null ) {
@@ -72,9 +76,13 @@ class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 	}
 
 	/**
-	 * @param  string  $key
-	 * @param   string $value
-	 * @param null|int $hop
+	 * Verify that a header field contains an expected value.
+	 *
+	 * For example, checking the header Content-Type for "json" **would** match a response of "application/json"
+	 *
+	 * @param string   $key The header field name to verify.
+	 * @param string   $value The expected containing value.
+	 * @param null|int $hop The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
 	public function expectHeaderContains( $key, $value, $hop = null ) {
@@ -90,7 +98,9 @@ class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 	}
 
 	/**
-	 * @param string $expectedContent
+	 * Verify that the content body equals an expected value.
+	 *
+	 * @param string $expectedContent The expected value.
 	 * @return $this
 	 */
 	public function expectBody( $expectedContent ) {
@@ -106,7 +116,9 @@ class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 	}
 
 	/**
-	 * @param string $expectedContent
+	 * Verify that the content body contains an expected value.
+	 *
+	 * @param string $expectedContent The expected containing value.
 	 * @return $this
 	 */
 	public function expectBodyContains( $expectedContent ) {

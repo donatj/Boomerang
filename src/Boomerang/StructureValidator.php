@@ -36,7 +36,9 @@ class StructureValidator implements ValidatorInterface {
 	}
 
 	/**
-	 * @param TypeExpectationInterface|callable|mixed $structure
+	 * Verify that the data matches the expected defined.
+	 *
+	 * @param TypeExpectationInterface|callable|mixed $structure A description of the expected structure.
 	 * @return $this
 	 */
 	public function expectStructure( $structure ) {

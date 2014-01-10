@@ -54,7 +54,7 @@ class TestRunner {
 				require_once($this->bootstrap);
 			} else {
 				/**
-				 * @todo replace UI drop errors with throwing errors
+				 * @todo replace UI drop errors with throwing exceptions
 				 */
 				$this->ui->dropError("Failed to load bootstrap");
 			}
