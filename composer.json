@@ -7,19 +7,20 @@
 		"testing"
 	],
 	"license": "MIT",
+	"minimum-stability": "dev",
 	"support": {
 		"issues": "https://github.com/donatj/Boomerang/issues"
 	},
 	"require": {
-		"donatj/cli-toolkit": "~0.1",
-		"donatj/flags": "~1.0",
+		"donatj/cli-toolkit": "*",
+		"donatj/flags": ">=1.0.1",
 		"php": ">=5.3.2",
 		"ext-curl": "*",
 		"ext-SPL": "*"
 	},
 	"require-dev": {
-		"donatj/drop": "~1.0",
-		"phpunit/phpunit": "~3"
+		"donatj/drop": "*",
+		"phpunit/phpunit": "3.7.*"
 	},
 	"authors": [
 		{
