@@ -11,9 +11,7 @@ use Boomerang\Factories\HttpResponseFactory;
  */
 class HttpRequest {
 
-
-	public $info;
-
+	private $curlInfo;
 	private $tmp = "/tmp";
 	private $maxRedirects = 10;
 	private $headers = array();
@@ -210,7 +208,7 @@ class HttpRequest {
 
 		$this->lastRequestTime = microtime(true) - $startTime;
 
-		$this->info = curl_getinfo($ch);
+		$this->curlInfo = curl_getinfo($ch);
 
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 		$headers     = substr($response, 0, $header_size);
@@ -236,6 +234,13 @@ class HttpRequest {
 		}
 
 		return 'application/json,application/xml,text/html,application/xhtml+xml,*/*';
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCurlInfo() {
+		return $this->curlInfo;
 	}
 
 	/**
