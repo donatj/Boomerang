@@ -7,7 +7,7 @@ namespace Boomerang\TypeExpectations;
  *
  * Defines a placeholder expectation of a "numeric string" with an optional minimum/maximum range.
  *
- * **Passes**: `numeric string`
+ * **Passes**: `numeric string` eg: "1.2"
  * **Fails**: `int` / `float`
  *
  * @package Boomerang\TypeExpectations
