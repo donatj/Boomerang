@@ -47,7 +47,7 @@ class StructureValidator implements ValidatorInterface {
 		$sx->setValidator($this);
 
 		$sx->match($this->data);
-		$this->expectations = array_merge($this->expectations, $sx->getExpectations());
+		$this->expectations = array_merge($this->expectations, $sx->getExpectationResults());
 
 		return $this;
 	}

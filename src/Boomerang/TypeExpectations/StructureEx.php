@@ -18,7 +18,7 @@ class StructureEx implements TypeExpectationInterface {
 
 	protected $structure;
 	protected $path = array();
-	protected $expectations = array();
+	protected $expectationResults = array();
 	/**
 	 * @var ValidatorInterface
 	 */
@@ -48,7 +48,7 @@ class StructureEx implements TypeExpectationInterface {
 
 	public function match( $data ) {
 		list($pass, $expectations) = $this->__validate($data, $this->structure);
-		$this->addExpectations($expectations);
+		$this->addExpectationResults($expectations);
 
 		return $pass;
 	}
@@ -90,7 +90,7 @@ class StructureEx implements TypeExpectationInterface {
 			$validation->setValidator($this->validator);
 
 			$pass         = $validation->match($data);
-			$expectations = array_merge($expectations, $validation->getExpectations());
+			$expectations = array_merge($expectations, $validation->getExpectationResults());
 		} elseif( $validation instanceof TypeExpectationInterface ) {
 			if( !$pass = $validation->match($data) ) {
 				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
@@ -145,15 +145,15 @@ class StructureEx implements TypeExpectationInterface {
 	 * @access private
 	 * @return array
 	 */
-	public function getExpectations() {
-		return $this->expectations;
+	public function getExpectationResults() {
+		return $this->expectationResults;
 	}
 
 	/**
 	 * @param array $expectations
 	 */
-	protected function addExpectations( array $expectations ) {
-		$this->expectations = array_merge($this->expectations, $expectations);
+	protected function addExpectationResults( array $expectations ) {
+		$this->expectationResults = array_merge($this->expectationResults, $expectations);
 	}
 
 	public function getMatchingTypeName() {

@@ -8,6 +8,7 @@ use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\ExpectationResults\PassingResult;
+use Boomerang\ExpectationResults\SquelchedExpectationResult;
 use Boomerang\Interfaces\ExpectationResultInterface;
 use Boomerang\Interfaces\ResponseValidatorInterface;
 use Boomerang\Interfaces\ValidatorInterface;
@@ -51,6 +52,8 @@ EOT;
 						$dot = Style::red("F");
 					} elseif( $expectationResult instanceof InfoResult ) {
 						$dot = Style::normal("I");
+					} elseif( $expectationResult instanceof SquelchedExpectationResult ) {
+						$dot = false;
 					} elseif( !$expectationResult instanceof PassingResult ) {
 						$dot = Style::red("?");
 					}
@@ -74,6 +77,11 @@ EOT;
 		foreach( $validators as $validator ) {
 
 			foreach( $validator->getExpectationResults() as $expectationResult ) {
+
+				if( $expectationResult instanceof SquelchedExpectationResult && $verbose < 2 ) {
+					continue;
+				}
+
 				if( $expectationResult instanceof ExpectationResultInterface ) {
 					$notPassing = !($expectationResult instanceof PassingResult);
 					if( $notPassing || $verbose ) {
@@ -82,7 +90,6 @@ EOT;
 							Output::string(PHP_EOL);
 							$initialWhitespace = true;
 						}
-
 
 						if( $validator instanceof ResponseValidatorInterface ) {
 							$endpoint = $validator->getResponse()->getRequest()->getEndpoint();

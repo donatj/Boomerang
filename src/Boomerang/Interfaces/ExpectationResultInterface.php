@@ -4,7 +4,7 @@ namespace Boomerang\Interfaces;
 
 interface ExpectationResultInterface {
 
-	public function __construct( ValidatorInterface $validator, $message = null );
+//	public function __construct( ValidatorInterface $validator, $message = null );
 
 	/**
 	 * @return string

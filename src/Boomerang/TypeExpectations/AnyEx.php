@@ -2,6 +2,10 @@
 
 namespace Boomerang\TypeExpectations;
 
+use Boomerang\ExpectationResults\FailingResult;
+use Boomerang\ExpectationResults\SquelchedExpectationResult;
+use Boomerang\Interfaces\ExpectationResultInterface;
+
 /**
  * Any Expectation
  *
@@ -25,19 +29,28 @@ class AnyEx extends AllEx {
 		$all_expectations = array();
 
 		foreach( $this->structures as $struct ) {
-			list($pass, $expectations) = $this->__validate($data, $struct);
+			list($pass, $expectationResults) = $this->__validate($data, $struct);
 
 			if( $pass ) {
-				//we only add the passing ones because having failing ones denotes failure
-				$this->addExpectations($expectations);
+
+				$expectationResults = array_map(function ( ExpectationResultInterface $result ) {
+					if( $result instanceof FailingResult ) {
+						return new SquelchedExpectationResult($result);
+					}
+
+					return $result;
+				}, $expectationResults);
+
+				$this->addExpectationResults($expectationResults);
 
 				return true;
 			}
 
-			$all_expectations = array_merge( $expectations, $all_expectations );
+			$all_expectations = array_merge($expectationResults, $all_expectations);
 		}
 
-		$this->addExpectations($all_expectations);
+		$this->addExpectationResults($all_expectations);
+
 		return false;
 	}
 
