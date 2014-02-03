@@ -72,14 +72,18 @@ class StructureEx implements TypeExpectationInterface {
 		$pass = true;
 
 		if( is_array($validation) ) {
-			foreach( $validation as $key => $value ) {
-				if( array_key_exists($key, $data) ) {
-					list($passing, $sub_expectations) = $this->__validate($data[$key], $value, array_merge($path, array( $key )));
-					$expectations = array_merge($expectations, $sub_expectations);
-					$pass         = $passing && $pass;
-				} else {
-					$expectations[] = new FailingExpectationResult($this->validator, "Missing Key\n { {$pathName} } ", $key);
+			if( is_array($data) ) {
+				foreach( $validation as $key => $value ) {
+					if( array_key_exists($key, $data) ) {
+						list($passing, $sub_expectations) = $this->__validate($data[$key], $value, array_merge($path, array( $key )));
+						$expectations = array_merge($expectations, $sub_expectations);
+						$pass         = $passing && $pass;
+					} else {
+						$expectations[] = new FailingExpectationResult($this->validator, "Missing key\n { {$pathName} } ", $key);
+					}
 				}
+			} else {
+				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected scalar\n { {$pathName} } ", $validation, $data);
 			}
 		} elseif( $validation instanceof StructureEx ) {
 			$validation->setPath($path);
