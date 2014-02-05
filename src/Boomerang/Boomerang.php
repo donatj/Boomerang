@@ -51,6 +51,14 @@ class Boomerang {
 			}
 		}
 
+		if( isset($config['define']) && is_array($config['define']) ) {
+			foreach( $config['define'] as $key => $definition ) {
+				if( !defined($key) ) {
+					define($key, $definition);
+				}
+			}
+		}
+
 		self::$bootstrap = & $flags->string('bootstrap', isset($suite['bootstrap']) ? $suite['bootstrap'] : false, 'A "bootstrap" PHP file that is run before the specs.');
 		self::$verbosity = & $flags->short('v', 'Output in verbose mode');
 
