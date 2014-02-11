@@ -4,7 +4,7 @@ namespace Boomerang\ExpectationResults;
 
 use Boomerang\Interfaces\ExpectationResultInterface;
 
-class SquelchedExpectationResult extends AbstractResult {
+class MutedExpectationResult extends AbstractResult {
 
 	/**
 	 * @var \Boomerang\Interfaces\ExpectationResultInterface

@@ -3,7 +3,7 @@
 namespace Boomerang\TypeExpectations;
 
 use Boomerang\ExpectationResults\FailingResult;
-use Boomerang\ExpectationResults\SquelchedExpectationResult;
+use Boomerang\ExpectationResults\MutedExpectationResult;
 use Boomerang\Interfaces\ExpectationResultInterface;
 
 /**
@@ -35,7 +35,7 @@ class AnyEx extends AllEx {
 
 				$expectationResults = array_map(function ( ExpectationResultInterface $result ) {
 					if( $result instanceof FailingResult ) {
-						return new SquelchedExpectationResult($result);
+						return new MutedExpectationResult($result);
 					}
 
 					return $result;

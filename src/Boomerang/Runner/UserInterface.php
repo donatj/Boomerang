@@ -8,7 +8,7 @@ use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\InfoResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\ExpectationResults\PassingResult;
-use Boomerang\ExpectationResults\SquelchedExpectationResult;
+use Boomerang\ExpectationResults\MutedExpectationResult;
 use Boomerang\Interfaces\ExpectationResultInterface;
 use Boomerang\Interfaces\ResponseValidatorInterface;
 use Boomerang\Interfaces\ValidatorInterface;
@@ -52,7 +52,7 @@ EOT;
 						$dot = Style::red("F");
 					} elseif( $expectationResult instanceof InfoResult ) {
 						$dot = Style::normal("I");
-					} elseif( $expectationResult instanceof SquelchedExpectationResult ) {
+					} elseif( $expectationResult instanceof MutedExpectationResult ) {
 						$dot = false;
 					} elseif( !$expectationResult instanceof PassingResult ) {
 						$dot = Style::red("?");
@@ -78,7 +78,7 @@ EOT;
 
 			foreach( $validator->getExpectationResults() as $expectationResult ) {
 
-				if( $expectationResult instanceof SquelchedExpectationResult && $verbose < 2 ) {
+				if( $expectationResult instanceof MutedExpectationResult && $verbose < 2 ) {
 					continue;
 				}
 
