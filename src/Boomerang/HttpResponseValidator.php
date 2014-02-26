@@ -13,9 +13,8 @@ use Boomerang\Interfaces\HttpResponseInterface;
  *
  * @package Boomerang
  */
-class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
+class HttpResponseValidator extends AbstractValidator {
 
-	private $expectations = array();
 	/**
 	 * @var HttpResponseInterface
 	 */
@@ -131,13 +130,6 @@ class HttpResponseValidator implements Interfaces\ResponseValidatorInterface {
 		}
 
 		return $this;
-	}
-
-	/**
-	 * @return Interfaces\ExpectationResultInterface[]
-	 */
-	public function getExpectationResults() {
-		return $this->expectations;
 	}
 
 }
