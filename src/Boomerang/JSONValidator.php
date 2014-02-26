@@ -24,7 +24,7 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 
 		$result = false;
 		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
-			$this->expectations[] = new FailingResult($this, "Failed to Parse JSON Document");
+			$this->expectations[] = new FailingResult($this, "Failed to Parse JSON Document: " . $error);
 			$this->data           = null;
 		} else {
 			$this->expectations[] = new PassingResult($this, "Successfully Parsed Document");
