@@ -7,3 +7,4 @@ composer.lock
 *.sublime-*
 coverage.xml
 coverage_report/
+phpunit.xml
