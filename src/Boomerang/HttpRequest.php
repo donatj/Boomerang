@@ -81,6 +81,16 @@ class HttpRequest {
 	}
 
 	/**
+	 * Set outgoing basic auth header.
+	 *
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function setBasicAuth( $username, $password = '' ) {
+		$this->setHeader('Authorization', "Basic " . base64_encode("{$username}:{$password}"));
+	}
+
+	/**
 	 * Retrieve an post value by name.
 	 *
 	 * @param $key
