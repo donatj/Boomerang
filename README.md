@@ -45,7 +45,7 @@ The easiest way to test is simply using the composer executable.
 
 From the root of the cloned project, execute 
 ```bash
-$ ./composer/bin/boomerang
+$ ./vendor/bin/boomerang
 ```
 
 ### Building a Phar
