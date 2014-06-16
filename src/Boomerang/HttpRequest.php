@@ -196,7 +196,7 @@ class HttpRequest {
 
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHeaders());
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getFlatHeaders());
 
 		if( $this->maxRedirects ) {
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -234,6 +234,20 @@ class HttpRequest {
 		}
 
 		return 'application/json,application/xml,text/html,application/xhtml+xml,*/*';
+	}
+
+	/**
+	 * Gets headers as a flattened array for cURL $key => $val --> $key: $val
+	 *
+	 * @return array
+	 */
+	private function getFlatHeaders() {
+		$output = array();
+		foreach( $this->getHeaders() as $key => $value ) {
+			$output[] = "$key: $value";
+		}
+
+		return $output;
 	}
 
 	/**
