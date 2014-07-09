@@ -12,7 +12,12 @@ use Boomerang\Factories\HttpResponseFactory;
 class HttpRequest {
 
 	private $curlInfo;
-	private $tmp = "/tmp";
+
+	/**
+	 * @var string
+	 */
+	private $tmp;
+
 	private $maxRedirects = 10;
 	private $headers = array();
 	private $endpoint;
@@ -20,6 +25,7 @@ class HttpRequest {
 	private $cookiesFollowRedirects = false;
 	private $postdata = array();
 	private $lastRequestTime = null;
+
 	/**
 	 * @var HttpResponseFactory
 	 */
@@ -31,6 +37,7 @@ class HttpRequest {
 	 */
 	public function __construct( $endpoint, HttpResponseFactory $responseFactory = null ) {
 		$this->endpoint = $endpoint;
+		$this->tmp      = sys_get_temp_dir() ? : '/tmp';
 
 		if( $responseFactory === null ) {
 			$this->responseFactory = new HttpResponseFactory();
@@ -133,11 +140,9 @@ class HttpRequest {
 	 *
 	 * Requires file system storage of a "cookie jar" file and is therefore disabled by default.
 	 *
-	 * @param bool   $bool true/false to enable/disable respectively
-	 * @param string $tmp_path Path to save the cookie jar file, defaults to /tmp
+	 * @param bool $bool true/false to enable/disable respectively
 	 */
-	public function setCookiesFollowRedirects( $bool, $tmp_path = '/tmp' ) {
-		$this->tmp                    = $tmp_path;
+	public function setCookiesFollowRedirects( $bool ) {
 		$this->cookiesFollowRedirects = $bool;
 	}
 
