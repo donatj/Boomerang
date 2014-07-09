@@ -1,6 +1,6 @@
 # Boomerang!
 [![Latest Stable Version](https://poser.pugx.org/boomerang/boomerang/v/stable.png)](https://packagist.org/packages/boomerang/boomerang) [![Total Downloads](https://poser.pugx.org/boomerang/boomerang/downloads.png)](https://packagist.org/packages/boomerang/boomerang) [![Latest Unstable Version](https://poser.pugx.org/boomerang/boomerang/v/unstable.png)](https://packagist.org/packages/boomerang/boomerang) [![License](https://poser.pugx.org/boomerang/boomerang/license.png)](https://packagist.org/packages/boomerang/boomerang) [![Build Status](https://travis-ci.org/donatj/Boomerang.png?branch=master)](https://travis-ci.org/donatj/Boomerang)
-[![Dependency Status](https://www.versioneye.com/php/boomerang:boomerang/dev-master/badge.png)](https://www.versioneye.com/php/boomerang:boomerang/dev-master)
+[![Dependency Status](https://www.versioneye.com/php/boomerang:boomerang/dev-master/badge.png)](https://www.versioneye.com/php/boomerang:boomerang/dev-master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/donatj/Boomerang/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/donatj/Boomerang/?branch=master)
 
 Boomerang! is a simple Frisby.js inspired API endpoint testing framework, providing the tools you need to validate REST responses.
 
