@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Boomerang;
-
 
 abstract class AbstractValidator implements Interfaces\ResponseValidatorInterface {
 

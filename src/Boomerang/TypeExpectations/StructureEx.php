@@ -18,7 +18,12 @@ class StructureEx implements TypeExpectationInterface {
 
 	protected $structure;
 	protected $path = array();
+
+	/**
+	 * @var \Boomerang\Interfaces\ExpectationResultInterface[]
+	 */
 	protected $expectationResults = array();
+
 	/**
 	 * @var ValidatorInterface
 	 */
@@ -135,7 +140,6 @@ class StructureEx implements TypeExpectationInterface {
 	/**
 	 * @access private
 	 * @param array $path
-	 * @return mixed
 	 */
 	public function setPath( array $path ) {
 		$this->path = $path;
@@ -143,14 +147,14 @@ class StructureEx implements TypeExpectationInterface {
 
 	/**
 	 * @access private
-	 * @return array
+	 * @return \Boomerang\Interfaces\ExpectationResultInterface[]
 	 */
 	public function getExpectationResults() {
 		return $this->expectationResults;
 	}
 
 	/**
-	 * @param array $expectations
+	 * @param \Boomerang\Interfaces\ExpectationResultInterface[] $expectations
 	 */
 	protected function addExpectationResults( array $expectations ) {
 		$this->expectationResults = array_merge($this->expectationResults, $expectations);
