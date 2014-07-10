@@ -162,7 +162,12 @@ EOT;
 		}
 	}
 
-	public function dropError( $text, $code = 1, $additional = false ) {
+	/**
+	 * @param string      $text
+	 * @param int         $code
+	 * @param null|string $additional
+	 */
+	public function dropError( $text, $code = 1, $additional = null ) {
 		Output::string(Boomerang::$pathInfo['basename'] . ": " . Style::red($text) . PHP_EOL . ($additional ? $additional . PHP_EOL : ''));
 		die($code);
 	}
