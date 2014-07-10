@@ -89,16 +89,13 @@ class Boomerang {
 			case isset($selfUpdate) && $selfUpdate:
 				self::selfUpdate($ui);
 				die(0);
-				break;
 			case $displayVersion:
 				self::versionMarker($ui);
 				die(0);
-				break;
 			case $displayHelp:
 			case count($paths) < 1: //should come last because of this
 				$ui->dumpOptions($flags->getDefaults());
 				die(1);
-				break;
 		}
 
 		return $paths;
