@@ -42,8 +42,8 @@ class HttpResponse implements HttpResponseInterface {
 	/**
 	 * Headers need to be \r\n by spec
 	 *
-	 * @param $s
-	 * @return mixed
+	 * @param string $s
+	 * @return string
 	 */
 	private function normalizeHeaders( $s ) {
 		$s = str_replace("\r\n", "\n", $s);
@@ -54,6 +54,10 @@ class HttpResponse implements HttpResponseInterface {
 		return $s;
 	}
 
+	/**
+	 * @param string $raw_headers
+	 * @return string[]
+	 */
 	private function parseHeaders( $raw_headers ) {
 		$headers = array();
 		$key     = '';
@@ -86,6 +90,8 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
+	 * Get a response header by name.
+	 *
 	 * @param string   $header
 	 * @param null|int $hop
 	 * @return null|string Header value or null on not found
@@ -101,7 +107,7 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
-	 * Get Response headers as a HeaderName => Value array
+	 * Get response headers as a HeaderName => Value array
 	 *
 	 * @param null|int $hop The zero indexed hop(redirect). Defaults to the final hop.
 	 * @return array|null
@@ -119,7 +125,7 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
-	 * Get all Response headers from all hops as a HopIndex => HeaderName => Value array.
+	 * Get all response headers from all hops as a HopIndex => HeaderName => Value array.
 	 *
 	 * @return array
 	 */
@@ -128,7 +134,7 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
-	 * Get the raw unparsed Response header string.
+	 * Get the raw un-parsed Response header string.
 	 *
 	 * @return string
 	 */
