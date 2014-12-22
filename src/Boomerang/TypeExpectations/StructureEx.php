@@ -51,6 +51,12 @@ class StructureEx implements TypeExpectationInterface {
 		$this->validator = $validator;
 	}
 
+	/**
+	 * @access private
+	 * 
+	 * @param array|int|float|string $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 		list($pass, $expectations) = $this->__validate($data, $this->structure);
 		$this->addExpectationResults($expectations);
@@ -59,9 +65,9 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
-	 * @param       $data
-	 * @param       $validation
-	 * @param array $path
+	 * @param array|int|float|string                                               $data
+	 * @param array|int|float|string|StructureEx|TypeExpectationInterface|\Closure $validation
+	 * @param array                                                                $path
 	 * @return array
 	 */
 	protected function __validate( $data, $validation, array $path = null ) {
@@ -124,6 +130,10 @@ class StructureEx implements TypeExpectationInterface {
 		return array( $pass, $expectations );
 	}
 
+	/**
+	 * @param array $path
+	 * @return string
+	 */
 	private function makePathName( array $path ) {
 		$s_path = "root";
 		foreach( $path as $loc ) {
