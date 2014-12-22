@@ -4,7 +4,7 @@
 
 Boomerang! is a simple Frisby.js inspired API endpoint testing framework, providing the tools you need to validate REST responses.
 
-Boomerang! consumes your API and validates your defined set of expectations, alerting you to any problems arising.
+Boomerang! consumes your API and validates your defined set of expectations, alerting you to any problems that arise.
 
 Boomerang! is still in development and more info is coming soon!
 
