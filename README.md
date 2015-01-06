@@ -15,7 +15,7 @@ Boomerang! is still in development and more info is coming soon!
 
 ## Installation
 
-Using composer, boomerang can be installed globally via: 
+Using composer, `boomerang` can be installed globally via: 
 
 ```bash
 $ composer global require 'boomerang/boomerang=dev-master'
