@@ -12,14 +12,14 @@
 	},
 	"require": {
 		"donatj/cli-toolkit": "~0.1",
-		"donatj/flags": "~1.0",
+		"donatj/flags": "~1.1.0",
 		"php": ">=5.3.2",
 		"ext-curl": "*",
 		"ext-SPL": "*"
 	},
 	"require-dev": {
 		"donatj/drop": "*",
-		"phpunit/phpunit": "3.7.*"
+		"phpunit/phpunit": "4.*"
 	},
 	"authors": [
 		{
@@ -35,6 +35,6 @@
 		}
 	},
 	"bin": [
-        "composer/bin/boomerang"
-    ]
+		"composer/bin/boomerang"
+	]
 }
