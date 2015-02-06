@@ -53,7 +53,7 @@ class StructureEx implements TypeExpectationInterface {
 
 	/**
 	 * @access private
-	 * 
+	 *
 	 * @param array|int|float|string $data
 	 * @return bool
 	 */
@@ -103,10 +103,15 @@ class StructureEx implements TypeExpectationInterface {
 			$pass         = $validation->match($data);
 			$expectations = array_merge($expectations, $validation->getExpectationResults());
 		} elseif( $validation instanceof TypeExpectationInterface ) {
+			$typeName = gettype($data);
+			if( $typeName == 'string' ) {
+				$typeName .= "{" . strlen($data) . "}";
+			}
+
 			if( !$pass = $validation->match($data) ) {
-				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), gettype($data));
+				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), $typeName);
 			} else {
-				$expectations[] = new PassingExpectationResult($this->validator, "Expected structure type check result\n { {$pathName} } ", gettype($data));
+				$expectations[] = new PassingExpectationResult($this->validator, "Expected structure type check result\n { {$pathName} } ", $typeName);
 			}
 
 		} elseif( $validation instanceof \Closure ) {
