@@ -20,7 +20,7 @@ class HttpRequest {
 
 	private $maxRedirects = 10;
 	private $headers = array();
-	private $endpoint;
+	private $endpointParts;
 	private $cookies = array();
 	private $cookiesFollowRedirects = false;
 	private $postdata = array();
@@ -36,12 +36,58 @@ class HttpRequest {
 	 * @param HttpResponseFactory $responseFactory A factory for creating Response objects.
 	 */
 	public function __construct( $endpoint, HttpResponseFactory $responseFactory = null ) {
-		$this->endpoint = $endpoint;
-		$this->tmp      = sys_get_temp_dir() ? : '/tmp';
+		$this->setEndpoint($endpoint);
+		$this->tmp = sys_get_temp_dir() ?: '/tmp';
 
 		if( $responseFactory === null ) {
 			$this->responseFactory = new HttpResponseFactory();
 		}
+	}
+
+	/**
+	 * Retrieve a url param by name
+	 *
+	 * @param string $param The name of the param.
+	 * @return string|array|null Null on failure.
+	 */
+	public function getUrlParam( $param ) {
+		$params = $this->getUrlParams();
+
+		return isset($params[$param]) ? $params[$param] : null;
+	}
+
+	/**
+	 * Set a url param by name.
+	 *
+	 * @param string                 $param The name of the param.
+	 * @param string|int|float|array $value
+	 */
+	public function setUrlParam( $param, $value ) {
+		$params         = $this->getUrlParams();
+		$params[$param] = $value;
+
+		$this->endpointParts['query'] = http_build_query($params);
+	}
+
+	/**
+	 * Get all url params.
+	 *
+	 * @return array
+	 */
+	public function getUrlParams() {
+		$query = !empty($this->endpointParts['query']) ? $this->endpointParts['query'] : '';
+		parse_str($query, $result);
+
+		return $result;
+	}
+
+	/**
+	 * Set outgoing params as an array of ParamName => Value
+	 *
+	 * @param array $params Params to set
+	 */
+	public function setUrlParams( array $params ) {
+		$this->endpointParts['query'] = http_build_query($params);
 	}
 
 	/**
@@ -72,7 +118,7 @@ class HttpRequest {
 	public function getHeaders() {
 		$headers = $this->headers;
 		if( !isset($headers['Accept']) ) {
-			$headers['Accept'] = $this->detectAccept($this->endpoint);
+			$headers['Accept'] = $this->detectAccept($this->getEndpoint());
 		}
 
 		return $headers;
@@ -165,13 +211,27 @@ class HttpRequest {
 		$this->cookies[$key] = $value;
 	}
 
+	private function unparse_url( $parsed_url ) {
+		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+		$host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+		$user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+		$pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
+		$pass     = ($user || $pass) ? "{$pass}@" : '';
+		$path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+		$query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+		$fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+
+		return "{$scheme}{$user}{$pass}{$host}{$port}{$path}{$query}{$fragment}";
+	}
+
 	/**
 	 * Gets the request URI
 	 *
 	 * @return string
 	 */
 	public function getEndpoint() {
-		return $this->endpoint;
+		return $this->unparse_url($this->endpointParts);
 	}
 
 	/**
@@ -180,7 +240,7 @@ class HttpRequest {
 	 * @param string $endpoint
 	 */
 	public function setEndpoint( $endpoint ) {
-		$this->endpoint = $endpoint;
+		$this->endpointParts = parse_url($endpoint);
 	}
 
 	/**
@@ -190,7 +250,7 @@ class HttpRequest {
 	 */
 	public function makeRequest() {
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $this->endpoint);
+		curl_setopt($ch, CURLOPT_URL, $this->getEndpoint());
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
