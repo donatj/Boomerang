@@ -4,6 +4,7 @@ namespace Boomerang\TypeExpectations;
 
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
+use Boomerang\Interfaces\ExpectationResultInterface;
 use Boomerang\Interfaces\TypeExpectationInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 
@@ -71,7 +72,9 @@ class StructureEx implements TypeExpectationInterface {
 	 * @return array
 	 */
 	protected function __validate( $data, $validation, array $path = null ) {
-
+		/**
+		 * @var $expectations \Boomerang\ExpectationResults\AbstractResult[]
+		 */
 		$expectations = array();
 
 		if( !$path ) {
@@ -172,7 +175,14 @@ class StructureEx implements TypeExpectationInterface {
 	 * @param \Boomerang\Interfaces\ExpectationResultInterface[] $expectations
 	 */
 	protected function addExpectationResults( array $expectations ) {
-		$this->expectationResults = array_merge($this->expectationResults, $expectations);
+		foreach( $expectations as $expect ) {
+			if( $expect instanceof ExpectationResultInterface ) {
+				// @todo ideally I shouldn't need to do this
+				$this->expectationResults[spl_object_hash($expect)] = $expect;
+			} else {
+				throw new \InvalidArgumentException('Expectation Results must implement ExpectationResultInterface');
+			}
+		}
 	}
 
 	public function getMatchingTypeName() {
