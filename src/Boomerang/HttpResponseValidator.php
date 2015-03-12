@@ -132,4 +132,22 @@ class HttpResponseValidator extends AbstractValidator {
 		return $this;
 	}
 
+	/**
+	 * Verify the number of redirection hops is as expected.
+	 *
+	 * @param int $expectedCount The expected number of redirect hops.
+	 * @return $this
+	 */
+	public function expectHopCount( $expectedCount ) {
+		$hops = $this->response->getHopCount();
+
+		if( $hops != $expectedCount ) {
+			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected number of redirect hops', $expectedCount, $hops);
+		}else{
+			$this->expectations[] = new PassingExpectationResult($this, 'Expected number of redirect hops', $expectedCount, $hops);
+		}
+
+		return $this;
+	}
+
 }
