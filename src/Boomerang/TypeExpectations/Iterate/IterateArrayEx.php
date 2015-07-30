@@ -2,6 +2,8 @@
 
 namespace Boomerang\TypeExpectations\Iterate;
 
+use Boomerang\ExpectationResults\FailingExpectationResult;
+
 /**
  * Iterating Array Expectation
  *
@@ -12,7 +14,15 @@ namespace Boomerang\TypeExpectations\Iterate;
 class IterateArrayEx extends IterateStructureEx {
 
 	public function match( $data ) {
-		return parent::match($data) && static::validType($data);
+		$pass = parent::match($data);
+
+		if( !static::validType($data) ) {
+			$pathname = $this->makePathName($this->path);
+			$this->addExpectationResults(array( new FailingExpectationResult($this->getValidator(), "Unexpected structure type\n{$pathname}", static::getMatchingTypeName()) ));
+			$pass = false;
+		}
+
+		return $pass;
 	}
 
 	/**
