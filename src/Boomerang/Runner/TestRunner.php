@@ -46,7 +46,7 @@ class TestRunner {
 	}
 
 	/**
-	 * @param callable $afterExecution
+	 * @param \Closure $afterExecution
 	 */
 	function runTests( \Closure $afterExecution = null ) {
 		if( $this->bootstrap ) {

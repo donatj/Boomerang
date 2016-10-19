@@ -295,6 +295,9 @@ class HttpRequest {
 		return $this->responseFactory->newInstance($body, $headers, $this);
 	}
 
+	/**
+	 * @param string $endpoint
+	 */
 	private function detectAccept( $endpoint ) {
 		$url  = parse_url($endpoint);
 		$path = pathinfo($url['path']);
