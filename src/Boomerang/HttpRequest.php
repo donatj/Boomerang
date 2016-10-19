@@ -23,7 +23,7 @@ class HttpRequest {
 	private $endpointParts;
 	private $cookies = array();
 	private $cookiesFollowRedirects = false;
-	private $postdata = array();
+	private $postData = array();
 	private $lastRequestTime = null;
 
 	/**
@@ -150,7 +150,7 @@ class HttpRequest {
 	 * @return string|null
 	 */
 	public function getPost( $key ) {
-		return isset($this->postdata[$key]) ? $this->postdata[$key] : null;
+		return isset($this->postData[$key]) ? $this->postData[$key] : null;
 	}
 
 	/**
@@ -160,7 +160,7 @@ class HttpRequest {
 	 * @param $value
 	 */
 	public function setPost( $key, $value ) {
-		$this->postdata[$key] = $value;
+		$this->postData[$key] = $value;
 	}
 
 	/**
@@ -168,8 +168,8 @@ class HttpRequest {
 	 *
 	 * @return array
 	 */
-	public function getPostdata() {
-		return $this->postdata;
+	public function getPostData() {
+		return $this->postData;
 	}
 
 	/**
@@ -177,8 +177,8 @@ class HttpRequest {
 	 *
 	 * @param array $post
 	 */
-	public function setPostdata( array $post ) {
-		$this->postdata = $post;
+	public function setPostData( array $post ) {
+		$this->postData = $post;
 	}
 
 	/**
@@ -260,9 +260,9 @@ class HttpRequest {
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiejar);
 		}
 
-		if( $this->postdata ) {
+		if( $this->postData ) {
 			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->postdata, '', '&'));
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->postData, '', '&'));
 		}
 
 		if( $this->cookies ) {
