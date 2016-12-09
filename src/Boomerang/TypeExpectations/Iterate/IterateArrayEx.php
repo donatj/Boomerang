@@ -16,7 +16,7 @@ class IterateArrayEx extends IterateStructureEx {
 	public function match( $data ) {
 		$pass = parent::match($data);
 
-		if( !static::validType($data) ) {
+		if( $pass && !static::validType($data) ) {
 			$pathname = $this->makePathName($this->path);
 			$this->addExpectationResults(array( new FailingExpectationResult($this->getValidator(), "Unexpected structure type\n{$pathname}", static::getMatchingTypeName()) ));
 			$pass = false;
