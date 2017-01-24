@@ -23,22 +23,23 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		 */
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
-		->method('getStatus')
-		->will($this->returnValue(200));
+			->method('getStatus')
+			->will($this->returnValue(200));
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectStatus(200);
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(false, $lastExpectation->getFail());
 
 		# ==
 
 		$valid->expectStatus(302);
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(true, $lastExpectation->getFail());
-
 	}
 
 	public function testExpectHeader() {
@@ -47,30 +48,33 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		 */
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
-		->method('getHeader')
-		->will($this->returnValue('test'));
+			->method('getHeader')
+			->will($this->returnValue('test'));
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectHeader('test', 'test');
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(false, $lastExpectation->getFail());
 
 		# == Fail
 
 		$valid->expectHeader('test', 'fail');
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(true, $lastExpectation->getFail());
 
 		# == False
 
 		$mock->expects($this->any())
-		->method('getHeader')
-		->will($this->returnValue(false));
+			->method('getHeader')
+			->will($this->returnValue(false));
 
 		$valid->expectHeader('test', false);
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(true, $lastExpectation->getFail());
 	}
@@ -81,30 +85,33 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		 */
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
-		->method('getHeader')
-		->will($this->returnValue('thisIsMyTestHeader'));
+			->method('getHeader')
+			->will($this->returnValue('thisIsMyTestHeader'));
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectHeaderContains('test', 'IsMyTest');
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(false, $lastExpectation->getFail());
 
 		# == Fail
 
 		$valid->expectHeaderContains('test', 'fail');
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(true, $lastExpectation->getFail());
 
 		# == False
 
 		$mock->expects($this->any())
-		->method('getHeader')
-		->will($this->returnValue(false));
+			->method('getHeader')
+			->will($this->returnValue(false));
 
 		$valid->expectHeaderContains('test', false);
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(true, $lastExpectation->getFail());
 	}
@@ -115,32 +122,34 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		 */
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
-		->method('getBody')
-		->will($this->returnValue('test'));
+			->method('getBody')
+			->will($this->returnValue('test'));
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectBody('test');
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(false, $lastExpectation->getFail());
 
 		# == Fail
 
 		$valid->expectBody('fail');
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(true, $lastExpectation->getFail());
 
 		# == False
 
-//		$mock->expects($this->any())
-//		->method('getBody')
-//		->will($this->returnValue(false));
-//
-//		$valid->expectBody(false);
-//		$lastExpectation = end($valid->getExpectationResults());
-//
-//		$this->assertSame(true, $lastExpectation->getFail());
+		//		$mock->expects($this->any())
+		//		->method('getBody')
+		//		->will($this->returnValue(false));
+		//
+		//		$valid->expectBody(false);
+		//		$lastExpectation = end($valid->getExpectationResults());
+		//
+		//		$this->assertSame(true, $lastExpectation->getFail());
 	}
 
 	public function testExpectBodyContains() {
@@ -149,35 +158,37 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		 */
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
-		->method('getBody')
-		->will($this->returnValue('thisIsMyTestHeader'));
+			->method('getBody')
+			->will($this->returnValue('thisIsMyTestHeader'));
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectBodyContains('IsMyTest');
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(false, $lastExpectation->getFail());
 
 		# == Fail
 
 		$valid->expectBodyContains('fail');
-		$lastExpectation = end($valid->getExpectationResults());
+		$expResults      = $valid->getExpectationResults();
+		$lastExpectation = end($expResults);
 
 		$this->assertSame(true, $lastExpectation->getFail());
 
 		# == False
 
-//		$mock->expects($this->any())
-//		->method('getBody')
-//		->will($this->returnValue(false));
-//
-//		$valid->expectBodyContains('test', false);
-//		$lastExpectation = end($valid->getExpectationResults());
-//
-//		$this->assertSame(true, $lastExpectation->getFail());
+		//		$mock->expects($this->any())
+		//		->method('getBody')
+		//		->will($this->returnValue(false));
+		//
+		//		$valid->expectBodyContains('test', false);
+		//		$lastExpectation = end($valid->getExpectationResults());
+		//
+		//		$this->assertSame(true, $lastExpectation->getFail());
 	}
 
-//	public function testGetExpectationResults() {
-//
-//	}
+	//	public function testGetExpectationResults() {
+	//
+	//	}
 }
