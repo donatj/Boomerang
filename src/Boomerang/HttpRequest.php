@@ -299,15 +299,17 @@ class HttpRequest {
 	 * @param string $endpoint
 	 */
 	private function detectAccept( $endpoint ) {
-		$url  = parse_url($endpoint);
-		$path = pathinfo($url['path']);
-		if( isset($path['extension']) ) {
-			switch( strtolower($path['extension']) ) {
-				case 'json':
-					return 'application/json';
-					break;
-				case 'xml':
-					return 'application/xml';
+		$url = parse_url($endpoint);
+		if( isset($url['path']) ) {
+			$path = pathinfo($url['path']);
+			if( isset($path['extension']) ) {
+				switch( strtolower($path['extension']) ) {
+					case 'json':
+						return 'application/json';
+						break;
+					case 'xml':
+						return 'application/xml';
+				}
 			}
 		}
 
