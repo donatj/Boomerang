@@ -11,6 +11,14 @@ use Boomerang\Factories\HttpResponseFactory;
  */
 class HttpRequest {
 
+	const GET     = "GET";
+	const POST    = "POST";
+	const PUT     = "PUT";
+	const PATCH   = "PATCH";
+	const DELETE  = "DELETE";
+	const TRACE   = "TRACE";
+	const OPTIONS = "OPTIONS";
+
 	private $curlInfo;
 
 	/**
@@ -23,13 +31,18 @@ class HttpRequest {
 	private $endpointParts;
 	private $cookies = array();
 	private $cookiesFollowRedirects = false;
-	private $postData = array();
+	private $body = array();
 	private $lastRequestTime = null;
 
 	/**
 	 * @var HttpResponseFactory
 	 */
 	private $responseFactory;
+
+	/**
+	 * @var string
+	 */
+	private $method = self::GET;
 
 	/**
 	 * @param string              $endpoint URI to request.
@@ -44,6 +57,20 @@ class HttpRequest {
 		} else {
 			$this->responseFactory = $responseFactory;
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMethod() {
+		return $this->method;
+	}
+
+	/**
+	 * @param string $method
+	 */
+	public function setMethod( $method ) {
+		$this->method = $method;
 	}
 
 	/**
@@ -152,35 +179,57 @@ class HttpRequest {
 	 * @return string|null
 	 */
 	public function getPost( $key ) {
-		return isset($this->postData[$key]) ? $this->postData[$key] : null;
+		return isset($this->body[$key]) ? $this->body[$key] : null;
 	}
 
 	/**
 	 * Set a named key of the post value
 	 *
+	 * Note that this has the side effect of changing the HTTP Method to POST
+	 *
 	 * @param $key
 	 * @param $value
 	 */
 	public function setPost( $key, $value ) {
-		$this->postData[$key] = $value;
+		$this->method     = self::POST;
+		$this->body[$key] = $value;
 	}
 
 	/**
 	 * Retrieve all queued post-data as an array.
 	 *
+	 * @deprecated
 	 * @return array
 	 */
 	public function getPostData() {
-		return $this->postData;
+		return $this->body;
 	}
 
 	/**
 	 * Set all post data, whipping past values.
 	 *
+	 * Note that this has the side effect of changing the HTTP Method to POST
+	 *
+	 * @deprecated
 	 * @param array $post
 	 */
 	public function setPostData( array $post ) {
-		$this->postData = $post;
+		$this->method = self::POST;
+		$this->body   = $post;
+	}
+
+	/**
+	 * @return array|string
+	 */
+	public function getBody() {
+		return $this->body;
+	}
+
+	/**
+	 * @param array|string $body
+	 */
+	public function setBody( $body ) {
+		$this->body = $body;
 	}
 
 	/**
@@ -262,9 +311,10 @@ class HttpRequest {
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiejar);
 		}
 
-		if( $this->postData ) {
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->postData, '', '&'));
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
+
+		if( $this->body ) {
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
 		}
 
 		if( $this->cookies ) {
@@ -299,6 +349,7 @@ class HttpRequest {
 
 	/**
 	 * @param string $endpoint
+	 * @return string
 	 */
 	private function detectAccept( $endpoint ) {
 		$url = parse_url($endpoint);
