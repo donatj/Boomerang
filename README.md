@@ -8,6 +8,8 @@ Boomerang! consumes your API and validates your defined set of expectations, ale
 
 Boomerang! is still in development and more info is coming soon!
 
+Documentation and more information is availible at http://boomerang.work/
+
 ## Requirements
 
 - PHP 5.3.0+ with CLI and SPL
