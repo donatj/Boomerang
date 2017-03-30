@@ -12,7 +12,7 @@ Documentation and more information is availible at http://boomerang.work/
 
 ## Requirements
 
-- PHP 5.3.0+ with CLI and SPL
+- PHP 5.4.0+ with CLI and SPL
 - *nix or cygwin on windows.
 
 ## Installation
