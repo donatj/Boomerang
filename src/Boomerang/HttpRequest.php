@@ -41,6 +41,8 @@ class HttpRequest {
 
 		if( $responseFactory === null ) {
 			$this->responseFactory = new HttpResponseFactory();
+		} else {
+			$this->responseFactory = $responseFactory;
 		}
 	}
 
