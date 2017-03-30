@@ -60,6 +60,8 @@ class HttpRequest {
 	}
 
 	/**
+	 * Get the current request method.
+	 *
 	 * @return string
 	 */
 	public function getMethod() {
@@ -67,6 +69,11 @@ class HttpRequest {
 	}
 
 	/**
+	 * Set the request method.
+	 *
+	 * Helper constants exist, for example:
+	 * 	`$req->setMethod(HttpRequest::POST);`
+	 *
 	 * @param string $method
 	 */
 	public function setMethod( $method ) {
@@ -219,6 +226,8 @@ class HttpRequest {
 	}
 
 	/**
+	 * Get the requests body
+	 *
 	 * @return array|string
 	 */
 	public function getBody() {
@@ -226,6 +235,8 @@ class HttpRequest {
 	}
 
 	/**
+	 * Set the requests body
+	 *
 	 * @param array|string $body
 	 */
 	public function setBody( $body ) {
