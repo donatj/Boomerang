@@ -62,14 +62,14 @@ class HttpResponse implements HttpResponseInterface {
 	}
 
 	/**
-	 * @param string $raw_headers
+	 * @param string $rawHeaders
 	 * @return string[]
 	 */
-	private function parseHeaders( $raw_headers ) {
+	private function parseHeaders( $rawHeaders ) {
 		$headers = array();
 		$key     = '';
 
-		foreach( explode("\n", $raw_headers) as $i => $h ) {
+		foreach( explode("\n", $rawHeaders) as $i => $h ) {
 			$h = explode(':', $h, 2);
 
 			if( isset($h[1]) ) {
