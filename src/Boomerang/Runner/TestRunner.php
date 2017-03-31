@@ -5,6 +5,7 @@ namespace Boomerang\Runner;
 class TestRunner {
 
 	private $path;
+	/** @var \Iterator */
 	private $files;
 	private $bootstrap;
 

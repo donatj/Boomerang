@@ -21,9 +21,7 @@ class HttpRequest {
 
 	private $curlInfo;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $tmp;
 
 	private $maxRedirects = 10;
@@ -31,6 +29,7 @@ class HttpRequest {
 	private $endpointParts;
 	private $cookies = array();
 	private $cookiesFollowRedirects = false;
+	/** @var array|string */
 	private $body = array();
 	private $lastRequestTime = null;
 
