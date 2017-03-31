@@ -32,7 +32,7 @@ class Boomerang {
 	private static function init( $args, UserInterface $ui ) {
 
 		$flags     = new Flags();
-		$testSuite = & $flags->string('testsuite', 'default', 'Which test suite to run.');
+		$testSuite = &$flags->string('testsuite', 'default', 'Which test suite to run.');
 		$flags->parse($args, true);
 
 		if( is_readable(self::CONFIG_FILE) ) {
@@ -61,14 +61,14 @@ class Boomerang {
 			}
 		}
 
-		self::$bootstrap = & $flags->string('bootstrap', isset($suite['bootstrap']) ? $suite['bootstrap'] : false, 'A "bootstrap" PHP file that is run before the specs.');
-		self::$verbosity = & $flags->short('v', 'Output in verbose mode');
+		self::$bootstrap = &$flags->string('bootstrap', isset($suite['bootstrap']) ? $suite['bootstrap'] : false, 'A "bootstrap" PHP file that is run before the specs.');
+		self::$verbosity = &$flags->short('v', 'Output in verbose mode');
 
-		$displayHelp    = & $flags->bool('help', false, 'Display this help message.');
-		$displayVersion = & $flags->bool('version', false, 'Display this applications version.');
+		$displayHelp    = &$flags->bool('help', false, 'Display this help message.');
+		$displayVersion = &$flags->bool('version', false, 'Display this applications version.');
 
 		if( defined('BOOMERANG_IS_PHAR') ) {
-			$selfUpdate = & $flags->bool('selfupdate', false, 'Update to the latest version of Boomerang!');
+			$selfUpdate = &$flags->bool('selfupdate', false, 'Update to the latest version of Boomerang!');
 		}
 
 		try {
