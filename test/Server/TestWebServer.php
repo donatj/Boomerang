@@ -44,7 +44,7 @@ class TestWebServer {
 		sleep(1); // just to make sure it's fully started up, maybe not nesessary
 
 		if( !$this->isRunning() ) {
-			throw new RuntimeException("Failed to start server. Is something already running on port {$port}?");
+			throw new RuntimeException("Failed to start server. Is something already running on port {$this->port}?");
 		}
 
 		register_shutdown_function(function () {
