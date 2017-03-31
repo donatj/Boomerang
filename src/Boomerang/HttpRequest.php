@@ -72,7 +72,7 @@ class HttpRequest {
 	 * Set the request method.
 	 *
 	 * Helper constants exist, for example:
-	 * 	`$req->setMethod(HttpRequest::POST);`
+	 *    `$req->setMethod(HttpRequest::POST);`
 	 *
 	 * @param string $method
 	 */
@@ -309,7 +309,11 @@ class HttpRequest {
 	 * @param string $endpoint
 	 */
 	public function setEndpoint( $endpoint ) {
-		$this->endpointParts = parse_url($endpoint);
+		$parts = parse_url($endpoint);
+		if( $parts === false ) {
+			throw new \InvalidArgumentException("Failed to parse url '{$endpoint}'");
+		}
+		$this->endpointParts = $parts;
 	}
 
 	/**
