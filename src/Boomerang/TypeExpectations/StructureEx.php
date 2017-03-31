@@ -33,7 +33,7 @@ class StructureEx implements TypeExpectationInterface {
 	/**
 	 * @param TypeExpectationInterface|callable|mixed $structure
 	 */
-	function __construct( $structure ) {
+	public function __construct( $structure ) {
 		$this->structure = $structure;
 	}
 

@@ -22,7 +22,7 @@ use Boomerang\Interfaces\ExpectationResultInterface;
  */
 class AnyEx extends AllEx {
 
-	function match( $data ) {
+	public function match( $data ) {
 
 		// @todo: __validate should do something other than throw the exceptions into an array, because this can't currently work
 

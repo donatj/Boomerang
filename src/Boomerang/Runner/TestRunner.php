@@ -21,7 +21,7 @@ class TestRunner {
 	 * @param string                          $bootstrap
 	 * @param \Boomerang\Runner\UserInterface $ui
 	 */
-	function __construct( $path, $bootstrap, UserInterface $ui ) {
+	public function __construct( $path, $bootstrap, UserInterface $ui ) {
 		$this->path      = $path;
 		$this->bootstrap = $bootstrap;
 		$this->ui        = $ui;
@@ -32,7 +32,7 @@ class TestRunner {
 	 * @param $path
 	 * @return \Iterator
 	 */
-	function getFileList( $path ) {
+	private function getFileList( $path ) {
 		if( $real = realpath($path) ) {
 			$path = $real;
 		}
@@ -56,7 +56,7 @@ class TestRunner {
 	/**
 	 * @param \Closure $afterExecution
 	 */
-	function runTests( \Closure $afterExecution = null ) {
+	public function runTests( \Closure $afterExecution = null ) {
 		if( $this->bootstrap ) {
 			if( is_readable($this->bootstrap) ) {
 				require_once($this->bootstrap);

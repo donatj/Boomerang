@@ -28,11 +28,11 @@ class AllEx extends StructureEx {
 	/**
 	 * @param TypeExpectationInterface|callable|mixed $structure,... One or more structure definitions to match
 	 */
-	function __construct( $structure ) {
+	public function __construct( $structure ) {
 		$this->structures = func_get_args();
 	}
 
-	function match($data) {
+	public function match($data) {
 		$pass = true;
 
 		foreach($this->structures as $struct) {
