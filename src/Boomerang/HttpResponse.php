@@ -134,6 +134,8 @@ class HttpResponse implements HttpResponseInterface {
 	/**
 	 * Get all response headers from all hops as a HopIndex => HeaderName => Value array.
 	 *
+	 * Note: header key values are lower cased.
+	 *
 	 * @return array
 	 */
 	public function getAllHeaders() {
