@@ -105,7 +105,10 @@ class Boomerang {
 	 * @access private
 	 */
 	static function main( $args ) {
-		$ui = new UserInterface(STDOUT, STDERR);
+		$stdout = fopen('php://stdout', 'w');
+		$stderr = fopen('php://stderr', 'w');
+
+		$ui = new UserInterface($stdout, $stderr);
 
 		self::$boomerangPath = realpath($args[0]);
 		self::$pathInfo      = pathinfo(self::$boomerangPath);
