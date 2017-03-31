@@ -52,9 +52,9 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 
 		foreach( $methods as $method ) {
 			$mockFactory    = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
-			$mockNewInstace = $mockFactory->method('newInstance');
+			$mockNewInstance = $mockFactory->method('newInstance');
 
-			$mockNewInstace->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse, $method ) {
+			$mockNewInstance->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse, $method ) {
 				$data = json_decode($body, true);
 				$this->assertSame($data['METHOD'], $method);
 				$this->assertSame($data['INPUT'], 'This is the requests body');
@@ -78,11 +78,11 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeprecatedPostMethod() {
-		$mockResponse = $this->getMock('Boomerang\\HttpResponse', [], [], '', false);
+		$mockResponse   = $this->getMock('Boomerang\\HttpResponse', [], [], '', false);
 		$mockFactory    = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
-		$mockNewInstace = $mockFactory->method('newInstance');
+		$mockNewInstance = $mockFactory->method('newInstance');
 
-		$mockNewInstace->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
+		$mockNewInstance->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
 			$data = json_decode($body, true);
 			$this->assertSame($data['METHOD'], HttpRequest::POST);
 			$this->assertSame($data['INPUT'], '');
