@@ -212,8 +212,8 @@ class HttpRequest {
 	 * @param mixed  $value
 	 */
 	public function setFormValue( $key, $value ) {
-		if( !is_array($this->body[$key]) ) {
-			$this->body[$key] = [];
+		if( !is_array($this->body) ) {
+			$this->body = [];
 		}
 		$this->body[$key] = $value;
 	}
