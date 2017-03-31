@@ -71,7 +71,10 @@ class HttpRequest {
 	 * Set the request method.
 	 *
 	 * Helper constants exist, for example:
-	 *    `$req->setMethod(HttpRequest::POST);`
+	 *
+	 * ```php
+	 * $req->setMethod(HttpRequest::POST);
+	 * ```
 	 *
 	 * @param string $method
 	 */
