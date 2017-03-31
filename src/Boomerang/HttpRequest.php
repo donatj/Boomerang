@@ -194,6 +194,8 @@ class HttpRequest {
 	 *
 	 * Note that this has the side effect of changing the HTTP Method to POST
 	 *
+	 * @deprecated Use setMethod + setBody instead
+	 *
 	 * @param $key
 	 * @param $value
 	 */
@@ -205,8 +207,9 @@ class HttpRequest {
 	/**
 	 * Retrieve all queued post-data as an array.
 	 *
-	 * @deprecated
-	 * @return array
+	 * @deprecated Use getBody instead
+	 *
+	 * @return array|string
 	 */
 	public function getPostData() {
 		return $this->body;
@@ -273,7 +276,11 @@ class HttpRequest {
 		$this->cookies[$key] = $value;
 	}
 
-	private function unparse_url( $parsed_url ) {
+	/**
+	 * @param array $parsed_url
+	 * @return string
+	 */
+	private function composeUrl( array $parsed_url ) {
 		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
 		$host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
 		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
@@ -293,7 +300,7 @@ class HttpRequest {
 	 * @return string
 	 */
 	public function getEndpoint() {
-		return $this->unparse_url($this->endpointParts);
+		return $this->composeUrl($this->endpointParts);
 	}
 
 	/**
