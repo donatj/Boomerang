@@ -20,7 +20,8 @@
 	},
 	"require-dev": {
 		"donatj/drop": "*",
-		"phpunit/phpunit": "4.*"
+		"phpunit/phpunit": "4.*",
+		"ralouphie/getallheaders": "^2.0"
 	},
 	"authors": [
 		{
