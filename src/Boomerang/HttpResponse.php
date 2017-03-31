@@ -14,8 +14,8 @@ use Boomerang\Interfaces\HttpResponseInterface;
 class HttpResponse implements HttpResponseInterface {
 
 	private $body;
-	private $headers_raw;
-	private $header_sets;
+	private $headersRaw;
+	private $headerSets;
 	private $request;
 
 	/**
@@ -24,8 +24,8 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param HttpRequest|null $request
 	 */
 	public function __construct( $body, $headers, HttpRequest $request = null ) {
-		$this->body        = $body;
-		$this->headers_raw = $headers;
+		$this->body       = $body;
+		$this->headersRaw = $headers;
 
 		$headers = $this->normalizeHeaders($headers);
 
@@ -34,7 +34,7 @@ class HttpResponse implements HttpResponseInterface {
 			$h = $this->parseHeaders($h);
 		}
 
-		$this->header_sets = $headers_split;
+		$this->headerSets = $headers_split;
 
 		$this->request = $request;
 	}
@@ -114,11 +114,11 @@ class HttpResponse implements HttpResponseInterface {
 	 */
 	public function getHeaders( $hop = null ) {
 		if( $hop === null ) {
-			return end($this->header_sets);
+			return end($this->headerSets);
 		}
 
-		if( isset($this->header_sets[$hop]) ) {
-			return $this->header_sets[$hop];
+		if( isset($this->headerSets[$hop]) ) {
+			return $this->headerSets[$hop];
 		}
 
 		return null;
@@ -130,7 +130,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @return array
 	 */
 	public function getAllHeaders() {
-		return $this->header_sets;
+		return $this->headerSets;
 	}
 
 	/**
@@ -139,7 +139,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @return string
 	 */
 	public function getRawHeaders() {
-		return $this->headers_raw;
+		return $this->headersRaw;
 	}
 
 	/**
@@ -166,7 +166,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @return int
 	 */
 	public function getHopCount() {
-		return count($this->header_sets);
+		return count($this->headerSets);
 	}
 
 	/**
