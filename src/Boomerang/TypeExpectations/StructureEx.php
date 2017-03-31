@@ -93,7 +93,8 @@ class StructureEx implements TypeExpectationInterface {
 						$expectations = array_merge($expectations, $sub_expectations);
 						$pass         = $passing && $pass;
 					} else {
-						$expectations[] = new FailingExpectationResult($this->validator, "Missing key\n { {$pathName} } ", $key);
+						$subPathName    = $this->makePathName(array_merge($path, [ $key ]));
+						$expectations[] = new FailingExpectationResult($this->validator, "Missing key\n { {$subPathName} } ", $key);
 					}
 				}
 			} else {
@@ -116,7 +117,6 @@ class StructureEx implements TypeExpectationInterface {
 			} else {
 				$expectations[] = new PassingExpectationResult($this->validator, "Expected structure type check result\n { {$pathName} } ", $typeName);
 			}
-
 		} elseif( $validation instanceof \Closure ) {
 			$result = $validation($data);
 			$pass   = $result === true;
@@ -125,14 +125,12 @@ class StructureEx implements TypeExpectationInterface {
 			} else {
 				$expectations[] = new PassingExpectationResult($this->validator, "Expected \\Closure structure validator result\n { {$pathName} } ", $result);
 			}
-
 		} elseif( is_scalar($validation) ) {
 			if( !$pass = $validation == $data ) {
 				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected value\n { {$pathName} } ", $validation, $data);
 			} else {
 				$expectations[] = new PassingExpectationResult($this->validator, "Expected value\n { {$pathName} } ", $validation);
 			}
-
 		}
 
 		return array( $pass, $expectations );
