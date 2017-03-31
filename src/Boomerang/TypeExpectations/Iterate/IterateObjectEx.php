@@ -12,7 +12,10 @@ namespace Boomerang\TypeExpectations\Iterate;
 class IterateObjectEx extends IterateArrayEx {
 
 	/**
-	 * Static so its overridable with static::
+	 * Static so its can be overridden with static::
+	 *
+	 * @param mixed $data
+	 * @return bool
 	 */
 	protected static function validType( $data ) {
 		return self::isAssoc($data);

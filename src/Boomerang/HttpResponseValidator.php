@@ -28,7 +28,7 @@ class HttpResponseValidator extends AbstractValidator {
 	}
 
 	/**
-	 * @return \Boomerang\HttpResponse
+	 * @return HttpResponseInterface
 	 */
 	public function getResponse() {
 		return $this->response;

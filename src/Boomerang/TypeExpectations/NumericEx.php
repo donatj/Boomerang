@@ -17,7 +17,10 @@ use Boomerang\Interfaces\TypeExpectationInterface;
  */
 class NumericEx implements TypeExpectationInterface {
 
+	/** @var float|int|null */
 	protected $min;
+
+	/** @var float|int|null */
 	protected $max;
 
 	/**

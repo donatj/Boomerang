@@ -13,7 +13,9 @@ use Boomerang\Interfaces\TypeExpectationInterface;
  */
 class StringEx implements TypeExpectationInterface {
 
+	/** @var int|null */
 	protected $minLength;
+	/** @var int|null */
 	protected $maxLength;
 
 	/**
