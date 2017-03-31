@@ -2,7 +2,6 @@
 
 namespace Boomerang\Test;
 
-use Boomerang\Factories\HttpResponseFactory;
 use Boomerang\HttpRequest;
 
 class HttpRequestTest extends \PHPUnit_Framework_TestCase {
@@ -49,10 +48,10 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 			HttpRequest::OPTIONS,
 		];
 
-		$mockResponse = $this->getMock(\HttpResponse::class);
+		$mockResponse = $this->getMock('Boomerang\\HttpResponse', [], [], '', false);
 
 		foreach( $methods as $method ) {
-			$mockFactory    = $this->getMock(HttpResponseFactory::class);
+			$mockFactory    = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
 			$mockNewInstace = $mockFactory->method('newInstance');
 
 			$mockNewInstace->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse, $method ) {
@@ -79,8 +78,8 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeprecatedPostMethod() {
-		$mockResponse   = $this->getMock(\HttpResponse::class);
-		$mockFactory    = $this->getMock(HttpResponseFactory::class);
+		$mockResponse = $this->getMock('Boomerang\\HttpResponse', [], [], '', false);
+		$mockFactory    = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
 		$mockNewInstace = $mockFactory->method('newInstance');
 
 		$mockNewInstace->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
