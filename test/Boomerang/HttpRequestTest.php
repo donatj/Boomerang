@@ -37,6 +37,27 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('application/json', $headers_a[0]);
 	}
 
+	public function testUrlParams() {
+		$req = new HttpRequest('http://example.com/test.json?myParam=1&param2[]=1&param2[]=2');
+
+		$this->assertSame([
+			'myParam' => '1',
+			'param2'  => [ '1', '2', ],
+		], $req->getUrlParams());
+
+		$this->assertSame('1', $req->getUrlParam('myParam'));
+		$this->assertSame([ '1', '2', ], $req->getUrlParam('param2'));
+
+		$req->setUrlParam('myParam', [ 1, 2, 3 ]);
+		$this->assertSame([
+			'myParam' => [ '1', '2', '3', ],
+			'param2'  => [ '1', '2', ],
+		], $req->getUrlParams());
+
+		$req->setUrlParams([ 'sauce' => 'dog' ]);
+		$this->assertSame([ 'sauce' => 'dog' ], $req->getUrlParams());
+	}
+
 	public function testMethods() {
 		$methods = [
 			HttpRequest::GET,
