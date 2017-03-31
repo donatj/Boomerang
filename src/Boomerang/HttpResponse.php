@@ -13,9 +13,16 @@ use Boomerang\Interfaces\HttpResponseInterface;
  */
 class HttpResponse implements HttpResponseInterface {
 
+	/** @var string */
 	private $body;
+
+	/** @var string */
 	private $headersRaw;
+
+	/** @var array */
 	private $headerSets;
+
+	/** @var \Boomerang\HttpRequest|null */
 	private $request;
 
 	/**
