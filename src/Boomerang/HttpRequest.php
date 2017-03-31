@@ -193,14 +193,39 @@ class HttpRequest {
 	 *
 	 * Note that this has the side effect of changing the HTTP Method to POST
 	 *
-	 * @deprecated Use setMethod + setBody instead
+	 * @deprecated Use setMethod and setFormValue instead
 	 *
-	 * @param $key
-	 * @param $value
+	 * @param string $key
+	 * @param mixed  $value
 	 */
 	public function setPost( $key, $value ) {
-		$this->method     = self::POST;
+		$this->method = self::POST;
+		$this->setFormValue($key, $value);
+	}
+
+	/**
+	 * Set a named key of the form values
+	 *
+	 * Note that if there is a non-form body set, this will replace it.
+	 *
+	 * @param string $key
+	 * @param mixed  $value
+	 */
+	public function setFormValue( $key, $value ) {
+		if( !is_array($this->body[$key]) ) {
+			$this->body[$key] = [];
+		}
 		$this->body[$key] = $value;
+	}
+
+	/**
+	 * Retrieve an form value by name.
+	 *
+	 * @param string $key
+	 * @return mixed|null
+	 */
+	public function getFormValue( $key ) {
+		return isset($this->body[$key]) ? $this->body[$key] : null;
 	}
 
 	/**
@@ -219,12 +244,13 @@ class HttpRequest {
 	 *
 	 * Note that this has the side effect of changing the HTTP Method to POST
 	 *
-	 * @deprecated
+	 * @deprecated Use setBody instead
+	 *
 	 * @param array $post
 	 */
 	public function setPostData( array $post ) {
 		$this->method = self::POST;
-		$this->body   = $post;
+		$this->setBody($post);
 	}
 
 	/**
