@@ -181,6 +181,8 @@ class HttpRequest {
 	/**
 	 * Retrieve an post value by name.
 	 *
+	 * @deprecated Use getFormValue instead
+	 *
 	 * @param $key
 	 * @return string|null
 	 */
@@ -236,7 +238,7 @@ class HttpRequest {
 	 * @return array|string
 	 */
 	public function getPostData() {
-		return $this->body;
+		return $this->getBody();
 	}
 
 	/**
