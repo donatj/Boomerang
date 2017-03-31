@@ -3,6 +3,7 @@
 namespace Boomerang\Runner;
 
 use Boomerang\Boomerang;
+use Boomerang\Exceptions\CliRuntimeException;
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\InfoResult;
@@ -82,7 +83,7 @@ EOT;
 					Output::string($dot ?: Style::green("."));
 				}
 			} else {
-				$this->dropError("Error: Unexpected ValidatorInterface", E_USER_ERROR);
+				throw new CliRuntimeException("Error: Unexpected ValidatorInterface");
 			}
 		}
 

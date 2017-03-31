@@ -2,29 +2,24 @@
 
 namespace Boomerang\Runner;
 
+use Boomerang\Exceptions\CliRuntimeException;
+
 class TestRunner {
 
-	private $path;
 	/** @var \Iterator */
 	private $files;
+	private $path;
 	private $bootstrap;
-
-	/**
-	 * @var UserInterface
-	 */
-	private $ui;
 
 	/**
 	 * TestRunner constructor.
 	 *
-	 * @param string                          $path
-	 * @param string                          $bootstrap
-	 * @param \Boomerang\Runner\UserInterface $ui
+	 * @param string $path
+	 * @param string $bootstrap
 	 */
-	public function __construct( $path, $bootstrap, UserInterface $ui ) {
+	public function __construct( $path, $bootstrap ) {
 		$this->path      = $path;
 		$this->bootstrap = $bootstrap;
-		$this->ui        = $ui;
 		$this->files     = $this->getFileList($this->path);
 	}
 
@@ -50,7 +45,7 @@ class TestRunner {
 		}
 
 
-		$this->ui->dropError("Cannot find file \"$path\"");
+		throw new CliRuntimeException("Cannot find file \"$path\"");
 	}
 
 	/**
@@ -61,10 +56,7 @@ class TestRunner {
 			if( is_readable($this->bootstrap) ) {
 				require_once($this->bootstrap);
 			} else {
-				/**
-				 * @todo replace UI drop errors with throwing exceptions
-				 */
-				$this->ui->dropError("Failed to load bootstrap");
+				throw new CliRuntimeException("Failed to load bootstrap");
 			}
 		}
 

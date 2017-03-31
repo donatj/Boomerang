@@ -2,6 +2,7 @@
 
 namespace Boomerang;
 
+use Boomerang\Exceptions\CliExceptionInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\Runner\TestRunner;
 use Boomerang\Runner\UserInterface;
@@ -117,43 +118,47 @@ class Boomerang {
 
 		self::versionMarker($ui);
 
-		$runner = new TestRunner(end($scan), self::$bootstrap, $ui);
+		try {
+			$runner = new TestRunner(end($scan), self::$bootstrap);
 
-		$verbosity = self::$verbosity;
-		$displayed = array();
-		$runner->runTests(function ( $file ) use ( $ui, $verbosity, &$displayed ) {
-			$validators = array();
-			foreach( Boomerang::$validators as $validator ) {
-				$hash = spl_object_hash($validator);
+			$verbosity = self::$verbosity;
+			$displayed = array();
+			$runner->runTests(function ( $file ) use ( $ui, $verbosity, &$displayed ) {
+				$validators = array();
+				foreach( Boomerang::$validators as $validator ) {
+					$hash = spl_object_hash($validator);
 
-				if( !isset($displayed[$hash]) ) {
-					$validators[]     = $validator;
-					$displayed[$hash] = true;
+					if( !isset($displayed[$hash]) ) {
+						$validators[]     = $validator;
+						$displayed[$hash] = true;
+					}
+				}
+
+				$ui->updateExpectationDisplay($file, $validators, $verbosity);
+			});
+
+			$tests = 0;
+			$total = 0;
+			$fails = 0;
+			foreach( Boomerang::$validators as $v_data ) {
+				$tests++;
+				$ex_res = $v_data->getExpectationResults();
+				foreach( $ex_res as $ex ) {
+					$total++;
+					$fails += $ex->getFail();
 				}
 			}
 
-			$ui->updateExpectationDisplay($file, $validators, $verbosity);
-		});
+			$currMen = number_format(memory_get_usage() / 1048576, 2);
+			$peakMem = number_format(memory_get_peak_usage() / 1048576, 2);
 
-		$tests = 0;
-		$total = 0;
-		$fails = 0;
-		foreach( Boomerang::$validators as $v_data ) {
-			$tests++;
-			$ex_res = $v_data->getExpectationResults();
-			foreach( $ex_res as $ex ) {
-				$total++;
-				$fails += $ex->getFail();
-			}
+			$ui->outputMsg(PHP_EOL);
+			$ui->outputMsg("{$tests} tests, {$total} assertions, {$fails} failures, [{$currMen}]{$peakMem}mb peak memory use");
+
+			exit($fails ? 2 : 0);
+		} catch(CliExceptionInterface $ex) {
+			$ui->dropError($ex->getMessage(), $ex->getExitCode());
 		}
-
-		$currMen = number_format(memory_get_usage() / 1048576, 2);
-		$peakMem = number_format(memory_get_peak_usage() / 1048576, 2);
-
-		$ui->outputMsg(PHP_EOL);
-		$ui->outputMsg("{$tests} tests, {$total} assertions, {$fails} failures, [{$currMen}]{$peakMem}mb peak memory use");
-
-		die($fails ? 2 : 0);
 	}
 
 	private static function selfUpdate( UserInterface $ui ) {
