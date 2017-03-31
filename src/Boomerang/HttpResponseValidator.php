@@ -143,8 +143,8 @@ class HttpResponseValidator extends AbstractValidator {
 
 		if( $hops != $expectedCount ) {
 			$this->expectations[] = new FailingExpectationResult($this, 'Unexpected number of redirect hops', $expectedCount, $hops);
-		}else{
-			$this->expectations[] = new PassingExpectationResult($this, 'Expected number of redirect hops', $expectedCount, $hops);
+		} else {
+			$this->expectations[] = new PassingExpectationResult($this, 'Expected number of redirect hops', $expectedCount);
 		}
 
 		return $this;
