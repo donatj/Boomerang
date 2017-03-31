@@ -338,7 +338,7 @@ class HttpRequest {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
 		}
 
-		if( $this->cookies ) {
+		if( count($this->cookies) > 0 ) {
 			curl_setopt($ch, CURLOPT_COOKIE, http_build_cookie($this->cookies));
 		}
 
@@ -380,7 +380,6 @@ class HttpRequest {
 				switch( strtolower($path['extension']) ) {
 					case 'json':
 						return 'application/json';
-						break;
 					case 'xml':
 						return 'application/xml';
 				}
