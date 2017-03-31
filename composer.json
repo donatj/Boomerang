@@ -1,6 +1,7 @@
 {
 	"name": "boomerang/boomerang",
 	"type": "library",
+	"homepage": "http://boomerang.work/",
 	"description": "The Boomerang API Endpoint Testing Framework.",
 	"keywords": [
 		"api",
@@ -11,7 +12,7 @@
 		"issues": "https://github.com/donatj/Boomerang/issues"
 	},
 	"require": {
-		"donatj/cli-toolkit": "~0.1",
+		"donatj/cli-toolkit": "~0.1.0",
 		"donatj/flags": "~1",
 		"php": ">=5.4.0",
 		"ext-curl": "*",
@@ -25,7 +26,7 @@
 		{
 			"name": "Jesse G. Donat",
 			"email": "donatj@gmail.com",
-			"homepage": "http://donatstudios.com",
+			"homepage": "https://donatstudios.com",
 			"role": "Lead"
 		}
 	],
