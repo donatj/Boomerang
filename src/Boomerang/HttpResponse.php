@@ -185,7 +185,7 @@ class HttpResponse implements HttpResponseInterface {
 	public function getStatus( $hop = null ) {
 		$headers = $this->getHeaders($hop);
 
-		if( $headers ) {
+		if( $headers && isset($headers[0]) ) {
 			preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $headers[0], $match);
 			if( $status = intval($match[1]) ) {
 				return $status;
