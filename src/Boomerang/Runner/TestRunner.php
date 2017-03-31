@@ -7,11 +7,19 @@ class TestRunner {
 	private $path;
 	private $files;
 	private $bootstrap;
+
 	/**
 	 * @var UserInterface
 	 */
 	private $ui;
 
+	/**
+	 * TestRunner constructor.
+	 *
+	 * @param string                          $path
+	 * @param string                          $bootstrap
+	 * @param \Boomerang\Runner\UserInterface $ui
+	 */
 	function __construct( $path, $bootstrap, UserInterface $ui ) {
 		$this->path      = $path;
 		$this->bootstrap = $bootstrap;
@@ -42,7 +50,6 @@ class TestRunner {
 
 
 		$this->ui->dropError("Cannot find file \"$path\"");
-
 	}
 
 	/**

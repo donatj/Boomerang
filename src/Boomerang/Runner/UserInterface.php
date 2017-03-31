@@ -17,10 +17,19 @@ use CLI\Style;
 
 class UserInterface {
 
+	/**
+	 * UserInterface constructor.
+	 *
+	 * @param resource $STDOUT
+	 * @param resource $STDERR
+	 */
 	public function __construct( $STDOUT, $STDERR ) {
 		Output::$stream = $STDOUT;
 	}
 
+	/**
+	 * @param string $additional
+	 */
 	public function dumpOptions( $additional ) {
 		$fname = Boomerang::$pathInfo['basename'];
 
@@ -172,6 +181,9 @@ EOT;
 		die($code);
 	}
 
+	/**
+	 * @param string $text
+	 */
 	public function outputMsg( $text ) {
 		Output::string($text . PHP_EOL);
 	}
