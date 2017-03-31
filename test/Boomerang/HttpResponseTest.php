@@ -7,7 +7,7 @@ use Boomerang\HttpResponse;
 class HttpResponseTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetRawHeaders() {
-		$headers = <<<EOT
+		$headers  = <<<EOT
 HTTP/1.1 200 OK
 Content-Encoding:gzip
 Content-language:en
@@ -17,7 +17,8 @@ Content-language:en
 EOT;
 		$response = new HttpResponse("", $headers);
 
-		$this->assertEquals( $headers, $response->getRawHeaders() );
+		$this->assertEquals($headers, $response->getRawHeaders());
+		$this->assertSame(1, $response->getHopCount());
 	}
 
 	//@todo add just \r's hard, and \r\n's hard
@@ -69,8 +70,7 @@ EOT
 		$this->assertEquals('PHP/5.4.16-dev',
 			$response->getHeader('X-Powered-By'));
 
-		$this->assertEquals(null,
-			$response->getHeader('RandomFakeNotSetHeader', 0));
+		$this->assertNull($response->getHeader('RandomFakeNotSetHeader', 0));
 
 		//Sometimes you can get trailing newlines. Make sure this doesn't break things
 		$response = new HttpResponse("", <<<EOT
@@ -94,6 +94,7 @@ EOT
 		$this->assertEquals(null,
 			$response->getHeader('RandomFakeNotSetHeader', 0));
 
+		$this->assertSame(1, $response->getHopCount());
 	}
 
 	public function testMultihopHeaderParsing() {
@@ -175,8 +176,82 @@ EOT
 
 
 		//non-existent third hop
-		$this->assertEquals(null,
-			$response->getHeader(3));
+		$this->assertNull($response->getHeader(3));
+
+		$this->assertSame(2, $response->getHopCount());
+	}
+
+	public function testDuplicativeHeaders() {
+		$body     = "This is my test body";
+		$response = new HttpResponse($body, <<<EOT
+HTTP/1.1 200 OK
+Cache-Control: no-cache
+Cache-Control: no-store
+
+HTTP/1.1 500 OK
+Cache-Control: no-cache 
+Cache-Control: no-store
+Cache-Control: no-transform
+Cache-Control: only-if-cached
+EOT
+		);
+
+		$this->assertSame(array(
+			array(
+				'HTTP/1.1 200 OK',
+				'cache-control' => array(
+					'no-cache', 'no-store',
+				),
+			),
+			array(
+				'HTTP/1.1 500 OK',
+				'cache-control' => array(
+					'no-cache',
+					'no-store',
+					'no-transform',
+					'only-if-cached',
+				),
+			),
+
+		), $response->getAllHeaders());
+
+		$this->assertSame($response->getHeader('Cache-Control'), array(
+			'no-cache',
+			'no-store',
+			'no-transform',
+			'only-if-cached',
+		));
+
+		$this->assertSame(array(
+			'no-cache', 'no-store',
+		), $response->getHeader('Cache-Control', 0));
+
+		$this->assertSame(array(
+			'no-cache',
+			'no-store',
+			'no-transform',
+			'only-if-cached',
+		), $response->getHeader('Cache-Control', 1));
+
+		$this->assertNull($response->getHeader('Cache-Control', 2));
+
+		$this->assertSame(500, $response->getStatus());
+		$this->assertSame(200, $response->getStatus(0));
+		$this->assertSame(500, $response->getStatus(1));
+		$this->assertNull($response->getStatus(2));
+
+		$this->assertSame($body, $response->getBody());
+		$this->assertSame(2, $response->getHopCount());
+	}
+
+	public function testMissingStatus() {
+		$response = new HttpResponse("", <<<EOT
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+EOT
+		);
+
+		$this->assertNull($response->getStatus());
 	}
 
 }
