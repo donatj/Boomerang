@@ -11,14 +11,15 @@ abstract class AbstractResult implements ExpectationResultInterface {
 	 * @var string
 	 */
 	protected $message;
+
 	/**
 	 * @var ValidatorInterface
 	 */
 	protected $validator;
 
 	/**
-	 * @param ValidatorInterface   $validator
-	 * @param null|string $message
+	 * @param ValidatorInterface $validator
+	 * @param null|string        $message
 	 */
 	public function __construct( ValidatorInterface $validator, $message = null ) {
 		$this->message   = $message;
