@@ -6,9 +6,9 @@ use Boomerang\Boomerang;
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\InfoResult;
+use Boomerang\ExpectationResults\MutedExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\ExpectationResults\PassingResult;
-use Boomerang\ExpectationResults\MutedExpectationResult;
 use Boomerang\Interfaces\ExpectationResultInterface;
 use Boomerang\Interfaces\ResponseValidatorInterface;
 use Boomerang\Interfaces\ValidatorInterface;
@@ -17,6 +17,11 @@ use CLI\Style;
 
 class UserInterface {
 
+	/** @var resource */
+	protected $stdout;
+	/** @var resource */
+	protected $stderr;
+
 	/**
 	 * UserInterface constructor.
 	 *
@@ -24,6 +29,8 @@ class UserInterface {
 	 * @param resource $STDERR
 	 */
 	public function __construct( $STDOUT, $STDERR ) {
+		$this->stdout   = $STDOUT;
+		$this->stderr   = $STDERR;
 		Output::$stream = $STDOUT;
 	}
 
@@ -72,7 +79,7 @@ EOT;
 					}
 				}
 				if( !$verbose ) {
-					Output::string($dot ? : Style::green("."));
+					Output::string($dot ?: Style::green("."));
 				}
 			} else {
 				$this->dropError("Error: Unexpected ValidatorInterface", E_USER_ERROR);
@@ -145,7 +152,6 @@ EOT;
 									Output::string(Style::red(var_export($expected, true)));
 									Output::string(PHP_EOL);
 								}
-
 							} elseif( $expectationResult instanceof PassingExpectationResult ) {
 								$actual = $expectationResult->getActual();
 
@@ -161,7 +167,6 @@ EOT;
 
 						$lastEndpoint = $endpoint;
 					}
-
 				} elseif( is_string($expectationResult) ) {
 					$this->outputMsg('MSG: ' . $expectationResult);
 				} else {
@@ -177,6 +182,7 @@ EOT;
 	 * @param null|string $additional
 	 */
 	public function dropError( $text, $code = 1, $additional = null ) {
+		Output::$stream = $this->stderr;
 		Output::string(Boomerang::$pathInfo['basename'] . ": " . Style::red($text) . PHP_EOL . ($additional ? $additional . PHP_EOL : ''));
 		die($code);
 	}
