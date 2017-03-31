@@ -141,10 +141,10 @@ class StructureEx implements TypeExpectationInterface {
 	 * @return string
 	 */
 	protected function makePathName( array $path ) {
-		$s_path = "root";
+		$s_path = "";
 		foreach( $path as $loc ) {
 			if( is_numeric($loc) ) {
-				$s_path .= "[$loc]";
+				$s_path .= ".[$loc]";
 			} else {
 				$s_path .= ".$loc";
 			}
