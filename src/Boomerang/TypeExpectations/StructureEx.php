@@ -87,13 +87,15 @@ class StructureEx implements TypeExpectationInterface {
 
 		if( is_array($validation) ) {
 			if( is_array($data) ) {
+				reset($validation);
+				$firstIsZero = key($validation) === 0;
 				foreach( $validation as $key => $value ) {
 					if( array_key_exists($key, $data) ) {
 						list($passing, $sub_expectations) = $this->__validate($data[$key], $value, array_merge($path, array( $key )));
 						$expectations = array_merge($expectations, $sub_expectations);
 						$pass         = $passing && $pass;
 					} else {
-						$subPathName    = $this->makePathName(array_merge($path, [ $key ]));
+						$subPathName    = $this->makePathName(array_merge($path, [ $firstIsZero ? $key : (string)$key ]));
 						$expectations[] = new FailingExpectationResult($this->validator, "Missing key\n { {$subPathName} } ", $key);
 					}
 				}
@@ -144,7 +146,14 @@ class StructureEx implements TypeExpectationInterface {
 		$s_path = "";
 		foreach( $path as $loc ) {
 			if( is_numeric($loc) ) {
-				$s_path .= ".[$loc]";
+				if( is_int($loc) ) {
+					if( $s_path == "" ) {
+						$s_path = ".";
+					}
+					$s_path .= "[$loc]";
+				} else {
+					$s_path .= '."' . $loc . '"';
+				}
 			} else {
 				$s_path .= ".$loc";
 			}
