@@ -3,15 +3,16 @@
 namespace Boomerang\Test;
 
 use Boomerang\HttpRequest;
+use donatj\MockWebServer\MockWebServer;
 
 class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 
-	/** @var \TestWebServer */
+	/** @var MockWebServer */
 	public static $webServer;
 
 	public static function setUpBeforeClass() {
-		require_once(__DIR__ . '/../Server/TestWebServer.php');
-		self::$webServer = new \TestWebServer();
+		self::$webServer = new MockWebServer;
+		self::$webServer->start();
 	}
 
 	public function testAcceptOverride() {
@@ -72,7 +73,7 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 		$mockResponse = $this->getMock('Boomerang\\HttpResponse', [], [], '', false);
 
 		foreach( $methods as $method ) {
-			$mockFactory    = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
+			$mockFactory     = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
 			$mockNewInstance = $mockFactory->method('newInstance');
 
 			$mockNewInstance->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse, $method ) {
@@ -99,8 +100,8 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeprecatedPostMethod() {
-		$mockResponse   = $this->getMock('Boomerang\\HttpResponse', [], [], '', false);
-		$mockFactory    = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
+		$mockResponse    = $this->getMock('Boomerang\\HttpResponse', [], [], '', false);
+		$mockFactory     = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
 		$mockNewInstance = $mockFactory->method('newInstance');
 
 		$mockNewInstance->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
@@ -125,4 +126,44 @@ class HttpRequestTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame($mockResponse, $resp);
 	}
 
+	public function testCookiesFollowRedirects() {
+		$mockResponse    = $this->getMock('Boomerang\\HttpResponse', [], [], '', false);
+		$mockFactory     = $this->getMock('Boomerang\\Factories\\HttpResponseFactory');
+		$mockNewInstance = $mockFactory->method('newInstance');
+
+		$mockNewInstance->will($this->returnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
+			$data = json_decode($body, true);
+			$this->assertSame($data['_COOKIE'], [
+				'sessionid' => '38afes7a8',
+			]);
+
+			$this->assertSame($data['REQUEST_URI'], '/sauce');
+			$headerParts = explode("\r\n\r\n", trim($headers));
+			$this->assertCount(2, $headerParts);
+
+			$this->assertStringStartsWith("HTTP/1.1 301 Moved Permanently\r\n", $headerParts[0]);
+			$this->assertContains("\r\nSet-Cookie: sessionid=38afes7a8; Path=/\r\n", $headerParts[0]);
+
+			$this->assertStringStartsWith("HTTP/1.1 200 OK\r\n", $headerParts[1]);
+			$this->assertNotContains("\r\nSet-Cookie: \r\n", $headerParts[1]);
+
+			return $mockResponse;
+		}));
+
+		$endpoint = self::$webServer->getUrlOfResponse(
+			'redirecting to: /sauce',
+			[
+				'Set-Cookie: sessionid=38afes7a8; Path=/',
+				'Location: /sauce',
+			],
+			301
+		);
+
+		$req = new HttpRequest($endpoint, $mockFactory);
+		$req->setMaxRedirects(2);
+		$req->setCookiesFollowRedirects(true);
+
+		$resp = $req->makeRequest();
+		$this->assertSame($mockResponse, $resp);
+	}
 }
