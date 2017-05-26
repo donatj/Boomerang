@@ -15,11 +15,16 @@ use donatj\Flags;
  */
 class Boomerang {
 
+	/** @access private */
 	const VERSION     = ".0.2.0";
+	/** @access private */
 	const PHAR_URL    = "http://phar.boomerang.so/builds/dev/boomerang.phar";
+	/** @access private */
 	const CONFIG_FILE = "boomerang.ini";
 
+	/** @access private */
 	public static $boomerangPath;
+	/** @access private */
 	public static $pathInfo;
 
 	private static $bootstrap;
@@ -28,7 +33,7 @@ class Boomerang {
 	/**
 	 * @var ValidatorInterface[]
 	 */
-	public static $validators = array();
+	private static $validators = array();
 
 	private static function init( $args, UserInterface $ui ) {
 
