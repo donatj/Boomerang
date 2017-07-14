@@ -12,7 +12,7 @@
 		"issues": "https://github.com/donatj/Boomerang/issues"
 	},
 	"require": {
-		"donatj/cli-toolkit": "~0.1.0",
+		"donatj/cli-toolkit": "~0.2.0",
 		"donatj/flags": "~1",
 		"php": ">=5.4.0",
 		"ext-curl": "*",
@@ -20,7 +20,7 @@
 	},
 	"require-dev": {
 		"donatj/drop": "*",
-		"donatj/mock-webserver": "~0.1.0",
+		"donatj/mock-webserver": "~0.4.0",
 		"phpunit/phpunit": "4.*",
 		"ralouphie/getallheaders": "^2.0"
 	},
