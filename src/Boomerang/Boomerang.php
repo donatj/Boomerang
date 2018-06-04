@@ -16,9 +16,9 @@ use donatj\Flags;
 class Boomerang {
 
 	/** @access private */
-	const VERSION     = ".0.2.0";
+	const VERSION = ".0.2.0";
 	/** @access private */
-	const PHAR_URL    = "http://phar.boomerang.so/builds/dev/boomerang.phar";
+	const PHAR_URL = "http://phar.boomerang.so/builds/dev/boomerang.phar";
 	/** @access private */
 	const CONFIG_FILE = "boomerang.ini";
 
@@ -35,6 +35,12 @@ class Boomerang {
 	 */
 	private static $validators = array();
 
+	/**
+	 * @param                                 $args
+	 * @param \Boomerang\Runner\UserInterface $ui
+	 * @return array|string[]
+	 * @throws \donatj\Exceptions\AbstractFlagException
+	 */
 	private static function init( $args, UserInterface $ui ) {
 
 		$flags     = new Flags();
@@ -79,7 +85,7 @@ class Boomerang {
 
 		try {
 			$flags->parse($args);
-		} catch(\Exception $e) {
+		} catch( \Exception $e ) {
 			$ui->dropError($e->getMessage(), 1, $flags->getDefaults());
 		}
 
@@ -111,6 +117,8 @@ class Boomerang {
 	 * @access private
 	 */
 	static function main( $args ) {
+		$start = microtime(true);
+
 		$stdout = fopen('php://stdout', 'w');
 		$stderr = fopen('php://stderr', 'w');
 
@@ -156,12 +164,13 @@ class Boomerang {
 
 			$currMen = number_format(memory_get_usage() / 1048576, 2);
 			$peakMem = number_format(memory_get_peak_usage() / 1048576, 2);
+			$seconds = number_format(microtime(true) - $start, 2);
 
 			$ui->outputMsg(PHP_EOL);
-			$ui->outputMsg("{$tests} tests, {$total} assertions, {$fails} failures, [{$currMen}]{$peakMem}mb peak memory use");
+			$ui->outputMsg("{$tests} tests, {$total} assertions, {$fails} failures, [{$currMen}]{$peakMem}mb peak memory use, {$seconds} seconds");
 
 			exit($fails ? 2 : 0);
-		} catch(CliExceptionInterface $ex) {
+		} catch( CliExceptionInterface $ex ) {
 			$ui->dropError($ex->getMessage(), $ex->getExitCode());
 		}
 	}
@@ -193,7 +202,7 @@ class Boomerang {
 		try {
 			$phar = new \Phar($tmpFile);
 			unset($phar);
-		} catch(\Exception $e) {
+		} catch( \Exception $e ) {
 			unlink($tmpFile);
 			$ui->dropError('Download is corrupted. Try re-running selfupdate.');
 		}
