@@ -3,8 +3,9 @@
 namespace Boomerang\Test;
 
 use Boomerang\HttpResponse;
+use PHPUnit\Framework\TestCase;
 
-class HttpResponseTest extends \PHPUnit_Framework_TestCase {
+class HttpResponseTest extends TestCase {
 
 	public function testGetRawHeaders() {
 		$headers  = <<<'EOT'

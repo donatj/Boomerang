@@ -3,8 +3,9 @@
 namespace Boomerang\TypeExpectations\Test;
 
 use Boomerang\TypeExpectations\NullEx;
+use PHPUnit\Framework\TestCase;
 
-class NullExTest extends \PHPUnit_Framework_TestCase {
+class NullExTest extends TestCase {
 
 	public function testBasicMatching() {
 
@@ -22,7 +23,6 @@ class NullExTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(false, $x->match(' '));
 		$this->assertEquals(false, $x->match('0'));
 		$this->assertEquals(false, $x->match(0));
-
 	}
 
 }

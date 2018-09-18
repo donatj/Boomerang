@@ -6,8 +6,9 @@ use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\ResponseInterface;
 use Boomerang\JSONValidator;
+use PHPUnit\Framework\TestCase;
 
-class JSONValidatorTest extends \PHPUnit_Framework_TestCase {
+class JSONValidatorTest extends TestCase {
 
 	public function testConstruct() {
 
@@ -28,10 +29,10 @@ class JSONValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @param $data
-	 * @return \PHPUnit_Framework_MockObject_MockObject|ResponseInterface
+	 * @return \PHPUnit\Framework\MockObject\MockObject|ResponseInterface
 	 */
 	private function _getMockResponse( $data ) {
-		$mock = $this->getMock('Boomerang\\Interfaces\\ResponseInterface');
+		$mock = $this->getMockBuilder(ResponseInterface::class)->getMock();
 		$mock->expects($this->any())
 			->method('getBody')
 			->willReturn($data);

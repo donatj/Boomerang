@@ -14,14 +14,16 @@
 	"require": {
 		"donatj/cli-toolkit": "~0.2",
 		"donatj/flags": "~1",
+
 		"php": ">=7.1.0",
 		"ext-curl": "*",
-		"ext-SPL": "*"
+		"ext-SPL": "*",
+		"ext-json": "*"
 	},
 	"require-dev": {
 		"donatj/drop": "*",
 		"donatj/mock-webserver": "~0.4.0",
-		"phpunit/phpunit": "4.*",
+		"phpunit/phpunit": "6.*",
 		"ralouphie/getallheaders": "^2.0",
 		"friendsofphp/php-cs-fixer": "^2.13"
 	},

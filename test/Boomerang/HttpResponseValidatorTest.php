@@ -4,23 +4,24 @@ namespace Boomerang\Test;
 
 use Boomerang\HttpResponseValidator;
 use Boomerang\Interfaces\HttpResponseInterface;
+use PHPUnit\Framework\TestCase;
 
-class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
+class HttpResponseValidatorTest extends TestCase {
 
 	public function testGetResponse() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit_Framework_MockObject_MockObject
+		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
 		 */
-		$mock  = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
+		$mock  = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
 		$valid = new HttpResponseValidator($mock);
 		$this->assertSame($mock, $valid->getResponse());
 	}
 
 	public function testExpectStatus() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit_Framework_MockObject_MockObject
+		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
 		 */
-		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
+		$mock = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
 		$mock->expects($this->any())
 			->method('getStatus')
 			->willReturn(200);
@@ -43,9 +44,9 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExpectHeader() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit_Framework_MockObject_MockObject
+		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
 		 */
-		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
+		$mock = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
 		$mock->expects($this->any())
 			->method('getHeader')
 			->willReturn('test');
@@ -80,9 +81,9 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExpectHeaderContains() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit_Framework_MockObject_MockObject
+		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
 		 */
-		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
+		$mock = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
 		$mock->expects($this->any())
 			->method('getHeader')
 			->willReturn('thisIsMyTestHeader');
@@ -117,9 +118,9 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExpectBody() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit_Framework_MockObject_MockObject
+		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
 		 */
-		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
+		$mock = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
 		$mock->expects($this->any())
 			->method('getBody')
 			->willReturn('test');
@@ -153,9 +154,9 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExpectBodyContains() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit_Framework_MockObject_MockObject
+		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
 		 */
-		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
+		$mock = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
 		$mock->expects($this->any())
 			->method('getBody')
 			->willReturn('thisIsMyTestHeader');

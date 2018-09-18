@@ -3,8 +3,9 @@
 namespace Boomerang\TypeExpectations\Test;
 
 use Boomerang\TypeExpectations\NumberEx;
+use PHPUnit\Framework\TestCase;
 
-class NumberExTest extends \PHPUnit_Framework_TestCase {
+class NumberExTest extends TestCase {
 
 	public function testBasicMatching() {
 
@@ -18,7 +19,6 @@ class NumberExTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(false, $x->match([ 1 ]));
 		$this->assertEquals(false, $x->match("1"));
 		$this->assertEquals(false, $x->match(true));
-
 	}
 
 	public function testRangeMatching() {
@@ -40,12 +40,11 @@ class NumberExTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(false, $x->match(1000));
 		$this->assertEquals(false, $x->match(-1000));
 
-//		$this->assertEquals(false, $x->match(9.9999999999999999999999));  this one is troublesome
+		//		$this->assertEquals(false, $x->match(9.9999999999999999999999));  this one is troublesome
 		$this->assertEquals(false, $x->match([ 1 ]));
 		$this->assertEquals(false, $x->match("1"));
 		$this->assertEquals(false, $x->match("-1"));
 		$this->assertEquals(false, $x->match(false));
-
 	}
 
 }
