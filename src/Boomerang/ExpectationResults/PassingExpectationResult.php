@@ -12,9 +12,9 @@ class PassingExpectationResult extends PassingResult {
 	protected $actual;
 
 	/**
-	 * @param ValidatorInterface   $validator
-	 * @param null|string $message
-	 * @param mixed       $actual
+	 * @param ValidatorInterface $validator
+	 * @param null|string        $message
+	 * @param mixed              $actual
 	 */
 	public function __construct( ValidatorInterface $validator, $message = null, $actual = null ) {
 		parent::__construct($validator, $message);

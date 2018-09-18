@@ -16,10 +16,10 @@ class FailingExpectationResult extends FailingResult {
 	protected $actual;
 
 	/**
-	 * @param ValidatorInterface   $validator
-	 * @param null|string $message
-	 * @param mixed       $expected
-	 * @param mixed       $actual
+	 * @param ValidatorInterface $validator
+	 * @param null|string        $message
+	 * @param mixed              $expected
+	 * @param mixed              $actual
 	 */
 	public function __construct( ValidatorInterface $validator, $message = null, $expected = null, $actual = null ) {
 		parent::__construct($validator, $message);

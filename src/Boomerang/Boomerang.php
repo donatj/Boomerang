@@ -33,10 +33,10 @@ class Boomerang {
 	/**
 	 * @var ValidatorInterface[]
 	 */
-	private static $validators = array();
+	private static $validators = [];
 
 	/**
-	 * @param                                 $args
+	 * @param  string[]                       $args
 	 * @param \Boomerang\Runner\UserInterface $ui
 	 * @return array|string[]
 	 * @throws \donatj\Exceptions\AbstractFlagException
@@ -50,7 +50,7 @@ class Boomerang {
 		if( is_readable(self::CONFIG_FILE) ) {
 			$config = parse_ini_file(self::CONFIG_FILE, true);
 		} else {
-			$config = array();
+			$config = [];
 		}
 
 		if( isset($config[$testSuite]) ) {
@@ -89,7 +89,7 @@ class Boomerang {
 			$ui->dropError($e->getMessage(), 1, $flags->getDefaults());
 		}
 
-		$paths = array();
+		$paths = [];
 
 		if( $flags->args() ) {
 			$paths = $flags->args();
@@ -135,9 +135,9 @@ class Boomerang {
 			$runner = new TestRunner(end($scan), self::$bootstrap);
 
 			$verbosity = self::$verbosity;
-			$displayed = array();
+			$displayed = [];
 			$runner->runTests(function ( $file ) use ( $ui, $verbosity, &$displayed ) {
-				$validators = array();
+				$validators = [];
 				foreach( Boomerang::$validators as $validator ) {
 					$hash = spl_object_hash($validator);
 
@@ -223,7 +223,8 @@ class Boomerang {
 	/**
 	 * Register a Validator with Boomerang
 	 *
-	 * After creating an instance of a Validator, it needs to be registered with Boomerang in order for results to be tallied and displayed.
+	 * After creating an instance of a Validator, it needs to be registered with Boomerang in order for results to be
+	 * tallied and displayed.
 	 *
 	 * @param ValidatorInterface $validator
 	 */

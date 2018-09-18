@@ -21,7 +21,7 @@ class RegexEx extends StringEx {
 	}
 
 	public function match( $data ) {
-		return parent::match($data) && preg_match( $this->pattern, $data );
+		return parent::match($data) && preg_match($this->pattern, $data);
 	}
 
 	public function getMatchingTypeName() {

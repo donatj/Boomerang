@@ -32,10 +32,10 @@ class AllEx extends StructureEx {
 		$this->structures = func_get_args();
 	}
 
-	public function match($data) {
+	public function match( $data ) {
 		$pass = true;
 
-		foreach($this->structures as $struct) {
+		foreach( $this->structures as $struct ) {
 			list($passing, $expectations) = $this->__validate($data, $struct);
 			$this->addExpectationResults($expectations);
 			$pass = $pass && $passing;
