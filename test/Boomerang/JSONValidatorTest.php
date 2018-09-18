@@ -18,7 +18,6 @@ class JSONValidatorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertCount(1, $results);
 		$this->assertInstanceOf('\\Boomerang\\ExpectationResults\\FailingResult', reset($results));
 
-
 		$mock = $this->_getMockResponse( '[1,2,3]' );
 
 		$json    = new JSONValidator($mock);

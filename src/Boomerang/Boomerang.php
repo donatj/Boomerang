@@ -37,7 +37,6 @@ class Boomerang {
 
 	/**
 	 * @param  string[]                       $args
-	 * @param \Boomerang\Runner\UserInterface $ui
 	 * @return array|string[]
 	 * @throws \donatj\Exceptions\AbstractFlagException
 	 */
@@ -73,7 +72,7 @@ class Boomerang {
 			}
 		}
 
-		self::$bootstrap = &$flags->string('bootstrap', isset($suite['bootstrap']) ? $suite['bootstrap'] : false, 'A "bootstrap" PHP file that is run before the specs.');
+		self::$bootstrap = &$flags->string('bootstrap', $suite['bootstrap'] ?? false, 'A "bootstrap" PHP file that is run before the specs.');
 		self::$verbosity = &$flags->short('v', 'Output in verbose mode');
 
 		$displayHelp    = &$flags->bool('help', false, 'Display this help message.');
@@ -100,13 +99,16 @@ class Boomerang {
 		switch( true ) {
 			case isset($selfUpdate) && $selfUpdate:
 				self::selfUpdate($ui);
+
 				die(0);
 			case $displayVersion:
 				self::versionMarker($ui);
+
 				die(0);
 			case $displayHelp:
 			case count($paths) < 1: //should come last because of this
 				$ui->dumpOptions($flags->getDefaults());
+
 				die(1);
 		}
 
@@ -116,7 +118,7 @@ class Boomerang {
 	/**
 	 * @access private
 	 */
-	static function main( $args ) {
+	public static function main( $args ) {
 		$start = microtime(true);
 
 		$stdout = fopen('php://stdout', 'w');
@@ -225,8 +227,6 @@ class Boomerang {
 	 *
 	 * After creating an instance of a Validator, it needs to be registered with Boomerang in order for results to be
 	 * tallied and displayed.
-	 *
-	 * @param ValidatorInterface $validator
 	 */
 	public static function addValidator( ValidatorInterface $validator ) {
 		self::$validators[] = $validator;

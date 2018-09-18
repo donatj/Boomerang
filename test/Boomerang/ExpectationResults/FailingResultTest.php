@@ -7,7 +7,7 @@ use Boomerang\Interfaces\ValidatorInterface;
 
 class FailingResultTest extends \PHPUnit_Framework_TestCase {
 
-	function testGetFail() {
+	public function testGetFail() {
 		/**
 		 * @var $mockValidator ValidatorInterface
 		 */

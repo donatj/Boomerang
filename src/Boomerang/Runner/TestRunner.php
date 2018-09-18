@@ -37,13 +37,12 @@ class TestRunner {
 		if( is_dir($path) ) {
 			$dir   = new \RecursiveDirectoryIterator($path);
 			$ite   = new \RecursiveIteratorIterator($dir);
-			$files = new \RegexIterator($ite, "/Spec\.php$/");
 
-			return $files;
-		} elseif( is_readable($path) ) {
-			return new \ArrayIterator(array( $path ));
+			return new \RegexIterator($ite, "/Spec\\.php$/");
 		}
-
+		if( is_readable($path) ) {
+			return new \ArrayIterator([ $path ]);
+		}
 
 		throw new CliRuntimeException("Cannot find file \"$path\"");
 	}

@@ -7,7 +7,6 @@ use Boomerang\Interfaces\HttpResponseInterface;
 
 class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 
-
 	public function testGetResponse() {
 		/**
 		 * @var $mock HttpResponseInterface|\PHPUnit_Framework_MockObject_MockObject

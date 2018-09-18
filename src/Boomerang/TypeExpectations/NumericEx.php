@@ -24,8 +24,8 @@ class NumericEx implements TypeExpectationInterface {
 	protected $max;
 
 	/**
-	 * @param null|int|float $min Optional minimum valid value
-	 * @param null|int|float $max Optional maximum valid value
+	 * @param float|int|null $min Optional minimum valid value
+	 * @param float|int|null $max Optional maximum valid value
 	 */
 	public function __construct( $min = null, $max = null ) {
 		$this->min = $min;

@@ -23,42 +23,35 @@ class AllExTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(true, $x->match(true));
 
-
 		$x = new AllEx($mockFail);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(false, $x->match(true));
-
 
 		$x = new AllEx($mockPass, $mockPass);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(true, $x->match(true));
 
-
 		$x = new AllEx($mockFail, $mockFail);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(false, $x->match(true));
-
 
 		$x = new AllEx($mockPass, $mockPass, $mockPass);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(true, $x->match(true));
 
-
 		$x = new AllEx($mockPass, $mockFail, $mockPass);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(false, $x->match(true));
 
-
 		$x = new AllEx($mockPass, function () { return true; }, $mockPass);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(true, $x->match(true));
-
 
 		$x = new AllEx($mockPass, function () { return false; }, $mockPass);
 		$x->setValidator($mockValidator);

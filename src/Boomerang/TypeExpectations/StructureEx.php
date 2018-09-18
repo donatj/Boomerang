@@ -18,12 +18,12 @@ use Boomerang\Interfaces\ValidatorInterface;
 class StructureEx implements TypeExpectationInterface {
 
 	protected $structure;
-	protected $path = array();
+	protected $path = [];
 
 	/**
 	 * @var \Boomerang\Interfaces\ExpectationResultInterface[]
 	 */
-	protected $expectationResults = array();
+	protected $expectationResults = [];
 
 	/**
 	 * @var ValidatorInterface
@@ -31,7 +31,7 @@ class StructureEx implements TypeExpectationInterface {
 	private $validator;
 
 	/**
-	 * @param TypeExpectationInterface|callable|mixed $structure
+	 * @param callable|mixed|TypeExpectationInterface $structure
 	 */
 	public function __construct( $structure ) {
 		$this->structure = $structure;
@@ -55,19 +55,19 @@ class StructureEx implements TypeExpectationInterface {
 	/**
 	 * @access private
 	 *
-	 * @param array|int|float|string $data
+	 * @param array|float|int|string $data
 	 * @return bool
 	 */
 	public function match( $data ) {
-		list($pass, $expectations) = $this->__validate($data, $this->structure);
+		[$pass, $expectations] = $this->__validate($data, $this->structure);
 		$this->addExpectationResults($expectations);
 
 		return $pass;
 	}
 
 	/**
-	 * @param array|int|float|string                                               $data
-	 * @param array|int|float|string|StructureEx|TypeExpectationInterface|\Closure $validation
+	 * @param array|float|int|string                                               $data
+	 * @param array|\Closure|float|int|string|StructureEx|TypeExpectationInterface $validation
 	 * @param array                                                                $path
 	 * @return array
 	 */
@@ -75,7 +75,7 @@ class StructureEx implements TypeExpectationInterface {
 		/**
 		 * @var $expectations \Boomerang\ExpectationResults\AbstractResult[]
 		 */
-		$expectations = array();
+		$expectations = [];
 
 		if( !$path ) {
 			$path = $this->path;
@@ -91,7 +91,7 @@ class StructureEx implements TypeExpectationInterface {
 				$firstIsZero = key($validation) === 0;
 				foreach( $validation as $key => $value ) {
 					if( array_key_exists($key, $data) ) {
-						list($passing, $sub_expectations) = $this->__validate($data[$key], $value, array_merge($path, array( $key )));
+						[$passing, $sub_expectations] = $this->__validate($data[$key], $value, array_merge($path, [ $key ]));
 						$expectations = array_merge($expectations, $sub_expectations);
 						$pass         = $passing && $pass;
 					} else {
@@ -143,11 +143,10 @@ class StructureEx implements TypeExpectationInterface {
 			}
 		}
 
-		return array( $pass, $expectations );
+		return [ $pass, $expectations ];
 	}
 
 	/**
-	 * @param array $path
 	 * @return string
 	 */
 	protected function makePathName( array $path ) {
@@ -172,7 +171,6 @@ class StructureEx implements TypeExpectationInterface {
 
 	/**
 	 * @access private
-	 * @param array $path
 	 */
 	public function setPath( array $path ) {
 		$this->path = $path;
@@ -205,7 +203,7 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
-	 * @param float|int|string|array $data
+	 * @param array|float|int|string $data
 	 * @return string
 	 */
 	private function getScalarTypeName( $data ) {

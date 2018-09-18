@@ -18,8 +18,7 @@ abstract class AbstractResult implements ExpectationResultInterface {
 	protected $validator;
 
 	/**
-	 * @param ValidatorInterface $validator
-	 * @param null|string        $message
+	 * @param string|null        $message
 	 */
 	public function __construct( ValidatorInterface $validator, $message = null ) {
 		$this->message   = $message;
@@ -27,7 +26,7 @@ abstract class AbstractResult implements ExpectationResultInterface {
 	}
 
 	/**
-	 * @return String
+	 * @return string
 	 */
 	public function getMessage() {
 		return $this->message;

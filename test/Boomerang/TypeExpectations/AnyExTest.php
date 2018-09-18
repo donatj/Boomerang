@@ -12,48 +12,40 @@ class AnyExTest extends \PHPUnit_Framework_TestCase {
 		$mockPass = $this->_getTypeExpectationInterface(true);
 		$mockFail = $this->_getTypeExpectationInterface(false);
 
-
 		$x = new AnyEx($mockPass);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(true, $x->match(true));
-
 
 		$x = new AnyEx($mockFail);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(false, $x->match(true));
 
-
 		$x = new AnyEx($mockPass, $mockPass);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(true, $x->match(true));
-
 
 		$x = new AnyEx($mockFail, $mockFail);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(false, $x->match(true));
 
-
 		$x = new AnyEx($mockPass, $mockPass, $mockPass);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(true, $x->match(true));
-
 
 		$x = new AnyEx($mockPass, $mockFail, $mockPass);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(true, $x->match(true));
 
-
 		$x = new AnyEx($mockPass, function () { return true; }, $mockPass);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(true, $x->match(true));
-
 
 		$x = new AnyEx($mockPass, function () { return false; }, $mockPass);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));

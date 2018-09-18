@@ -22,7 +22,8 @@
 		"donatj/drop": "*",
 		"donatj/mock-webserver": "~0.4.0",
 		"phpunit/phpunit": "4.*",
-		"ralouphie/getallheaders": "^2.0"
+		"ralouphie/getallheaders": "^2.0",
+		"friendsofphp/php-cs-fixer": "^2.13"
 	},
 	"authors": [
 		{

@@ -18,7 +18,7 @@ class IterateArrayEx extends IterateStructureEx {
 
 		if( $pass && !static::validType($data) ) {
 			$pathname = $this->makePathName($this->path);
-			$this->addExpectationResults(array( new FailingExpectationResult($this->getValidator(), "Unexpected structure type\n{$pathname}", static::getMatchingTypeName()) ));
+			$this->addExpectationResults([ new FailingExpectationResult($this->getValidator(), "Unexpected structure type\n{$pathname}", static::getMatchingTypeName()) ]);
 			$pass = false;
 		}
 
@@ -41,4 +41,3 @@ class IterateArrayEx extends IterateStructureEx {
 	}
 
 }
-

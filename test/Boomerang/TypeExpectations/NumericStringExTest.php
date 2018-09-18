@@ -22,7 +22,7 @@ class NumericStringExTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(true, $x->match("-1000"));
 
 		$this->assertEquals(false, $x->match(1.1));
-		$this->assertEquals(false, $x->match(array( 1 )));
+		$this->assertEquals(false, $x->match([ 1 ]));
 		$this->assertEquals(true, $x->match("1"));
 		$this->assertEquals(false, $x->match(true));
 
@@ -65,9 +65,8 @@ class NumericStringExTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(false, $x->match('1000'));
 		$this->assertEquals(false, $x->match('-1000'));
 
-
 //		$this->assertEquals(false, $x->match(9.9999999999999999999999));  this one is troublesome
-		$this->assertEquals(false, $x->match(array( 1 )));
+		$this->assertEquals(false, $x->match([ 1 ]));
 		$this->assertEquals(true, $x->match("1"));
 		$this->assertEquals(true, $x->match("-1"));
 		$this->assertEquals(false, $x->match(false));

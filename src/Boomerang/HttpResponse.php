@@ -28,7 +28,6 @@ class HttpResponse implements HttpResponseInterface {
 	/**
 	 * @param string           $body The body of the HTTP Request
 	 * @param string           $headers
-	 * @param HttpRequest|null $request
 	 */
 	public function __construct( $body, $headers, HttpRequest $request = null ) {
 		$this->body       = $body;
@@ -56,9 +55,8 @@ class HttpResponse implements HttpResponseInterface {
 		$s = str_replace("\r\n", "\n", $s);
 		$s = str_replace("\r", "\n", $s);
 		$s = str_replace("\n", "\r\n", $s);
-		$s = trim($s);
 
-		return $s;
+		return trim($s);
 	}
 
 	/**
@@ -66,7 +64,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @return string[]
 	 */
 	private function parseHeaders( $rawHeaders ) {
-		$headers = array();
+		$headers = [];
 		$key     = '';
 
 		foreach( explode("\n", $rawHeaders) as $i => $h ) {
@@ -76,9 +74,9 @@ class HttpResponse implements HttpResponseInterface {
 				if( !isset($headers[$h[0]]) ) {
 					$headers[$h[0]] = trim($h[1]);
 				} elseif( is_array($headers[$h[0]]) ) {
-					$headers[$h[0]] = array_merge($headers[$h[0]], array( trim($h[1]) ));
+					$headers[$h[0]] = array_merge($headers[$h[0]], [ trim($h[1]) ]);
 				} else {
-					$headers[$h[0]] = array_merge(array( $headers[$h[0]] ), array( trim($h[1]) ));
+					$headers[$h[0]] = array_merge([ $headers[$h[0]] ], [ trim($h[1]) ]);
 				}
 
 				$key = $h[0];
@@ -91,17 +89,15 @@ class HttpResponse implements HttpResponseInterface {
 			}
 		}
 
-		$headers = array_change_key_case($headers);
-
-		return $headers;
+		return array_change_key_case($headers);
 	}
 
 	/**
 	 * Get a response header by name.
 	 *
 	 * @param string   $header
-	 * @param null|int $hop
-	 * @return null|string Header value or null on not found
+	 * @param int|null $hop
+	 * @return string|null Header value or null on not found
 	 */
 	public function getHeader( $header, $hop = null ) {
 		$headers = $this->getHeaders($hop);
@@ -116,7 +112,7 @@ class HttpResponse implements HttpResponseInterface {
 	/**
 	 * Get response headers as a HeaderName => Value array
 	 *
-	 * @param null|int $hop The zero indexed hop(redirect). Defaults to the final hop.
+	 * @param int|null $hop The zero indexed hop(redirect). Defaults to the final hop.
 	 * @return array|null
 	 */
 	public function getHeaders( $hop = null ) {

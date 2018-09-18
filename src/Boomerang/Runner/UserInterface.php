@@ -180,11 +180,12 @@ EOT;
 	/**
 	 * @param string      $text
 	 * @param int         $code
-	 * @param null|string $additional
+	 * @param string|null $additional
 	 */
 	public function dropError( $text, $code = 1, $additional = null ) {
 		Output::$stream = $this->stderr;
 		Output::string(Boomerang::$pathInfo['basename'] . ": " . Style::red($text) . PHP_EOL . ($additional ? $additional . PHP_EOL : ''));
+
 		die($code);
 	}
 
