@@ -1,15 +1,20 @@
 imports:
-    - php
+  - php
 
 build:
-    tests:
+  nodes:
+    analysis:
+      tests:
         override:
-            -
-                command: vendor/bin/phpunit --coverage-clover=coverage.xml
-                coverage:
-                    file: coverage.xml
-                    format: php-clover
+        - php-scrutinizer-run
+  tests:
+      override:
+          -
+              command: vendor/bin/phpunit --coverage-clover=coverage.xml
+              coverage:
+                  file: coverage.xml
+                  format: php-clover
 
 filter:
-    excluded_paths:
-      - test/
+  excluded_paths:
+    - test/
