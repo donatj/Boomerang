@@ -87,7 +87,7 @@ class HttpResponseValidator extends AbstractValidator {
 	public function expectHeaderContains( $key, $value, $hop = null ) {
 		$header = $this->response->getHeader($key, $hop);
 
-		if( !$header || strpos($header, $value) === false ) {
+		if( !$header || !$value || strpos($header, $value) === false ) {
 			$this->expectations[] = new FailingExpectationResult($this, "Unexpected header contains: " . var_export($key, true), $value, $header);
 		} else {
 			$this->expectations[] = new PassingExpectationResult($this, "Expected header contains: " . var_export($key, true), $header);
