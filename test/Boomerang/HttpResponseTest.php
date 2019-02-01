@@ -15,7 +15,7 @@ Content-language:en
 
 
 EOT;
-		$response = new HttpResponse("", $headers);
+		$response = new HttpResponse('', $headers);
 
 		$this->assertEquals($headers, $response->getRawHeaders());
 		$this->assertSame(1, $response->getHopCount());
@@ -24,7 +24,7 @@ EOT;
 	//@todo add just \r's hard, and \r\n's hard
 
 	public function testBasicHeaderParsing() {
-		$response = new HttpResponse("", <<<EOT
+		$response = new HttpResponse('', <<<EOT
 HTTP/1.1 200 OK
 Cache-Control:no-store, no-cache, must-revalidate, post-check=0, pre-check=0
 Connection:close

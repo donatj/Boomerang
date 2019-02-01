@@ -24,14 +24,14 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
 			->method('getStatus')
-			->will($this->returnValue(200));
+			->willReturn(200);
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectStatus(200);
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(false, $lastExpectation->getFail());
+		$this->assertFalse($lastExpectation->getFail());
 
 		# ==
 
@@ -39,7 +39,7 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(true, $lastExpectation->getFail());
+		$this->assertTrue($lastExpectation->getFail());
 	}
 
 	public function testExpectHeader() {
@@ -49,14 +49,14 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
 			->method('getHeader')
-			->will($this->returnValue('test'));
+			->willReturn('test');
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectHeader('test', 'test');
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(false, $lastExpectation->getFail());
+		$this->assertFalse($lastExpectation->getFail());
 
 		# == Fail
 
@@ -64,13 +64,13 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(true, $lastExpectation->getFail());
+		$this->assertTrue($lastExpectation->getFail());
 
 		# == False
 
 		$mock->expects($this->any())
 			->method('getHeader')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$valid->expectHeader('test', false);
 		$expResults      = $valid->getExpectationResults();
@@ -86,14 +86,14 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
 			->method('getHeader')
-			->will($this->returnValue('thisIsMyTestHeader'));
+			->willReturn('thisIsMyTestHeader');
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectHeaderContains('test', 'IsMyTest');
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(false, $lastExpectation->getFail());
+		$this->assertFalse($lastExpectation->getFail());
 
 		# == Fail
 
@@ -101,19 +101,19 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(true, $lastExpectation->getFail());
+		$this->assertTrue($lastExpectation->getFail());
 
 		# == False
 
 		$mock->expects($this->any())
 			->method('getHeader')
-			->will($this->returnValue(false));
+			->willReturn(false);
 
 		$valid->expectHeaderContains('test', false);
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(true, $lastExpectation->getFail());
+		$this->assertTrue($lastExpectation->getFail());
 	}
 
 	public function testExpectBody() {
@@ -123,14 +123,14 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
 			->method('getBody')
-			->will($this->returnValue('test'));
+			->willReturn('test');
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectBody('test');
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(false, $lastExpectation->getFail());
+		$this->assertFalse($lastExpectation->getFail());
 
 		# == Fail
 
@@ -138,7 +138,7 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(true, $lastExpectation->getFail());
+		$this->assertTrue($lastExpectation->getFail());
 
 		# == False
 
@@ -159,14 +159,14 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$mock = $this->getMock('Boomerang\\Interfaces\\HttpResponseInterface');
 		$mock->expects($this->any())
 			->method('getBody')
-			->will($this->returnValue('thisIsMyTestHeader'));
+			->willReturn('thisIsMyTestHeader');
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectBodyContains('IsMyTest');
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(false, $lastExpectation->getFail());
+		$this->assertFalse($lastExpectation->getFail());
 
 		# == Fail
 
@@ -174,7 +174,7 @@ class HttpResponseValidatorTest extends \PHPUnit_Framework_TestCase {
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
-		$this->assertSame(true, $lastExpectation->getFail());
+		$this->assertTrue($lastExpectation->getFail());
 
 		# == False
 

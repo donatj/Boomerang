@@ -49,18 +49,16 @@ class AnyExTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(true, $x->match(true));
 
 
-		$x = new AnyEx($mockPass, function(){ return true; }, $mockPass);
+		$x = new AnyEx($mockPass, function () { return true; }, $mockPass);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(true, $x->match(true));
 
 
-		$x = new AnyEx($mockPass, function(){ return false; }, $mockPass);
+		$x = new AnyEx($mockPass, function () { return false; }, $mockPass);
 		$x->setValidator($this->getMock('Boomerang\\Interfaces\\ValidatorInterface'));
 
 		$this->assertEquals(true, $x->match(true));
-
-
 	}
 
 	/**
@@ -70,8 +68,8 @@ class AnyExTest extends \PHPUnit_Framework_TestCase {
 	private function _getTypeExpectationInterface( $bool ) {
 		$mock = $this->getMock('Boomerang\\Interfaces\\TypeExpectationInterface');
 		$mock->expects($this->any())
-		->method('match')
-		->will($this->returnValue($bool));
+			->method('match')
+			->willReturn($bool);
 
 		return $mock;
 	}

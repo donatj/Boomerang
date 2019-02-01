@@ -64,8 +64,6 @@ class AllExTest extends \PHPUnit_Framework_TestCase {
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(false, $x->match(true));
-
-
 	}
 
 	/**
@@ -75,8 +73,8 @@ class AllExTest extends \PHPUnit_Framework_TestCase {
 	private function _getTypeExpectationInterface( $bool ) {
 		$mock = $this->getMock('Boomerang\\Interfaces\\TypeExpectationInterface');
 		$mock->expects($this->any())
-		->method('match')
-		->will($this->returnValue($bool));
+			->method('match')
+			->willReturn($bool);
 
 		return $mock;
 	}
