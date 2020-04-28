@@ -1,7 +1,7 @@
 {
 	"name": "boomerang/boomerang",
 	"type": "library",
-	"homepage": "http://boomerang.work/",
+	"homepage": "https://boomerang.work/",
 	"description": "The Boomerang API Endpoint Testing Framework.",
 	"keywords": [
 		"api",
