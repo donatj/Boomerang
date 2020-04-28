@@ -16,7 +16,9 @@
 		"donatj/flags": "~1",
 		"php": ">=5.4.0",
 		"ext-curl": "*",
-		"ext-SPL": "*"
+		"ext-SPL": "*",
+		"ext-json": "*",
+		"ext-http": "*"
 	},
 	"require-dev": {
 		"donatj/drop": "*",
