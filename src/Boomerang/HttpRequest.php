@@ -370,6 +370,7 @@ class HttpRequest {
 		}
 
 		if( count($this->cookies) > 0 ) {
+			// @todo This does not work without http extension… find a better solution
 			curl_setopt($ch, CURLOPT_COOKIE, http_build_cookie($this->cookies));
 		}
 

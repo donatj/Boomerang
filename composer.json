@@ -17,8 +17,7 @@
 		"php": ">=5.4.0",
 		"ext-curl": "*",
 		"ext-SPL": "*",
-		"ext-json": "*",
-		"ext-http": "*"
+		"ext-json": "*"
 	},
 	"require-dev": {
 		"donatj/drop": "*",
