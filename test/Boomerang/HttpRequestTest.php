@@ -3,6 +3,7 @@
 namespace Boomerang\Test;
 
 use Boomerang\HttpRequest;
+use donatj\MockWebServer\Response;
 
 class HttpRequestTest extends \BaseServerTest {
 
@@ -144,13 +145,16 @@ class HttpRequestTest extends \BaseServerTest {
 			return $mockResponse;
 		});
 
+
 		$endpoint = self::$server->getUrlOfResponse(
-			'redirecting to: /sauce',
-			[
-				'Set-Cookie: sessionid=38afes7a8; Path=/',
-				'Location: /sauce',
-			],
-			301
+			new Response(
+				'redirecting to: /sauce',
+				[
+					'Set-Cookie: sessionid=38afes7a8; Path=/',
+					'Location: /sauce',
+				],
+				301
+			)
 		);
 
 		$req = new HttpRequest($endpoint, $mockFactory);
