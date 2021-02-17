@@ -3,8 +3,9 @@
 namespace Boomerang\TypeExpectations\Test;
 
 use Boomerang\TypeExpectations\NumericEx;
+use PHPUnit\Framework\TestCase;
 
-class NumericExTest extends \PHPUnit_Framework_TestCase {
+class NumericExTest extends TestCase {
 
 	public function testBasicMatching() {
 
