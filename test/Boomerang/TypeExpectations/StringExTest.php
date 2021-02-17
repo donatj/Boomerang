@@ -3,8 +3,9 @@
 namespace Boomerang\TypeExpectations\Test;
 
 use Boomerang\TypeExpectations\StringEx;
+use PHPUnit\Framework\TestCase;
 
-class StringExTest extends \PHPUnit_Framework_TestCase {
+class StringExTest extends TestCase {
 
 	public function testBasicMatching() {
 
