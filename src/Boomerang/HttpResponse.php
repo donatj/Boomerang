@@ -2,6 +2,7 @@
 
 namespace Boomerang;
 
+use Boomerang\Exceptions\ResponseException;
 use Boomerang\Interfaces\HttpResponseInterface;
 
 /**
@@ -188,8 +189,12 @@ class HttpResponse implements HttpResponseInterface {
 		$headers = $this->getHeaders($hop);
 
 		if( $headers && isset($headers[0]) ) {
-			preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $headers[0], $match);
-			if( $status = intval($match[1]) ) {
+			preg_match('%HTTP/\d(?:\.\d)?\s+(\d+)(\s+.*|$)%', $headers[0], $match);
+			if(!isset($match[1])) {
+				throw new ResponseException("Failed to parse protocol '{$headers[0]}'");
+			}
+
+			if( $status = (int)$match[1] ) {
 				return $status;
 			}
 		}
