@@ -255,4 +255,30 @@ EOT
 		$this->assertNull($response->getStatus());
 	}
 
+	public function testHttp2ProtocolParse(){
+		$body = 'Testing the new HTTP-2 Body';
+		$response = new HttpResponse($body, <<<EOT
+HTTP/2 401
+Date: Mon, 26 Aug 2013 22:13:30 GMT
+Server: Apache/2.4.15 PHP/7.3.27
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+EOT
+		);
+
+		$this->assertSame( 401, $response->getStatus());
+	}
+
+	public function testProtocolException(){
+		$this->expectException('\Boomerang\Exceptions\ResponseException');
+		$response = new HttpResponse('', <<<EOT
+HTTP/NOT-SUPPORTED 401
+Date: Mon, 26 Aug 2013 22:13:30 GMT
+Server: Apache/2.4.15 PHP/7.3.27
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+EOT
+		);
+
+		$response->getStatus();
+	}
+
 }
