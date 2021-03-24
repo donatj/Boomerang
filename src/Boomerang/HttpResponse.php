@@ -43,8 +43,7 @@ class HttpResponse implements HttpResponseInterface {
 		}
 
 		$this->headerSets = $headers_split;
-
-		$this->request = $request;
+		$this->request    = $request;
 	}
 
 	/**
@@ -54,12 +53,9 @@ class HttpResponse implements HttpResponseInterface {
 	 * @return string
 	 */
 	private function normalizeHeaders( $s ) {
-		$s = str_replace("\r\n", "\n", $s);
-		$s = str_replace("\r", "\n", $s);
-		$s = str_replace("\n", "\r\n", $s);
-		$s = trim($s);
+		$s = str_replace([ "\r\n", "\r", "\n" ], [ "\n", "\n", "\r\n" ], $s);
 
-		return $s;
+		return trim($s);
 	}
 
 	/**
@@ -67,7 +63,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @return string[]
 	 */
 	private function parseHeaders( $rawHeaders ) {
-		$headers = array();
+		$headers = [];
 		$key     = '';
 
 		foreach( explode("\n", $rawHeaders) as $i => $h ) {
@@ -77,24 +73,20 @@ class HttpResponse implements HttpResponseInterface {
 				if( !isset($headers[$h[0]]) ) {
 					$headers[$h[0]] = trim($h[1]);
 				} elseif( is_array($headers[$h[0]]) ) {
-					$headers[$h[0]] = array_merge($headers[$h[0]], array( trim($h[1]) ));
+					$headers[$h[0]] = array_merge($headers[$h[0]], [ trim($h[1]) ]);
 				} else {
-					$headers[$h[0]] = array_merge(array( $headers[$h[0]] ), array( trim($h[1]) ));
+					$headers[$h[0]] = array_merge([ $headers[$h[0]] ], [ trim($h[1]) ]);
 				}
 
 				$key = $h[0];
-			} else {
-				if( substr($h[0], 0, 1) == "\t" )
-					$headers[$key] .= "\r\n\t" . trim($h[0]);
-				elseif( !$key )
-					$headers[0] = trim($h[0]);
-				trim($h[0]);
+			} elseif( strpos($h[0], "\t") === 0 ) {
+				$headers[$key] .= "\r\n\t" . trim($h[0]);
+			} elseif( !$key ) {
+				$headers[0] = trim($h[0]);
 			}
 		}
 
-		$headers = array_change_key_case($headers);
-
-		return $headers;
+		return array_change_key_case($headers);
 	}
 
 	/**
@@ -190,7 +182,7 @@ class HttpResponse implements HttpResponseInterface {
 
 		if( $headers && isset($headers[0]) ) {
 			preg_match('%HTTP/\d(?:\.\d)?\s+(\d+)(\s+.*|$)%', $headers[0], $match);
-			if(!isset($match[1])) {
+			if( !isset($match[1]) ) {
 				throw new ResponseException("Failed to parse protocol '{$headers[0]}'");
 			}
 
