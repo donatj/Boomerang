@@ -268,8 +268,11 @@ EOT
 		$this->assertSame( 401, $response->getStatus());
 	}
 
+
+	/**
+	 * @expectedException \Boomerang\Exceptions\ResponseException
+	 */
 	public function testProtocolException(){
-		$this->expectException('\Boomerang\Exceptions\ResponseException');
 		$response = new HttpResponse('', <<<EOT
 HTTP/NOT-SUPPORTED 401
 Date: Mon, 26 Aug 2013 22:13:30 GMT
