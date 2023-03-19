@@ -2,6 +2,7 @@
 
 namespace Boomerang;
 
+use Boomerang\Exceptions\BoomerangException;
 use Boomerang\Exceptions\CliExceptionInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\Runner\TestRunner;
@@ -172,6 +173,8 @@ class Boomerang {
 			exit($fails ? 2 : 0);
 		} catch( CliExceptionInterface $ex ) {
 			$ui->dropError($ex->getMessage(), $ex->getExitCode());
+		} catch ( BoomerangException $ex ) {
+			$ui->dropError($ex->getMessage(), 3);
 		}
 	}
 

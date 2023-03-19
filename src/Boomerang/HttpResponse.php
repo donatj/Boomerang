@@ -183,6 +183,9 @@ class HttpResponse implements HttpResponseInterface {
 		if( $headers && isset($headers[0]) ) {
 			preg_match('%HTTP/\d(?:\.\d)?\s+(\d+)(\s+.*|$)%', $headers[0], $match);
 			if( !isset($match[1]) ) {
+				if($this->request) {
+					throw new ResponseException("Failed to parse response protocol '{$headers[0]}' on request '{$this->request->getEndpoint()}'");
+				}
 				throw new ResponseException("Failed to parse protocol '{$headers[0]}'");
 			}
 

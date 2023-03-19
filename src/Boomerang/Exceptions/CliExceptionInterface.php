@@ -2,7 +2,7 @@
 
 namespace Boomerang\Exceptions;
 
-interface CliExceptionInterface {
+interface CliExceptionInterface extends BoomerangException {
 
 	/**
 	 * @return int

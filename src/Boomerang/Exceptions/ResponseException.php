@@ -2,6 +2,6 @@
 
 namespace Boomerang\Exceptions;
 
-class ResponseException extends \RuntimeException {
+class ResponseException extends \RuntimeException implements BoomerangException {
 
 }
