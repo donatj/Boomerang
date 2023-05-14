@@ -164,27 +164,6 @@ class HttpRequest {
 	}
 
 	/**
-	 * Retrieve an post value by name.
-	 *
-	 * @deprecated Use getFormValue instead
-	 */
-	public function getPost( string $key ) : ?string {
-		return $this->body[$key] ?? null;
-	}
-
-	/**
-	 * Set a named key of the post value
-	 *
-	 * Note that this has the side effect of changing the HTTP Method to POST
-	 *
-	 * @deprecated Use setMethod and setFormValue instead
-	 */
-	public function setPost( string $key, $value ) : void {
-		$this->method = self::POST;
-		$this->setFormValue($key, $value);
-	}
-
-	/**
 	 * Set a named key of the form values
 	 *
 	 * Note that if there is a non-form body set, this will replace it.
@@ -204,28 +183,6 @@ class HttpRequest {
 	 */
 	public function getFormValue( string $key ) {
 		return $this->body[$key] ?? null;
-	}
-
-	/**
-	 * Retrieve all queued post-data as an array.
-	 *
-	 * @return array|string
-	 * @deprecated Use getBody instead
-	 */
-	public function getPostData() {
-		return $this->getBody();
-	}
-
-	/**
-	 * Set all post data, whipping past values.
-	 *
-	 * Note that this has the side effect of changing the HTTP Method to POST
-	 *
-	 * @deprecated Use setBody instead
-	 */
-	public function setPostData( array $post ) : void {
-		$this->method = self::POST;
-		$this->setBody($post);
 	}
 
 	/**
