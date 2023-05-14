@@ -1,14 +1,15 @@
 <?php
 
-namespace Boomerang\TypeExpectations\Test;
+namespace Tests\Boomerang\TypeExpectations;
 
 use Boomerang\Interfaces\TypeExpectationInterface;
+use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\TypeExpectations\AllEx;
 use PHPUnit\Framework\TestCase;
 
 class AllExTest extends TestCase {
 
-	public function testMatch() {
+	public function testMatch() : void {
 
 		$mockPass = $this->_getTypeExpectationInterface(true);
 		$mockFail = $this->_getTypeExpectationInterface(false);
@@ -16,55 +17,54 @@ class AllExTest extends TestCase {
 		/**
 		 * @var ValidatorInterface $mockValidator
 		 */
-		$mockValidator = $this->getMockBuilder('Boomerang\\Interfaces\\ValidatorInterface')->getMock();
+		$mockValidator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
 
 		$x = new AllEx($mockPass);
 		$x->setValidator($mockValidator);
 
-		$this->assertEquals(true, $x->match(true));
+		$this->assertTrue($x->match(true));
 
 		$x = new AllEx($mockFail);
 		$x->setValidator($mockValidator);
 
-		$this->assertEquals(false, $x->match(true));
+		$this->assertFalse($x->match(true));
 
 		$x = new AllEx($mockPass, $mockPass);
 		$x->setValidator($mockValidator);
 
-		$this->assertEquals(true, $x->match(true));
+		$this->assertTrue($x->match(true));
 
 		$x = new AllEx($mockFail, $mockFail);
 		$x->setValidator($mockValidator);
 
-		$this->assertEquals(false, $x->match(true));
+		$this->assertFalse($x->match(true));
 
 		$x = new AllEx($mockPass, $mockPass, $mockPass);
 		$x->setValidator($mockValidator);
 
-		$this->assertEquals(true, $x->match(true));
+		$this->assertTrue($x->match(true));
 
 		$x = new AllEx($mockPass, $mockFail, $mockPass);
 		$x->setValidator($mockValidator);
 
-		$this->assertEquals(false, $x->match(true));
+		$this->assertFalse($x->match(true));
 
 		$x = new AllEx($mockPass, function () { return true; }, $mockPass);
 		$x->setValidator($mockValidator);
 
-		$this->assertEquals(true, $x->match(true));
+		$this->assertTrue($x->match(true));
 
 		$x = new AllEx($mockPass, function () { return false; }, $mockPass);
 		$x->setValidator($mockValidator);
 
-		$this->assertEquals(false, $x->match(true));
+		$this->assertFalse($x->match(true));
 	}
 
 	/**
-	 * @param bool $bool
 	 * @return \PHPUnit\Framework\MockObject\MockObject|TypeExpectationInterface
 	 */
-	private function _getTypeExpectationInterface( $bool ) {
-		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\TypeExpectationInterface')->getMock();
+	private function _getTypeExpectationInterface( bool $bool ) {
+		$mock = $this->getMockBuilder(TypeExpectationInterface::class)->getMock();
 		$mock->method('match')
 			->willReturn($bool);
 

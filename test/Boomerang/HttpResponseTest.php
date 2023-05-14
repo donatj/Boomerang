@@ -1,13 +1,14 @@
 <?php
 
-namespace Boomerang\Test;
+namespace Tests\Boomerang;
 
+use Boomerang\Exceptions\ResponseException;
 use Boomerang\HttpResponse;
 use PHPUnit\Framework\TestCase;
 
 class HttpResponseTest extends TestCase {
 
-	public function testGetRawHeaders() {
+	public function testGetRawHeaders() : void {
 		$headers  = <<<'EOT'
 			HTTP/1.1 200 OK
 			Content-Encoding:gzip
@@ -24,7 +25,7 @@ class HttpResponseTest extends TestCase {
 
 	// @todo add just \r's hard, and \r\n's hard
 
-	public function testBasicHeaderParsing() {
+	public function testBasicHeaderParsing() : void {
 		$response = new HttpResponse('', <<<'EOT'
 			HTTP/1.1 200 OK
 			Cache-Control:no-store, no-cache, must-revalidate, post-check=0, pre-check=0
@@ -44,7 +45,7 @@ class HttpResponseTest extends TestCase {
 
 		$headers_a = $response->getHeaders();
 
-		$this->assertEquals($headers_a[0], 'HTTP/1.1 200 OK');
+		$this->assertEquals('HTTP/1.1 200 OK', $headers_a[0]);
 		$this->assertEquals(200, $response->getStatus());
 		$this->assertEquals('no-store, no-cache, must-revalidate, post-check=0, pre-check=0',
 			$response->getHeader('Cache-Control'));
@@ -86,7 +87,7 @@ class HttpResponseTest extends TestCase {
 
 		$headers_a = $response->getHeaders();
 
-		$this->assertEquals($headers_a[0], 'HTTP/1.1 200 OK');
+		$this->assertEquals('HTTP/1.1 200 OK', $headers_a[0]);
 		$this->assertEquals('gzip',
 			$response->getHeader('Content-Encoding'));
 		$this->assertEquals('en',
@@ -98,7 +99,7 @@ class HttpResponseTest extends TestCase {
 		$this->assertSame(1, $response->getHopCount());
 	}
 
-	public function testMultihopHeaderParsing() {
+	public function testMultihopHeaderParsing() : void {
 		$response = new HttpResponse("", <<<'EOT'
 			HTTP/1.1 302 Found
 			Date: Mon, 26 Aug 2013 22:13:30 GMT
@@ -107,7 +108,7 @@ class HttpResponseTest extends TestCase {
 			Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
 			Pragma: no-cache
 			Set-Cookie: anchor_node_id=2; expires=Tue, 27-Aug-2013 22:13:30 GMT; path=/
-			Location: http://local.myon.com/books/categories.html
+			Location: http://local.example.com/books/categories.html
 			Content-Length: 0
 			Content-Type: application/json
 
@@ -140,7 +141,7 @@ class HttpResponseTest extends TestCase {
 			$response->getHeader('Pragma', 0));
 		$this->assertEquals('anchor_node_id=2; expires=Tue, 27-Aug-2013 22:13:30 GMT; path=/',
 			$response->getHeader('Set-Cookie', 0));
-		$this->assertEquals('http://local.myon.com/books/categories.html',
+		$this->assertEquals('http://local.example.com/books/categories.html',
 			$response->getHeader('Location', 0));
 		$this->assertEquals('0',
 			$response->getHeader('Content-Length', 0));
@@ -180,7 +181,7 @@ class HttpResponseTest extends TestCase {
 		$this->assertSame(2, $response->getHopCount());
 	}
 
-	public function testDuplicativeHeaders() {
+	public function testDuplicativeHeaders() : void {
 		$body     = "This is my test body";
 		$response = new HttpResponse($body, <<<'EOT'
 			HTTP/1.1 200 OK
@@ -243,7 +244,7 @@ class HttpResponseTest extends TestCase {
 		$this->assertSame(2, $response->getHopCount());
 	}
 
-	public function testMissingStatus() {
+	public function testMissingStatus() : void {
 		$response = new HttpResponse("", <<<'EOT'
 			Expires: Thu, 19 Nov 1981 08:52:00 GMT
 			Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
@@ -253,8 +254,8 @@ class HttpResponseTest extends TestCase {
 		$this->assertNull($response->getStatus());
 	}
 
-	public function testHttp2ProtocolParse() {
-		$body = 'Testing the new HTTP-2 Body';
+	public function testHttp2ProtocolParse() : void {
+		$body     = 'Testing the new HTTP-2 Body';
 		$response = new HttpResponse($body, <<<'EOT'
 			HTTP/2 401
 			Date: Mon, 26 Aug 2013 22:13:30 GMT
@@ -263,11 +264,11 @@ class HttpResponseTest extends TestCase {
 			EOT
 		);
 
-		$this->assertSame( 401, $response->getStatus());
+		$this->assertSame(401, $response->getStatus());
 	}
 
-	public function testProtocolException() {
-		$this->expectException(\Boomerang\Exceptions\ResponseException::class);
+	public function testProtocolException() : void {
+		$this->expectException(ResponseException::class);
 
 		$response = new HttpResponse('', <<<'EOT'
 			HTTP/NOT-SUPPORTED 401

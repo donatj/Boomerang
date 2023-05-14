@@ -41,6 +41,11 @@
 			"Boomerang": "src/"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "test/"
+		}
+	},
 	"bin": [
 		"composer/bin/boomerang"
 	],
