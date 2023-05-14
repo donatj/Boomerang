@@ -17,8 +17,6 @@ class Boomerang {
 	/** @access private */
 	public const VERSION = ".0.2.0";
 	/** @access private */
-	public const PHAR_URL = "http://phar.boomerang.so/builds/dev/boomerang.phar";
-	/** @access private */
 	public const CONFIG_FILE = "boomerang.ini";
 
 	/** @access private */
@@ -75,10 +73,6 @@ class Boomerang {
 		$displayHelp    = &$flags->bool('help', false, 'Display this help message.');
 		$displayVersion = &$flags->bool('version', false, 'Display this applications version.');
 
-		if( defined('BOOMERANG_IS_PHAR') ) {
-			$selfUpdate = &$flags->bool('selfupdate', false, 'Update to the latest version of Boomerang!');
-		}
-
 		try {
 			$flags->parse($args);
 		} catch( \Exception $e ) {
@@ -94,10 +88,6 @@ class Boomerang {
 		}
 
 		switch( true ) {
-			case isset($selfUpdate) && $selfUpdate:
-				self::selfUpdate($ui);
-
-				die(0);
 			case $displayVersion:
 				self::versionMarker($ui);
 
@@ -174,47 +164,6 @@ class Boomerang {
 		} catch ( BoomerangException $ex ) {
 			$ui->dropError($ex->getMessage(), 3);
 		}
-	}
-
-	private static function selfUpdate( UserInterface $ui ) : void {
-		$ui->outputMsg("Starting self update ... ");
-
-		$localFile = $_SERVER['argv'][0];
-		$tmpFile   = $localFile . '.tmp.' . microtime();
-
-		if( !is_writable($tmpDir = dirname($tmpFile)) ) {
-			$ui->dropError("Update failed: {$tmpDir} not writable.");
-		}
-
-		if( !is_writable($localFile) ) {
-			$ui->dropError("Update failed: {$localFile} not writable.");
-		}
-
-		$pharContent = @file_get_contents(self::PHAR_URL);
-		if( !$pharContent ) {
-			$ui->dropError('Error downloading PHAR');
-		}
-
-		$written = @file_put_contents($tmpFile, $pharContent);
-		if( !$written ) {
-			$ui->dropError('Error writing PHAR');
-		}
-
-		try {
-			$phar = new \Phar($tmpFile);
-			unset($phar);
-		} catch( \Exception $e ) {
-			unlink($tmpFile);
-			$ui->dropError('Download is corrupted. Try re-running selfupdate.');
-		}
-
-		chmod($tmpFile, 0777 & ~umask());
-
-		if( !@rename($tmpFile, $localFile) ) {
-			$ui->dropError('Failed to replace URL');
-		}
-
-		$ui->outputMsg("Success!");
 	}
 
 	private static function versionMarker( UserInterface $ui ) : void {
