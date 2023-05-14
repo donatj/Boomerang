@@ -9,13 +9,15 @@ namespace Boomerang\TypeExpectations;
  */
 class RegexEx extends StringEx {
 
-	private $pattern;
+	private string $pattern;
 
 	/**
 	 * @param string $pattern The preg pattern to search for
 	 */
-	public function __construct( $pattern ) {
+	public function __construct( string $pattern ) {
 		$this->pattern = $pattern;
+
+		parent::__construct();
 	}
 
 	public function match( $data ) : bool {
