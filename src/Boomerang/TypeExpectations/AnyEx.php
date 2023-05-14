@@ -20,7 +20,7 @@ use Boomerang\Interfaces\ExpectationResultInterface;
  */
 class AnyEx extends AllEx {
 
-	public function match( $data ) {
+	public function match( $data ) : bool {
 
 		// @todo: __validate should do something other than throw the exceptions into an array, because this can't currently work
 
@@ -52,7 +52,7 @@ class AnyEx extends AllEx {
 		return false;
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'Any (||) Matcher';
 	}
 

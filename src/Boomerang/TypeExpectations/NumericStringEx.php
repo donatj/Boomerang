@@ -12,12 +12,12 @@ namespace Boomerang\TypeExpectations;
  */
 class NumericStringEx extends NumericEx {
 
-	public function match( $data ) {
+	public function match( $data ) : bool {
 		return is_string($data)
 			   && parent::match($data);
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'numeric string';
 	}
 

@@ -8,16 +8,13 @@ class TestRunner {
 
 	/** @var \Iterator */
 	private $files;
-	private $path;
-	private $bootstrap;
+	private string $path;
+	private string $bootstrap;
 
 	/**
 	 * TestRunner constructor.
-	 *
-	 * @param string $path
-	 * @param string $bootstrap
 	 */
-	public function __construct( $path, $bootstrap ) {
+	public function __construct( string $path, string $bootstrap ) {
 		$this->path      = $path;
 		$this->bootstrap = $bootstrap;
 		$this->files     = $this->getFileList($this->path);
@@ -48,7 +45,7 @@ class TestRunner {
 		throw new CliRuntimeException("Cannot find file \"$path\"");
 	}
 
-	public function runTests( ?\Closure $afterExecution = null ) {
+	public function runTests( ?\Closure $afterExecution = null ) : void {
 		if( $this->bootstrap ) {
 			if( is_readable($this->bootstrap) ) {
 				require_once $this->bootstrap;
@@ -57,7 +54,7 @@ class TestRunner {
 			}
 		}
 
-		$scope = function ( $file ) { require $file; };
+		$scope = static fn ( string $file ) => require $file;
 
 		foreach( $this->files as $file ) {
 			$scope($file);

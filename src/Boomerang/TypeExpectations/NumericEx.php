@@ -30,7 +30,7 @@ class NumericEx implements TypeExpectationInterface {
 		$this->max = $max;
 	}
 
-	public function match( $data ) {
+	public function match( $data ) : bool {
 		return is_numeric($data)
 			   && $this->rangeValidation($data);
 	}
@@ -40,7 +40,7 @@ class NumericEx implements TypeExpectationInterface {
 			   && ($data <= $this->max || $this->max === null);
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'int|float|numeric string';
 	}
 

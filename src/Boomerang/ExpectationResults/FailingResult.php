@@ -4,10 +4,7 @@ namespace Boomerang\ExpectationResults;
 
 class FailingResult extends AbstractResult {
 
-	/**
-	 * @return bool
-	 */
-	public function getFail() {
+	public function getFail() : bool {
 		return true;
 	}
 

@@ -50,9 +50,8 @@ class StructureEx implements TypeExpectationInterface {
 	 * @access private
 	 *
 	 * @param array|float|int|string $data
-	 * @return bool
 	 */
-	public function match( $data ) {
+	public function match( $data ) : bool {
 		[$pass, $expectations] = $this->__validate($data, $this->structure);
 		$this->addExpectationResults($expectations);
 
@@ -194,7 +193,7 @@ class StructureEx implements TypeExpectationInterface {
 		}
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'structure';
 	}
 

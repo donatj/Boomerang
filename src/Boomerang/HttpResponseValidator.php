@@ -5,6 +5,7 @@ namespace Boomerang;
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\Interfaces\HttpResponseInterface;
+use Boomerang\Interfaces\ResponseInterface;
 
 /**
  * HTTP Validation
@@ -20,10 +21,7 @@ class HttpResponseValidator extends AbstractValidator {
 		$this->response = $response;
 	}
 
-	/**
-	 * @return HttpResponseInterface
-	 */
-	public function getResponse() {
+	public function getResponse() : ResponseInterface {
 		return $this->response;
 	}
 

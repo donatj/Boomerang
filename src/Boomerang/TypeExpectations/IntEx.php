@@ -12,12 +12,12 @@ namespace Boomerang\TypeExpectations;
  */
 class IntEx extends NumberEx {
 
-	public function match( $data ) {
+	public function match( $data ) : bool {
 		return intval($data) == $data
 			   && parent::match($data);
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'int';
 	}
 

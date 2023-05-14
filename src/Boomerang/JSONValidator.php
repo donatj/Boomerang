@@ -66,7 +66,7 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 	 *
 	 * @return $this
 	 */
-	public function inspectJSON() {
+	public function inspectJSON() : JSONValidator {
 		$this->expectations[] = new InfoResult($this, json_encode($this->data));
 
 		return $this;

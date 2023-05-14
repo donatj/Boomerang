@@ -12,7 +12,7 @@ use Boomerang\TypeExpectations\StructureEx;
  */
 class IterateStructureEx extends StructureEx {
 
-	public function match( $data ) {
+	public function match( $data ) : bool {
 
 		if( !is_array($data) ) {
 			$this->addExpectationResults([ new FailingExpectationResult($this->getValidator(), "Data not Iterable", static::getMatchingTypeName(), gettype($data)) ]);
@@ -31,7 +31,7 @@ class IterateStructureEx extends StructureEx {
 		return $pass;
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'object|array';
 	}
 

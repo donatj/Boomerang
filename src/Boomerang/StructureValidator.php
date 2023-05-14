@@ -21,9 +21,8 @@ class StructureValidator extends AbstractValidator {
 	 * Verify that the data matches the passed expected structure definition.
 	 *
 	 * @param callable|mixed|TypeExpectationInterface $structure A description of the expected structure.
-	 * @return $this
 	 */
-	public function expectStructure( $structure ) {
+	public function expectStructure( $structure ) : self {
 
 		$sx = new StructureEx($structure);
 		$sx->setValidator($this);
@@ -34,10 +33,7 @@ class StructureValidator extends AbstractValidator {
 		return $this;
 	}
 
-	/**
-	 * @return ResponseInterface
-	 */
-	public function getResponse() {
+	public function getResponse() : ResponseInterface {
 		return $this->response;
 	}
 

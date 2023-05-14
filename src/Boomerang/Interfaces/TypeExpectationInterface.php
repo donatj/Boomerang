@@ -8,17 +8,15 @@ interface TypeExpectationInterface {
 	 * Method to pass data to compare against
 	 *
 	 * @access private
-	 * @param $data
-	 * @return bool
+	 * @param mixed $data The data to compare against
 	 */
-	public function match( $data );
+	public function match( $data ) : bool;
 
 	/**
 	 * The pretty name of the type for error messages
 	 *
 	 * @access private
-	 * @return string
 	 */
-	public function getMatchingTypeName();
+	public function getMatchingTypeName() : string;
 
 }

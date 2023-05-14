@@ -15,11 +15,11 @@ use donatj\Flags;
 class Boomerang {
 
 	/** @access private */
-	const VERSION = ".0.2.0";
+	public const VERSION = ".0.2.0";
 	/** @access private */
-	const PHAR_URL = "http://phar.boomerang.so/builds/dev/boomerang.phar";
+	public const PHAR_URL = "http://phar.boomerang.so/builds/dev/boomerang.phar";
 	/** @access private */
-	const CONFIG_FILE = "boomerang.ini";
+	public const CONFIG_FILE = "boomerang.ini";
 
 	/** @access private */
 	public static $boomerangPath;
@@ -34,10 +34,10 @@ class Boomerang {
 
 	/**
 	 * @param string[] $args
-	 * @throws \donatj\Exceptions\AbstractFlagException
+	 *@throws \donatj\Exceptions\AbstractFlagException
 	 * @return array|string[]
 	 */
-	private static function init( $args, UserInterface $ui ) {
+	private static function init( array $args, UserInterface $ui ) : array {
 
 		$flags     = new Flags;
 		$testSuite = &$flags->string('testsuite', 'default', 'Which test suite to run.');
@@ -115,7 +115,7 @@ class Boomerang {
 	/**
 	 * @access private
 	 */
-	public static function main( $args ) {
+	public static function main( array $args ) : void {
 		$start = microtime(true);
 
 		$stdout = fopen('php://stdout', 'w');
@@ -176,7 +176,7 @@ class Boomerang {
 		}
 	}
 
-	private static function selfUpdate( UserInterface $ui ) {
+	private static function selfUpdate( UserInterface $ui ) : void {
 		$ui->outputMsg("Starting self update ... ");
 
 		$localFile = $_SERVER['argv'][0];
@@ -217,7 +217,7 @@ class Boomerang {
 		$ui->outputMsg("Success!");
 	}
 
-	private static function versionMarker( UserInterface $ui ) {
+	private static function versionMarker( UserInterface $ui ) : void {
 		$ui->outputMsg("Boomerang! " . self::VERSION . " by Jesse G. Donat" . PHP_EOL);
 	}
 
@@ -227,7 +227,7 @@ class Boomerang {
 	 * After creating an instance of a Validator, it needs to be registered with Boomerang in order for results to be
 	 * tallied and displayed.
 	 */
-	public static function addValidator( ValidatorInterface $validator ) {
+	public static function addValidator( ValidatorInterface $validator ) : void {
 		self::$validators[] = $validator;
 	}
 

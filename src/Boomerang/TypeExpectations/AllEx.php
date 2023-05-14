@@ -19,13 +19,13 @@ use Boomerang\Interfaces\TypeExpectationInterface;
 class AllEx extends StructureEx {
 
 	/** @var TypeExpectationInterface[] */
-	protected $structures;
+	protected array $structures;
 
 	public function __construct( $structure ) {
 		$this->structures = func_get_args();
 	}
 
-	public function match( $data ) {
+	public function match( $data ) : bool {
 		$pass = true;
 
 		foreach( $this->structures as $struct ) {
@@ -37,7 +37,7 @@ class AllEx extends StructureEx {
 		return $pass;
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'All (&&) Matcher';
 	}
 

@@ -11,14 +11,12 @@ class IterateObjectEx extends IterateArrayEx {
 
 	/**
 	 * Static so its can be overridden with static::
-	 *
-	 * @return bool
 	 */
-	protected static function validType( $data ) {
+	protected static function validType( $data ) : bool {
 		return self::isAssoc($data);
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'object';
 	}
 

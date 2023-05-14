@@ -6,19 +6,10 @@ interface ExpectationResultInterface {
 
 	//	public function __construct( ValidatorInterface $validator, $message = null );
 
-	/**
-	 * @return string
-	 */
-	public function getMessage();
+	public function getMessage() : string;
 
-	/**
-	 * @return \Boomerang\Interfaces\ValidatorInterface
-	 */
-	public function getValidator();
+	public function getValidator() : ValidatorInterface;
 
-	/**
-	 * @return bool
-	 */
-	public function getFail();
+	public function getFail() : bool;
 
 }

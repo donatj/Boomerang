@@ -12,23 +12,18 @@ use Boomerang\Interfaces\HttpResponseInterface;
  */
 class HttpResponse implements HttpResponseInterface {
 
-	/** @var string */
-	private $body;
+	private string $body;
 
-	/** @var string */
-	private $headersRaw;
+	private string $headersRaw;
 
-	/** @var array */
-	private $headerSets;
+	private array $headerSets;
 
-	/** @var \Boomerang\HttpRequest|null */
-	private $request;
+	private ?HttpRequest $request;
 
 	/**
-	 * @param string $body    The body of the HTTP Request
-	 * @param string $headers
+	 * @param string $body The body of the HTTP Request
 	 */
-	public function __construct( $body, $headers, ?HttpRequest $request = null ) {
+	public function __construct( string $body, string $headers, ?HttpRequest $request = null ) {
 		$this->body       = $body;
 		$this->headersRaw = $headers;
 
@@ -49,7 +44,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param string $s
 	 * @return string
 	 */
-	private function normalizeHeaders( $s ) {
+	private function normalizeHeaders( string $s ) : string {
 		$s = str_replace([ "\r\n", "\r", "\n" ], [ "\n", "\n", "\r\n" ], $s);
 
 		return trim($s);
@@ -59,7 +54,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param string $rawHeaders
 	 * @return string[]
 	 */
-	private function parseHeaders( $rawHeaders ) {
+	private function parseHeaders( string $rawHeaders ) : array {
 		$headers = [];
 		$key     = '';
 
@@ -93,7 +88,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param int|null $hop
 	 * @return string|null Header value or null on not found
 	 */
-	public function getHeader( $header, $hop = null ) {
+	public function getHeader( string $header, ?int $hop = null ) {
 		$headers = $this->getHeaders($hop);
 		$header  = strtolower($header);
 		if( isset($headers[$header]) ) {
@@ -109,7 +104,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param int|null $hop The zero indexed hop(redirect). Defaults to the final hop.
 	 * @return array|null
 	 */
-	public function getHeaders( $hop = null ) {
+	public function getHeaders( ?int $hop = null ) {
 		if( $hop === null ) {
 			return end($this->headerSets);
 		}
@@ -128,7 +123,7 @@ class HttpResponse implements HttpResponseInterface {
 	 *
 	 * @return array
 	 */
-	public function getAllHeaders() {
+	public function getAllHeaders() : array {
 		return $this->headerSets;
 	}
 
@@ -137,7 +132,7 @@ class HttpResponse implements HttpResponseInterface {
 	 *
 	 * @return string
 	 */
-	public function getRawHeaders() {
+	public function getRawHeaders() : string {
 		return $this->headersRaw;
 	}
 
@@ -155,7 +150,7 @@ class HttpResponse implements HttpResponseInterface {
 	 *
 	 * @return HttpRequest
 	 */
-	public function getRequest() {
+	public function getRequest() : HttpRequest {
 		return $this->request;
 	}
 
@@ -164,7 +159,7 @@ class HttpResponse implements HttpResponseInterface {
 	 *
 	 * @return int
 	 */
-	public function getHopCount() {
+	public function getHopCount() : int {
 		return count($this->headerSets);
 	}
 
@@ -174,7 +169,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param int|null $hop The zero indexed hop(redirect). Defaults to the final hop.
 	 * @return int|null
 	 */
-	public function getStatus( $hop = null ) {
+	public function getStatus( ?int $hop = null ) : ?int {
 		$headers = $this->getHeaders($hop);
 
 		if( $headers && isset($headers[0]) ) {

@@ -2,20 +2,22 @@
 
 namespace Boomerang\Interfaces;
 
+use Boomerang\HttpRequest;
+
 interface HttpResponseInterface extends ResponseInterface {
 
-	public function getHeader( $header, $hop = null );
+	public function getHeader( string $header, ?int $hop = null );
 
-	public function getHeaders( $hop = null );
+	public function getHeaders( ?int $hop = null );
 
-	public function getAllHeaders();
+	public function getAllHeaders() : array;
 
-	public function getRawHeaders();
+	public function getRawHeaders() : string;
 
-	public function getRequest();
+	public function getRequest() : HttpRequest;
 
-	public function getHopCount();
+	public function getHopCount() : int;
 
-	public function getStatus( $hop = null );
+	public function getStatus( ?int $hop = null ) : ?int;
 
 }

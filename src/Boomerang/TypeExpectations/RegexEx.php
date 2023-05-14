@@ -18,11 +18,11 @@ class RegexEx extends StringEx {
 		$this->pattern = $pattern;
 	}
 
-	public function match( $data ) {
+	public function match( $data ) : bool {
 		return parent::match($data) && preg_match($this->pattern, $data);
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'regex ' . $this->pattern;
 	}
 

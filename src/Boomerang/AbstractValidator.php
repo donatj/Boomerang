@@ -10,7 +10,7 @@ abstract class AbstractValidator implements Interfaces\ResponseValidatorInterfac
 	/**
 	 * @return Interfaces\ExpectationResultInterface[]
 	 */
-	public function getExpectationResults() {
+	public function getExpectationResults() : array {
 		return $this->expectations;
 	}
 

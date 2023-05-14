@@ -11,12 +11,12 @@ use Boomerang\ExpectationResults\FailingExpectationResult;
  */
 class IterateArrayEx extends IterateStructureEx {
 
-	public function match( $data ) {
+	public function match( $data ) : bool {
 		$pass = parent::match($data);
 
 		if( $pass && !static::validType($data) ) {
 			$pathname = $this->makePathName($this->path);
-			$this->addExpectationResults([ new FailingExpectationResult($this->getValidator(), "Unexpected structure type\n{$pathname}", static::getMatchingTypeName()) ]);
+			$this->addExpectationResults([ new FailingExpectationResult($this->getValidator(), "Unexpected structure type\n{$pathname}", $this->getMatchingTypeName()) ]);
 			$pass = false;
 		}
 
@@ -26,15 +26,15 @@ class IterateArrayEx extends IterateStructureEx {
 	/**
 	 * Static so its overridable with static::
 	 */
-	protected static function validType( $data ) {
+	protected static function validType( $data ) : bool {
 		return !self::isAssoc($data);
 	}
 
-	protected static function isAssoc( $arr ) {
+	protected static function isAssoc( $arr ) : bool {
 		return is_array($arr) && (array_keys($arr) !== range(0, count($arr) - 1));
 	}
 
-	public function getMatchingTypeName() {
+	public function getMatchingTypeName() : string {
 		return 'array';
 	}
 

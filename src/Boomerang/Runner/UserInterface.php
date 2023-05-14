@@ -35,15 +35,12 @@ class UserInterface {
 		Output::$stream = $STDOUT;
 	}
 
-	/**
-	 * @param string $additional
-	 */
-	public function dumpOptions( $additional ) {
-		$fname = Boomerang::$pathInfo['basename'];
+	public function dumpOptions( string $additional ) : void {
+		$base = Boomerang::$pathInfo['basename'];
 
 		$options = <<<EOT
-			usage: {$fname} [switches] <directory>
-			       {$fname} [switches] [APISpec]
+			usage: {$base} [switches] <directory>
+			       {$base} [switches] [APISpec]
 
 
 			EOT;
@@ -53,12 +50,7 @@ class UserInterface {
 		Output::string(PHP_EOL);
 	}
 
-	/**
-	 * @param string               $file
-	 * @param ValidatorInterface[] $validators
-	 * @param bool|int             $verbose
-	 */
-	public function updateExpectationDisplay( $file, $validators, $verbose = false ) {
+	public function updateExpectationDisplay( string $file, array $validators, int $verbose = 0 ) : void {
 
 		foreach( $validators as $validator ) {
 			if( $validator instanceof ValidatorInterface ) {
@@ -179,22 +171,14 @@ class UserInterface {
 		}
 	}
 
-	/**
-	 * @param string      $text
-	 * @param int         $code
-	 * @param string|null $additional
-	 */
-	public function dropError( $text, $code = 1, $additional = null ) {
+	public function dropError( string $text, int $code = 1, ?string $additional = null ) : void {
 		Output::$stream = $this->stderr;
 		Output::string(Boomerang::$pathInfo['basename'] . ": " . Style::red($text) . PHP_EOL . ($additional ? $additional . PHP_EOL : ''));
 
 		die($code);
 	}
 
-	/**
-	 * @param string $text
-	 */
-	public function outputMsg( $text ) {
+	public function outputMsg( string $text ) : void {
 		Output::string($text . PHP_EOL);
 	}
 

@@ -7,11 +7,8 @@ interface ValidatorInterface {
 	/**
 	 * @return ExpectationResultInterface[]
 	 */
-	public function getExpectationResults();
+	public function getExpectationResults() : array;
 
-	/**
-	 * @return ResponseInterface
-	 */
-	public function getResponse();
+	public function getResponse() : ResponseInterface;
 
 }

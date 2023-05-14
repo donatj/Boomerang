@@ -7,12 +7,7 @@ use Boomerang\HttpResponse;
 
 class HttpResponseFactory {
 
-	/**
-	 * @param string $body
-	 * @param string $headers
-	 * @return \Boomerang\HttpResponse
-	 */
-	public function newInstance( $body, $headers, ?HttpRequest $request = null ) {
+	public function newInstance( string $body, string $headers, ?HttpRequest $request = null ) : HttpResponse {
 		return new HttpResponse($body, $headers, $request);
 	}
 

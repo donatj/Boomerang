@@ -9,7 +9,7 @@ trait CliExceptionTrait {
 	 */
 	abstract public function getCode();
 
-	public function getExitCode() {
+	public function getExitCode() : int {
 		$code = $this->getCode();
 		if( $code >= 0 && $code <= 255 ) {
 			return $code;

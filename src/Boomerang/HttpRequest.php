@@ -9,21 +9,20 @@ use Boomerang\Factories\HttpResponseFactory;
  */
 class HttpRequest {
 
-	const GET     = "GET";
-	const POST    = "POST";
-	const PUT     = "PUT";
-	const PATCH   = "PATCH";
-	const DELETE  = "DELETE";
-	const TRACE   = "TRACE";
-	const OPTIONS = "OPTIONS";
+	public const GET     = "GET";
+	public const POST    = "POST";
+	public const PUT     = "PUT";
+	public const PATCH   = "PATCH";
+	public const DELETE  = "DELETE";
+	public const TRACE   = "TRACE";
+	public const OPTIONS = "OPTIONS";
 
 	private $curlInfo;
 
-	/** @var string */
-	private $tmp;
+	private string $tmp;
 
-	private $maxRedirects = 10;
-	private $headers = [];
+	private int $maxRedirects = 10;
+	private array $headers = [];
 	private $endpointParts;
 	private $cookies = [];
 	private $cookiesFollowRedirects = false;
@@ -41,7 +40,7 @@ class HttpRequest {
 	 * @param string              $endpoint        URI to request.
 	 * @param HttpResponseFactory $responseFactory A factory for creating Response objects.
 	 */
-	public function __construct( $endpoint, ?HttpResponseFactory $responseFactory = null ) {
+	public function __construct( string $endpoint, ?HttpResponseFactory $responseFactory = null ) {
 		$this->setEndpoint($endpoint);
 		$this->tmp = sys_get_temp_dir() ?: '/tmp';
 
@@ -54,10 +53,8 @@ class HttpRequest {
 
 	/**
 	 * Get the current request method.
-	 *
-	 * @return string
 	 */
-	public function getMethod() {
+	public function getMethod() : string {
 		return $this->method;
 	}
 
@@ -69,10 +66,8 @@ class HttpRequest {
 	 * ```php
 	 * $req->setMethod(HttpRequest::POST);
 	 * ```
-	 *
-	 * @param string $method
 	 */
-	public function setMethod( $method ) {
+	public function setMethod( string $method ) : void {
 		$this->method = $method;
 	}
 
@@ -82,7 +77,7 @@ class HttpRequest {
 	 * @param string $param The name of the param.
 	 * @return array|string|null Null on failure.
 	 */
-	public function getUrlParam( $param ) {
+	public function getUrlParam( string $param ) {
 		$params = $this->getUrlParams();
 
 		return $params[$param] ?? null;
@@ -94,7 +89,7 @@ class HttpRequest {
 	 * @param string                 $param The name of the param.
 	 * @param array|float|int|string $value
 	 */
-	public function setUrlParam( $param, $value ) {
+	public function setUrlParam( string $param, $value ) : void {
 		$params         = $this->getUrlParams();
 		$params[$param] = $value;
 
@@ -103,10 +98,8 @@ class HttpRequest {
 
 	/**
 	 * Get all url params.
-	 *
-	 * @return array
 	 */
-	public function getUrlParams() {
+	public function getUrlParams() : array {
 		$query = !empty($this->endpointParts['query']) ? $this->endpointParts['query'] : '';
 		parse_str($query, $result);
 
@@ -118,7 +111,7 @@ class HttpRequest {
 	 *
 	 * @param array $params Params to set
 	 */
-	public function setUrlParams( array $params ) {
+	public function setUrlParams( array $params ) : void {
 		$this->endpointParts['query'] = http_build_query($params);
 	}
 
@@ -128,7 +121,7 @@ class HttpRequest {
 	 * @param string $key The name of the header.
 	 * @return string|null Null on failure.
 	 */
-	public function getHeader( $key ) {
+	public function getHeader( string $key ) : ?string {
 		return $this->headers[$key] ?? null;
 	}
 
@@ -138,16 +131,14 @@ class HttpRequest {
 	 * @param string $key   The name of the header.
 	 * @param string $value The value to set the header to.
 	 */
-	public function setHeader( $key, $value ) {
+	public function setHeader( string $key, string $value ) : void {
 		$this->headers[$key] = $value;
 	}
 
 	/**
 	 * Get all set headers.
-	 *
-	 * @return array
 	 */
-	public function getHeaders() {
+	public function getHeaders() : array {
 		$headers = $this->headers;
 		if( !isset($headers['Accept']) ) {
 			$headers['Accept'] = $this->detectAccept($this->getEndpoint());
@@ -161,17 +152,14 @@ class HttpRequest {
 	 *
 	 * @param array $headers Headers to set
 	 */
-	public function setHeaders( array $headers ) {
+	public function setHeaders( array $headers ) : void {
 		$this->headers = $headers;
 	}
 
 	/**
 	 * Set outgoing basic auth header.
-	 *
-	 * @param string $username
-	 * @param string $password
 	 */
-	public function setBasicAuth( $username, $password = '' ) {
+	public function setBasicAuth( string $username, string $password = '' ) : void {
 		$this->setHeader('Authorization', "Basic " . base64_encode("{$username}:{$password}"));
 	}
 
@@ -179,11 +167,8 @@ class HttpRequest {
 	 * Retrieve an post value by name.
 	 *
 	 * @deprecated Use getFormValue instead
-	 *
-	 * @param $key
-	 * @return string|null
 	 */
-	public function getPost( $key ) {
+	public function getPost( string $key ) : ?string {
 		return $this->body[$key] ?? null;
 	}
 
@@ -193,10 +178,8 @@ class HttpRequest {
 	 * Note that this has the side effect of changing the HTTP Method to POST
 	 *
 	 * @deprecated Use setMethod and setFormValue instead
-	 *
-	 * @param string $key
 	 */
-	public function setPost( $key, $value ) {
+	public function setPost( string $key, $value ) : void {
 		$this->method = self::POST;
 		$this->setFormValue($key, $value);
 	}
@@ -205,10 +188,8 @@ class HttpRequest {
 	 * Set a named key of the form values
 	 *
 	 * Note that if there is a non-form body set, this will replace it.
-	 *
-	 * @param string $key
 	 */
-	public function setFormValue( $key, $value ) {
+	public function setFormValue( string $key, $value ) : void {
 		if( !is_array($this->body) ) {
 			$this->body = [];
 		}
@@ -217,21 +198,19 @@ class HttpRequest {
 	}
 
 	/**
-	 * Retrieve an form value by name.
+	 * Retrieve a form value by name.
 	 *
-	 * @param string $key
 	 * @return mixed|null
 	 */
-	public function getFormValue( $key ) {
+	public function getFormValue( string $key ) {
 		return $this->body[$key] ?? null;
 	}
 
 	/**
 	 * Retrieve all queued post-data as an array.
 	 *
-	 * @deprecated Use getBody instead
-	 *
 	 * @return array|string
+	 * @deprecated Use getBody instead
 	 */
 	public function getPostData() {
 		return $this->getBody();
@@ -244,7 +223,7 @@ class HttpRequest {
 	 *
 	 * @deprecated Use setBody instead
 	 */
-	public function setPostData( array $post ) {
+	public function setPostData( array $post ) : void {
 		$this->method = self::POST;
 		$this->setBody($post);
 	}
@@ -263,7 +242,7 @@ class HttpRequest {
 	 *
 	 * @param array|string $body
 	 */
-	public function setBody( $body ) {
+	public function setBody( $body ) : void {
 		$this->body = $body;
 	}
 
@@ -274,7 +253,7 @@ class HttpRequest {
 	 *
 	 * @param bool $bool true/false to enable/disable respectively
 	 */
-	public function setCookiesFollowRedirects( $bool ) {
+	public function setCookiesFollowRedirects( bool $bool ) : void {
 		$this->cookiesFollowRedirects = $bool;
 	}
 
@@ -283,24 +262,18 @@ class HttpRequest {
 	 *
 	 * @param array $cookies Cookies to set
 	 */
-	public function setCookies( array $cookies ) {
+	public function setCookies( array $cookies ) : void {
 		$this->cookies = $cookies;
 	}
 
 	/**
 	 * Set a named cookies outgoing value
-	 *
-	 * @param string $key
-	 * @param string $value
 	 */
-	public function setCookie( $key, $value ) {
+	public function setCookie( string $key, string $value ) : void {
 		$this->cookies[$key] = $value;
 	}
 
-	/**
-	 * @return string
-	 */
-	private function composeUrl( array $parsed_url ) {
+	private function composeUrl( array $parsed_url ) : string {
 		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
 		$host     = $parsed_url['host'] ?? '';
 		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
@@ -316,19 +289,15 @@ class HttpRequest {
 
 	/**
 	 * Gets the request URI
-	 *
-	 * @return string
 	 */
-	public function getEndpoint() {
+	public function getEndpoint() : string {
 		return $this->composeUrl($this->endpointParts);
 	}
 
 	/**
 	 * Sets the request URI
-	 *
-	 * @param string $endpoint
 	 */
-	public function setEndpoint( $endpoint ) {
+	public function setEndpoint( string $endpoint ) : void {
 		$parts = parse_url($endpoint);
 		if( $parts === false ) {
 			throw new \InvalidArgumentException("Failed to parse url '{$endpoint}'");
@@ -342,7 +311,7 @@ class HttpRequest {
 	 *
 	 * @return HttpResponse An object representing the result of the request
 	 */
-	public function makeRequest() {
+	public function makeRequest() : HttpResponse {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->getEndpoint());
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -391,11 +360,7 @@ class HttpRequest {
 		return $this->responseFactory->newInstance($body, $headers, $this);
 	}
 
-	/**
-	 * @param string $endpoint
-	 * @return string
-	 */
-	private function detectAccept( $endpoint ) {
+	private function detectAccept( string $endpoint ) : string {
 		$url = parse_url($endpoint);
 		if( isset($url['path']) ) {
 			$path = pathinfo($url['path']);
@@ -414,10 +379,8 @@ class HttpRequest {
 
 	/**
 	 * Gets headers as a flattened array for cURL $key => $val --> $key: $val
-	 *
-	 * @return array
 	 */
-	private function getFlatHeaders() {
+	private function getFlatHeaders() : array {
 		$output = [];
 		foreach( $this->getHeaders() as $key => $value ) {
 			$output[] = "$key: $value";
@@ -435,25 +398,21 @@ class HttpRequest {
 	 *
 	 * @return float|null null if there is no last request
 	 */
-	public function getLastRequestTime() {
+	public function getLastRequestTime() : ?float {
 		return $this->lastRequestTime;
 	}
 
 	/**
 	 * Get the current maximum number of redirects(hops) a request should follow.
-	 *
-	 * @return int
 	 */
-	public function getMaxRedirects() {
+	public function getMaxRedirects() : int {
 		return $this->maxRedirects;
 	}
 
 	/**
 	 * Set the maximum number of redirects(hops) a request should follow.
-	 *
-	 * @param int $maxRedirects
 	 */
-	public function setMaxRedirects( $maxRedirects ) {
+	public function setMaxRedirects( int $maxRedirects ) : void {
 		$this->maxRedirects = $maxRedirects;
 	}
 
