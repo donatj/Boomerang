@@ -8,8 +8,6 @@ use Boomerang\ExpectationResults\FailingExpectationResult;
  * Iterating Array Expectation
  *
  * Iterates over every element of an array, ensuring it is an array, and matching against passed structure expectations.
- *
- * @package Boomerang\TypeExpectations\Iterate
  */
 class IterateArrayEx extends IterateStructureEx {
 
@@ -18,7 +16,7 @@ class IterateArrayEx extends IterateStructureEx {
 
 		if( $pass && !static::validType($data) ) {
 			$pathname = $this->makePathName($this->path);
-			$this->addExpectationResults(array( new FailingExpectationResult($this->getValidator(), "Unexpected structure type\n{$pathname}", static::getMatchingTypeName()) ));
+			$this->addExpectationResults([ new FailingExpectationResult($this->getValidator(), "Unexpected structure type\n{$pathname}", static::getMatchingTypeName()) ]);
 			$pass = false;
 		}
 
@@ -41,4 +39,3 @@ class IterateArrayEx extends IterateStructureEx {
 	}
 
 }
-

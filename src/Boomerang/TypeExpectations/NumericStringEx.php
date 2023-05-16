@@ -9,8 +9,6 @@ namespace Boomerang\TypeExpectations;
  *
  * **Passes**: `numeric string` eg: "1.2"
  * **Fails**: `int` / `float`
- *
- * @package Boomerang\TypeExpectations
  */
 class NumericStringEx extends NumericEx {
 

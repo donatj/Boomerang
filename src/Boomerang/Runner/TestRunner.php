@@ -38,29 +38,26 @@ class TestRunner {
 			$dir   = new \RecursiveDirectoryIterator($path);
 			$ite   = new \RecursiveIteratorIterator($dir);
 
-			return new \RegexIterator($ite, "/Spec\.php$/");
+			return new \RegexIterator($ite, "/Spec\\.php$/");
 		}
 
 		if( is_readable($path) ) {
-			return new \ArrayIterator(array( $path ));
+			return new \ArrayIterator([ $path ]);
 		}
 
 		throw new CliRuntimeException("Cannot find file \"$path\"");
 	}
 
-	/**
-	 * @param \Closure $afterExecution
-	 */
-	public function runTests( \Closure $afterExecution = null ) {
+	public function runTests( ?\Closure $afterExecution = null ) {
 		if( $this->bootstrap ) {
 			if( is_readable($this->bootstrap) ) {
-				require_once($this->bootstrap);
+				require_once $this->bootstrap;
 			} else {
 				throw new CliRuntimeException("Failed to load bootstrap");
 			}
 		}
 
-		$scope = function ( $file ) { require($file); };
+		$scope = function ( $file ) { require $file; };
 
 		foreach( $this->files as $file ) {
 			$scope($file);

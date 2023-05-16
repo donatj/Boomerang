@@ -42,11 +42,11 @@ class UserInterface {
 		$fname = Boomerang::$pathInfo['basename'];
 
 		$options = <<<EOT
-usage: {$fname} [switches] <directory>
-       {$fname} [switches] [APISpec]
+			usage: {$fname} [switches] <directory>
+			       {$fname} [switches] [APISpec]
 
 
-EOT;
+			EOT;
 
 		Output::string($options);
 		Output::string($additional);
@@ -79,6 +79,7 @@ EOT;
 						break;
 					}
 				}
+
 				if( !$verbose ) {
 					Output::string($dot ?: Style::green("."));
 				}
@@ -127,10 +128,11 @@ EOT;
 							Output::string("[ " . Style::blue($endpoint, 'underline') . " ]");
 							if( $verbose ) {
 								/**
-								 * @var $validator ResponseValidatorInterface
+								 * @var ResponseValidatorInterface $validator
 								 */
 								Output::string('( ' . $validator->getResponse()->getRequest()->getLastRequestTime() . 's )');
 							}
+
 							Output::string(PHP_EOL);
 						}
 
@@ -180,11 +182,12 @@ EOT;
 	/**
 	 * @param string      $text
 	 * @param int         $code
-	 * @param null|string $additional
+	 * @param string|null $additional
 	 */
 	public function dropError( $text, $code = 1, $additional = null ) {
 		Output::$stream = $this->stderr;
 		Output::string(Boomerang::$pathInfo['basename'] . ": " . Style::red($text) . PHP_EOL . ($additional ? $additional . PHP_EOL : ''));
+
 		die($code);
 	}
 

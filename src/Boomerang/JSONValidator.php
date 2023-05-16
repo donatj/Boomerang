@@ -11,8 +11,6 @@ use Boomerang\Interfaces\ResponseInterface;
  * JSON Validator
  *
  * Used to validate JSON encoding and structure.
- *
- * @package Boomerang
  */
 class JSONValidator extends StructureValidator implements Interfaces\ResponseValidatorInterface {
 

@@ -8,8 +8,6 @@ use Boomerang\Interfaces\TypeExpectationInterface;
  * String Expectation
  *
  * Define a string matching placeholder expectation
- *
- * @package Boomerang\TypeExpectations
  */
 class StringEx implements TypeExpectationInterface {
 
@@ -19,8 +17,8 @@ class StringEx implements TypeExpectationInterface {
 	protected $maxLength;
 
 	/**
-	 * @param null|int $minLength Optional minimum length in bytes of a valid value
-	 * @param null|int $maxLength Optional maximum length in bytes of a valid value
+	 * @param int|null $minLength Optional minimum length in bytes of a valid value
+	 * @param int|null $maxLength Optional maximum length in bytes of a valid value
 	 */
 	public function __construct( $minLength = null, $maxLength = null ) {
 		$this->minLength = $minLength;
@@ -40,7 +38,7 @@ class StringEx implements TypeExpectationInterface {
 	}
 
 	public function getMatchingTypeName() {
-		return sprintf('string{%s,%s}', intval($this->minLength), is_null($this->maxLength) ? '∞' : $this->maxLength);
+		return sprintf('string{%s,%s}', intval($this->minLength), $this->maxLength ?? '∞');
 	}
 
 }

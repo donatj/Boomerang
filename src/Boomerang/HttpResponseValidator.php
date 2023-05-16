@@ -10,19 +10,12 @@ use Boomerang\Interfaces\HttpResponseInterface;
  * HTTP Validation
  *
  * Used to validate expected responses, headers and HTTP statues
- *
- * @package Boomerang
  */
 class HttpResponseValidator extends AbstractValidator {
 
-	/**
-	 * @var HttpResponseInterface
-	 */
+	/** @var HttpResponseInterface */
 	private $response;
 
-	/**
-	 * @param HttpResponseInterface $response
-	 */
 	public function __construct( HttpResponseInterface $response ) {
 		$this->response = $response;
 	}
@@ -38,7 +31,7 @@ class HttpResponseValidator extends AbstractValidator {
 	 * Verify that the HTTP response code is as expected.
 	 *
 	 * @param int  $expected_status
-	 * @param null $hop The zero indexed redirect hop. Defaults to the final hop.
+	 * @param null $hop             The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
 	public function expectStatus( $expected_status = 200, $hop = null ) {
@@ -57,9 +50,9 @@ class HttpResponseValidator extends AbstractValidator {
 	/**
 	 * Verify that a header field equals an expected value.
 	 *
-	 * @param string   $key The header field name to verify.
+	 * @param string   $key   The header field name to verify.
 	 * @param string   $value The expected value.
-	 * @param null|int $hop The zero indexed redirect hop. Defaults to the final hop.
+	 * @param int|null $hop   The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
 	public function expectHeader( $key, $value, $hop = null ) {
@@ -79,9 +72,9 @@ class HttpResponseValidator extends AbstractValidator {
 	 *
 	 * For example, checking the header Content-Type for "json" **would** match a response of "application/json"
 	 *
-	 * @param string   $key The header field name to verify.
+	 * @param string   $key   The header field name to verify.
 	 * @param string   $value The expected containing value.
-	 * @param null|int $hop The zero indexed redirect hop. Defaults to the final hop.
+	 * @param int|null $hop   The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
 	public function expectHeaderContains( $key, $value, $hop = null ) {

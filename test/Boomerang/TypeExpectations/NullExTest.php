@@ -9,7 +9,7 @@ class NullExTest extends TestCase {
 
 	public function testBasicMatching() {
 
-		$x = new NullEx();
+		$x = new NullEx;
 
 		$this->assertEquals(false, $x->match(false));
 		$this->assertEquals(false, $x->match(true));

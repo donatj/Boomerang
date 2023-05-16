@@ -11,8 +11,6 @@ use donatj\Flags;
 
 /**
  * Boomerang Application
- *
- * @package Boomerang
  */
 class Boomerang {
 
@@ -31,20 +29,17 @@ class Boomerang {
 	private static $bootstrap;
 	private static $verbosity;
 
-	/**
-	 * @var ValidatorInterface[]
-	 */
+	/** @var ValidatorInterface[] */
 	private static $validators = [];
 
 	/**
-	 * @param  string[]                       $args
-	 * @param \Boomerang\Runner\UserInterface $ui
-	 * @return array|string[]
+	 * @param string[] $args
 	 * @throws \donatj\Exceptions\AbstractFlagException
+	 * @return array|string[]
 	 */
 	private static function init( $args, UserInterface $ui ) {
 
-		$flags     = new Flags();
+		$flags     = new Flags;
 		$testSuite = &$flags->string('testsuite', 'default', 'Which test suite to run.');
 		$flags->parse($args, true);
 
@@ -74,7 +69,7 @@ class Boomerang {
 			}
 		}
 
-		self::$bootstrap = &$flags->string('bootstrap', isset($suite['bootstrap']) ? $suite['bootstrap'] : false, 'A "bootstrap" PHP file that is run before the specs.');
+		self::$bootstrap = &$flags->string('bootstrap', $suite['bootstrap'] ?? false, 'A "bootstrap" PHP file that is run before the specs.');
 		self::$verbosity = &$flags->short('v', 'Output in verbose mode');
 
 		$displayHelp    = &$flags->bool('help', false, 'Display this help message.');
@@ -101,13 +96,16 @@ class Boomerang {
 		switch( true ) {
 			case isset($selfUpdate) && $selfUpdate:
 				self::selfUpdate($ui);
+
 				die(0);
 			case $displayVersion:
 				self::versionMarker($ui);
+
 				die(0);
 			case $displayHelp:
-			case count($paths) < 1: //should come last because of this
+			case count($paths) < 1: // should come last because of this
 				$ui->dumpOptions($flags->getDefaults());
+
 				die(1);
 		}
 
@@ -117,7 +115,7 @@ class Boomerang {
 	/**
 	 * @access private
 	 */
-	static function main( $args ) {
+	public static function main( $args ) {
 		$start = microtime(true);
 
 		$stdout = fopen('php://stdout', 'w');
@@ -154,7 +152,7 @@ class Boomerang {
 			$tests = 0;
 			$total = 0;
 			$fails = 0;
-			foreach( Boomerang::$validators as $v_data ) {
+			foreach( self::$validators as $v_data ) {
 				$tests++;
 				$ex_res = $v_data->getExpectationResults();
 				foreach( $ex_res as $ex ) {
@@ -228,8 +226,6 @@ class Boomerang {
 	 *
 	 * After creating an instance of a Validator, it needs to be registered with Boomerang in order for results to be
 	 * tallied and displayed.
-	 *
-	 * @param ValidatorInterface $validator
 	 */
 	public static function addValidator( ValidatorInterface $validator ) {
 		self::$validators[] = $validator;

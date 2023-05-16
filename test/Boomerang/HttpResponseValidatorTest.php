@@ -3,15 +3,13 @@
 namespace Boomerang\Test;
 
 use Boomerang\HttpResponseValidator;
-use Boomerang\Interfaces\HttpResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 class HttpResponseValidatorTest extends TestCase {
 
-
 	public function testGetResponse() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
+		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
 		$mock  = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
 		$valid = new HttpResponseValidator($mock);
@@ -20,7 +18,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 	public function testExpectStatus() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
+		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
 		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
 		$mock->method('getStatus')
@@ -33,7 +31,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertFalse($lastExpectation->getFail());
 
-		# ==
+		// ==
 
 		$valid->expectStatus(302);
 		$expResults      = $valid->getExpectationResults();
@@ -44,7 +42,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 	public function testExpectHeader() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
+		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
 		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
 		$mock->method('getHeader')
@@ -57,7 +55,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertFalse($lastExpectation->getFail());
 
-		# == Fail
+		// == Fail
 
 		$valid->expectHeader('test', 'fail');
 		$expResults      = $valid->getExpectationResults();
@@ -65,7 +63,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertTrue($lastExpectation->getFail());
 
-		# == False
+		// == False
 
 		$mock->method('getHeader')
 			->willReturn(false);
@@ -79,7 +77,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 	public function testExpectHeaderContains() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
+		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
 		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
 		$mock->method('getHeader')
@@ -92,7 +90,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertFalse($lastExpectation->getFail());
 
-		# == Fail
+		// == Fail
 
 		$valid->expectHeaderContains('test', 'fail');
 		$expResults      = $valid->getExpectationResults();
@@ -100,7 +98,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertTrue($lastExpectation->getFail());
 
-		# == False
+		// == False
 
 		$mock->method('getHeader')
 			->willReturn(false);
@@ -114,7 +112,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 	public function testExpectBody() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
+		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
 		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
 		$mock->method('getBody')
@@ -127,7 +125,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertFalse($lastExpectation->getFail());
 
-		# == Fail
+		// == Fail
 
 		$valid->expectBody('fail');
 		$expResults      = $valid->getExpectationResults();
@@ -135,7 +133,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertTrue($lastExpectation->getFail());
 
-		# == False
+		// == False
 
 		//		$mock->expects($this->any())
 		//		->method('getBody')
@@ -149,7 +147,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 	public function testExpectBodyContains() {
 		/**
-		 * @var $mock HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject
+		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
 		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
 		$mock->method('getBody')
@@ -162,7 +160,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertFalse($lastExpectation->getFail());
 
-		# == Fail
+		// == Fail
 
 		$valid->expectBodyContains('fail');
 		$expResults      = $valid->getExpectationResults();
@@ -170,7 +168,7 @@ class HttpResponseValidatorTest extends TestCase {
 
 		$this->assertTrue($lastExpectation->getFail());
 
-		# == False
+		// == False
 
 		//		$mock->expects($this->any())
 		//		->method('getBody')
@@ -185,4 +183,5 @@ class HttpResponseValidatorTest extends TestCase {
 	//	public function testGetExpectationResults() {
 	//
 	//	}
+
 }

@@ -7,6 +7,6 @@ $response = $req->makeRequest();
 
 $valid = new HttpResponseValidator($response);
 $valid->expectStatus(200)
-	  ->expectHeaderContains('Content-Type', 'json');
+	->expectHeaderContains('Content-Type', 'json');
 
 Boomerang::addValidator($valid);

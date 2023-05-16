@@ -3,7 +3,6 @@
 namespace Boomerang\TypeExpectations\Test;
 
 use Boomerang\Interfaces\TypeExpectationInterface;
-use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\TypeExpectations\AllEx;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +14,7 @@ class AllExTest extends TestCase {
 		$mockFail = $this->_getTypeExpectationInterface(false);
 
 		/**
-		 * @var $mockValidator ValidatorInterface
+		 * @var ValidatorInterface $mockValidator
 		 */
 		$mockValidator = $this->getMockBuilder('Boomerang\\Interfaces\\ValidatorInterface')->getMock();
 
@@ -24,42 +23,35 @@ class AllExTest extends TestCase {
 
 		$this->assertEquals(true, $x->match(true));
 
-
 		$x = new AllEx($mockFail);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(false, $x->match(true));
-
 
 		$x = new AllEx($mockPass, $mockPass);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(true, $x->match(true));
 
-
 		$x = new AllEx($mockFail, $mockFail);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(false, $x->match(true));
-
 
 		$x = new AllEx($mockPass, $mockPass, $mockPass);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(true, $x->match(true));
 
-
 		$x = new AllEx($mockPass, $mockFail, $mockPass);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(false, $x->match(true));
 
-
 		$x = new AllEx($mockPass, function () { return true; }, $mockPass);
 		$x->setValidator($mockValidator);
 
 		$this->assertEquals(true, $x->match(true));
-
 
 		$x = new AllEx($mockPass, function () { return false; }, $mockPass);
 		$x->setValidator($mockValidator);

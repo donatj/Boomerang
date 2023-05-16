@@ -8,15 +8,10 @@ use Boomerang\TypeExpectations\StructureEx;
 
 class StructureValidator extends AbstractValidator {
 
-	/**
-	 * @var ResponseInterface
-	 */
+	/** @var ResponseInterface */
 	protected $response;
 	protected $data;
 
-	/**
-	 * @param ResponseInterface $response
-	 */
 	public function __construct( ResponseInterface $response ) {
 		$this->response = $response;
 		$this->data     = $this->response->getBody();
@@ -25,7 +20,7 @@ class StructureValidator extends AbstractValidator {
 	/**
 	 * Verify that the data matches the passed expected structure definition.
 	 *
-	 * @param TypeExpectationInterface|callable|mixed $structure A description of the expected structure.
+	 * @param callable|mixed|TypeExpectationInterface $structure A description of the expected structure.
 	 * @return $this
 	 */
 	public function expectStructure( $structure ) {

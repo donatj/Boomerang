@@ -6,8 +6,6 @@ use Boomerang\Factories\HttpResponseFactory;
 
 /**
  * Utility for generating HTTP Requests and receiving Responses into `HttpResponse` objects.
- *
- * @package Boomerang
  */
 class HttpRequest {
 
@@ -25,34 +23,30 @@ class HttpRequest {
 	private $tmp;
 
 	private $maxRedirects = 10;
-	private $headers = array();
+	private $headers = [];
 	private $endpointParts;
-	private $cookies = array();
+	private $cookies = [];
 	private $cookiesFollowRedirects = false;
 	/** @var array|string */
-	private $body = array();
-	private $lastRequestTime = null;
+	private $body = [];
+	private $lastRequestTime;
 
-	/**
-	 * @var HttpResponseFactory
-	 */
+	/** @var HttpResponseFactory */
 	private $responseFactory;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $method = self::GET;
 
 	/**
-	 * @param string              $endpoint URI to request.
+	 * @param string              $endpoint        URI to request.
 	 * @param HttpResponseFactory $responseFactory A factory for creating Response objects.
 	 */
-	public function __construct( $endpoint, HttpResponseFactory $responseFactory = null ) {
+	public function __construct( $endpoint, ?HttpResponseFactory $responseFactory = null ) {
 		$this->setEndpoint($endpoint);
 		$this->tmp = sys_get_temp_dir() ?: '/tmp';
 
 		if( $responseFactory === null ) {
-			$this->responseFactory = new HttpResponseFactory();
+			$this->responseFactory = new HttpResponseFactory;
 		} else {
 			$this->responseFactory = $responseFactory;
 		}
@@ -86,19 +80,19 @@ class HttpRequest {
 	 * Retrieve a url param by name
 	 *
 	 * @param string $param The name of the param.
-	 * @return string|array|null Null on failure.
+	 * @return array|string|null Null on failure.
 	 */
 	public function getUrlParam( $param ) {
 		$params = $this->getUrlParams();
 
-		return isset($params[$param]) ? $params[$param] : null;
+		return $params[$param] ?? null;
 	}
 
 	/**
 	 * Set a url param by name.
 	 *
 	 * @param string                 $param The name of the param.
-	 * @param string|int|float|array $value
+	 * @param array|float|int|string $value
 	 */
 	public function setUrlParam( $param, $value ) {
 		$params         = $this->getUrlParams();
@@ -135,13 +129,13 @@ class HttpRequest {
 	 * @return string|null Null on failure.
 	 */
 	public function getHeader( $key ) {
-		return isset($this->headers[$key]) ? $this->headers[$key] : null;
+		return $this->headers[$key] ?? null;
 	}
 
 	/**
 	 * Set an outgoing header by name.
 	 *
-	 * @param string $key The name of the header.
+	 * @param string $key   The name of the header.
 	 * @param string $value The value to set the header to.
 	 */
 	public function setHeader( $key, $value ) {
@@ -190,7 +184,7 @@ class HttpRequest {
 	 * @return string|null
 	 */
 	public function getPost( $key ) {
-		return isset($this->body[$key]) ? $this->body[$key] : null;
+		return $this->body[$key] ?? null;
 	}
 
 	/**
@@ -201,7 +195,6 @@ class HttpRequest {
 	 * @deprecated Use setMethod and setFormValue instead
 	 *
 	 * @param string $key
-	 * @param mixed  $value
 	 */
 	public function setPost( $key, $value ) {
 		$this->method = self::POST;
@@ -214,12 +207,12 @@ class HttpRequest {
 	 * Note that if there is a non-form body set, this will replace it.
 	 *
 	 * @param string $key
-	 * @param mixed  $value
 	 */
 	public function setFormValue( $key, $value ) {
 		if( !is_array($this->body) ) {
 			$this->body = [];
 		}
+
 		$this->body[$key] = $value;
 	}
 
@@ -230,7 +223,7 @@ class HttpRequest {
 	 * @return mixed|null
 	 */
 	public function getFormValue( $key ) {
-		return isset($this->body[$key]) ? $this->body[$key] : null;
+		return $this->body[$key] ?? null;
 	}
 
 	/**
@@ -250,8 +243,6 @@ class HttpRequest {
 	 * Note that this has the side effect of changing the HTTP Method to POST
 	 *
 	 * @deprecated Use setBody instead
-	 *
-	 * @param array $post
 	 */
 	public function setPostData( array $post ) {
 		$this->method = self::POST;
@@ -307,17 +298,16 @@ class HttpRequest {
 	}
 
 	/**
-	 * @param array $parsed_url
 	 * @return string
 	 */
 	private function composeUrl( array $parsed_url ) {
 		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-		$host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+		$host     = $parsed_url['host'] ?? '';
 		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
-		$user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+		$user     = $parsed_url['user'] ?? '';
 		$pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
 		$pass     = ($user || $pass) ? "{$pass}@" : '';
-		$path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+		$path     = $parsed_url['path'] ?? '';
 		$query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
 		$fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
@@ -343,6 +333,7 @@ class HttpRequest {
 		if( $parts === false ) {
 			throw new \InvalidArgumentException("Failed to parse url '{$endpoint}'");
 		}
+
 		$this->endpointParts = $parts;
 	}
 
@@ -427,7 +418,7 @@ class HttpRequest {
 	 * @return array
 	 */
 	private function getFlatHeaders() {
-		$output = array();
+		$output = [];
 		foreach( $this->getHeaders() as $key => $value ) {
 			$output[] = "$key: $value";
 		}
@@ -435,9 +426,6 @@ class HttpRequest {
 		return $output;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getCurlInfo() {
 		return $this->curlInfo;
 	}
@@ -445,7 +433,7 @@ class HttpRequest {
 	/**
 	 * Get the time the last request took in seconds a float
 	 *
-	 * @return null|float null if there is no last request
+	 * @return float|null null if there is no last request
 	 */
 	public function getLastRequestTime() {
 		return $this->lastRequestTime;

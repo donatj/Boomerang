@@ -2,7 +2,6 @@
 
 namespace Boomerang\Test;
 
-use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\ResponseInterface;
 use Boomerang\JSONValidator;
@@ -18,7 +17,6 @@ class JSONValidatorTest extends TestCase {
 		$results = $json->getExpectationResults();
 		$this->assertCount(1, $results);
 		$this->assertInstanceOf('\\Boomerang\\ExpectationResults\\FailingResult', reset($results));
-
 
 		$mock = $this->_getMockResponse( '[1,2,3]' );
 

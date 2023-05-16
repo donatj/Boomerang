@@ -9,8 +9,6 @@ use Boomerang\Interfaces\HttpResponseInterface;
  * Represents an HTTP Response.
  *
  * Usually received from an `HttpRequest` object
- *
- * @package Boomerang
  */
 class HttpResponse implements HttpResponseInterface {
 
@@ -27,11 +25,10 @@ class HttpResponse implements HttpResponseInterface {
 	private $request;
 
 	/**
-	 * @param string           $body The body of the HTTP Request
-	 * @param string           $headers
-	 * @param HttpRequest|null $request
+	 * @param string $body    The body of the HTTP Request
+	 * @param string $headers
 	 */
-	public function __construct( $body, $headers, HttpRequest $request = null ) {
+	public function __construct( $body, $headers, ?HttpRequest $request = null ) {
 		$this->body       = $body;
 		$this->headersRaw = $headers;
 
@@ -93,8 +90,8 @@ class HttpResponse implements HttpResponseInterface {
 	 * Get a response header by name.
 	 *
 	 * @param string   $header
-	 * @param null|int $hop
-	 * @return null|string Header value or null on not found
+	 * @param int|null $hop
+	 * @return string|null Header value or null on not found
 	 */
 	public function getHeader( $header, $hop = null ) {
 		$headers = $this->getHeaders($hop);
@@ -109,7 +106,7 @@ class HttpResponse implements HttpResponseInterface {
 	/**
 	 * Get response headers as a HeaderName => Value array
 	 *
-	 * @param null|int $hop The zero indexed hop(redirect). Defaults to the final hop.
+	 * @param int|null $hop The zero indexed hop(redirect). Defaults to the final hop.
 	 * @return array|null
 	 */
 	public function getHeaders( $hop = null ) {
@@ -186,6 +183,7 @@ class HttpResponse implements HttpResponseInterface {
 				if($this->request) {
 					throw new ResponseException("Failed to parse response protocol '{$headers[0]}' on request '{$this->request->getEndpoint()}'");
 				}
+
 				throw new ResponseException("Failed to parse protocol '{$headers[0]}'");
 			}
 

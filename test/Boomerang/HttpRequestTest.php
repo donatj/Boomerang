@@ -14,13 +14,11 @@ class HttpRequestTest extends \BaseServerTest {
 
 		$this->assertEquals('application/json', $headers_a[0]);
 
-
 		$req       = new HttpRequest('http://example.com/test.xml');
 		$headers   = $req->getHeaders();
 		$headers_a = explode(',', $headers['Accept']);
 
 		$this->assertEquals('application/xml', $headers_a[0]);
-
 
 		$req = new HttpRequest('http://example.com/test.xml');
 		$req->setHeader('Accept', 'application/json');
@@ -138,13 +136,11 @@ class HttpRequestTest extends \BaseServerTest {
 			$this->assertStringStartsWith("HTTP/1.1 301 Moved Permanently\r\n", $headerParts[0]);
 			$this->assertTrue(stripos($headerParts[0], "\r\nSet-Cookie: sessionid=38afes7a8; Path=/\r\n") !== false);
 
-
 			$this->assertStringStartsWith("HTTP/1.1 200 OK\r\n", $headerParts[1]);
 			$this->assertFalse(stripos($headerParts[1], "\r\nSet-Cookie: \r\n"));
 
 			return $mockResponse;
 		});
-
 
 		$endpoint = self::$server->getUrlOfResponse(
 			new Response(
@@ -164,4 +160,5 @@ class HttpRequestTest extends \BaseServerTest {
 		$resp = $req->makeRequest();
 		$this->assertSame($mockResponse, $resp);
 	}
+
 }

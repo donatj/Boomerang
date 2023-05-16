@@ -6,15 +6,12 @@ namespace Boomerang\TypeExpectations\Iterate;
  * Iterating Object Expectation
  *
  * Iterates over every element of an object, ensuring it is an object, and matching against passed structure expectations.
- *
- * @package Boomerang\TypeExpectations\Iterate
  */
 class IterateObjectEx extends IterateArrayEx {
 
 	/**
 	 * Static so its can be overridden with static::
 	 *
-	 * @param mixed $data
 	 * @return bool
 	 */
 	protected static function validType( $data ) {
@@ -26,4 +23,3 @@ class IterateObjectEx extends IterateArrayEx {
 	}
 
 }
-
