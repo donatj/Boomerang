@@ -24,10 +24,10 @@ class AnyEx extends AllEx {
 
 		// @todo: __validate should do something other than throw the exceptions into an array, because this can't currently work
 
-		$all_expectations = [];
+		$allExpectations = [];
 
 		foreach( $this->structures as $struct ) {
-			[$pass, $expectationResults] = $this->__validate($data, $struct);
+			[$pass, $expectationResults] = $this->validate($data, $struct);
 
 			if( $pass ) {
 
@@ -44,10 +44,10 @@ class AnyEx extends AllEx {
 				return true;
 			}
 
-			$all_expectations = array_merge($expectationResults, $all_expectations);
+			$allExpectations = array_merge($expectationResults, $allExpectations);
 		}
 
-		$this->addExpectationResults($all_expectations);
+		$this->addExpectationResults($allExpectations);
 
 		return false;
 	}

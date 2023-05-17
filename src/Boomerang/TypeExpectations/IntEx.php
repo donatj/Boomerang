@@ -13,7 +13,7 @@ namespace Boomerang\TypeExpectations;
 class IntEx extends NumberEx {
 
 	public function match( $data ) : bool {
-		return intval($data) == $data
+		return (int)$data == $data
 			   && parent::match($data);
 	}
 

@@ -28,17 +28,15 @@ class HttpRequest {
 	private $cookiesFollowRedirects = false;
 	/** @var array|string */
 	private $body = [];
-	private $lastRequestTime;
+	private ?float $lastRequestTime = null;
 
-	/** @var HttpResponseFactory */
-	private $responseFactory;
+	private HttpResponseFactory $responseFactory;
 
-	/** @var string */
-	private $method = self::GET;
+	private string $method = self::GET;
 
 	/**
-	 * @param string              $endpoint        URI to request.
-	 * @param HttpResponseFactory $responseFactory A factory for creating Response objects.
+	 * @param string                   $endpoint        URI to request.
+	 * @param HttpResponseFactory|null $responseFactory A factory for creating Response objects.
 	 */
 	public function __construct( string $endpoint, ?HttpResponseFactory $responseFactory = null ) {
 		$this->setEndpoint($endpoint);

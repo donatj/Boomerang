@@ -22,7 +22,7 @@ class IterateStructureEx extends StructureEx {
 
 		$pass = true;
 		foreach( $data as $key => $value ) {
-			[$passing, $expectations] = $this->__validate($value, $this->structure, array_merge($this->path, [ $key ]));
+			[$passing, $expectations] = $this->validate($value, $this->structure, array_merge($this->path, [ $key ]));
 			$pass = $pass && $passing;
 
 			$this->addExpectationResults($expectations);

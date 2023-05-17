@@ -28,7 +28,7 @@ class Boomerang {
 	private static $verbosity;
 
 	/** @var ValidatorInterface[] */
-	private static $validators = [];
+	private static array $validators = [];
 
 	/**
 	 * @param string[] $args
@@ -55,7 +55,7 @@ class Boomerang {
 					define($key, $definition);
 				}
 			}
-		} elseif( $testSuite != 'default' ) {
+		} elseif( $testSuite !== 'default' ) {
 			$ui->dropError("testsuite '{$testSuite}' is not known.", 1, $flags->getDefaults());
 		}
 

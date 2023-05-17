@@ -2,6 +2,7 @@
 
 namespace Boomerang\TypeExpectations;
 
+use Boomerang\Exceptions\InvalidStateException;
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\Interfaces\ExpectationResultInterface;
@@ -16,13 +17,12 @@ use Boomerang\Interfaces\ValidatorInterface;
 class StructureEx implements TypeExpectationInterface {
 
 	protected $structure;
-	protected $path = [];
+	protected array $path = [];
 
 	/** @var \Boomerang\Interfaces\ExpectationResultInterface[] */
-	protected $expectationResults = [];
+	protected array $expectationResults = [];
 
-	/** @var ValidatorInterface */
-	private $validator;
+	private ValidatorInterface $validator;
 
 	/**
 	 * @param callable|mixed|TypeExpectationInterface $structure
@@ -31,18 +31,18 @@ class StructureEx implements TypeExpectationInterface {
 		$this->structure = $structure;
 	}
 
-	/**
-	 * @return ValidatorInterface
-	 */
-	public function getValidator() {
+	public function getValidator() : ValidatorInterface {
+		if( !isset($this->validator) ) {
+			throw new InvalidStateException("Validator not set");
+		}
+
 		return $this->validator;
 	}
 
 	/**
 	 * @access private
-	 * @param ValidatorInterface $validator
 	 */
-	public function setValidator( $validator ) {
+	public function setValidator( ValidatorInterface $validator ) : void {
 		$this->validator = $validator;
 	}
 
@@ -52,7 +52,7 @@ class StructureEx implements TypeExpectationInterface {
 	 * @param array|float|int|string $data
 	 */
 	public function match( $data ) : bool {
-		[$pass, $expectations] = $this->__validate($data, $this->structure);
+		[ $pass, $expectations ] = $this->validate($data, $this->structure);
 		$this->addExpectationResults($expectations);
 
 		return $pass;
@@ -61,10 +61,9 @@ class StructureEx implements TypeExpectationInterface {
 	/**
 	 * @param array|float|int|string                                               $data
 	 * @param array|\Closure|float|int|string|StructureEx|TypeExpectationInterface $validation
-	 * @param array                                                                $path
-	 * @return array
+	 * @throws \ReflectionException
 	 */
-	protected function __validate( $data, $validation, ?array $path = null ) {
+	protected function validate( $data, $validation, ?array $path = null ) : array {
 		/**
 		 * @var \Boomerang\ExpectationResults\AbstractResult[] $expectations
 		 */
@@ -84,7 +83,7 @@ class StructureEx implements TypeExpectationInterface {
 				$firstIsZero = key($validation) === 0;
 				foreach( $validation as $key => $value ) {
 					if( array_key_exists($key, $data) ) {
-						[$passing, $sub_expectations] = $this->__validate($data[$key], $value, array_merge($path, [ $key ]));
+						[ $passing, $sub_expectations ] = $this->validate($data[$key], $value, array_merge($path, [ $key ]));
 						$expectations = array_merge($expectations, $sub_expectations);
 						$pass         = $passing && $pass;
 					} else {
@@ -140,10 +139,7 @@ class StructureEx implements TypeExpectationInterface {
 		return [ $pass, $expectations ];
 	}
 
-	/**
-	 * @return string
-	 */
-	protected function makePathName( array $path ) {
+	protected function makePathName( array $path ) : string {
 		$s_path = "";
 		foreach( $path as $loc ) {
 			if( is_numeric($loc) ) {
@@ -167,7 +163,7 @@ class StructureEx implements TypeExpectationInterface {
 	/**
 	 * @access private
 	 */
-	public function setPath( array $path ) {
+	public function setPath( array $path ) : void {
 		$this->path = $path;
 	}
 
@@ -175,14 +171,14 @@ class StructureEx implements TypeExpectationInterface {
 	 * @access private
 	 * @return \Boomerang\Interfaces\ExpectationResultInterface[]
 	 */
-	public function getExpectationResults() {
+	public function getExpectationResults() : array {
 		return $this->expectationResults;
 	}
 
 	/**
 	 * @param \Boomerang\Interfaces\ExpectationResultInterface[] $expectations
 	 */
-	protected function addExpectationResults( array $expectations ) {
+	protected function addExpectationResults( array $expectations ) : void {
 		foreach( $expectations as $expect ) {
 			if( $expect instanceof ExpectationResultInterface ) {
 				// @todo ideally I shouldn't need to do this
@@ -199,11 +195,10 @@ class StructureEx implements TypeExpectationInterface {
 
 	/**
 	 * @param array|float|int|string $data
-	 * @return string
 	 */
-	private function getScalarTypeName( $data ) {
+	private function getScalarTypeName( $data ) : string {
 		$typeName = gettype($data);
-		if( $typeName == 'string' ) {
+		if( $typeName === 'string' ) {
 			$typeName .= "{" . strlen($data) . "}";
 		}
 

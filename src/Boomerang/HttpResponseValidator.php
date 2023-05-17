@@ -28,15 +28,14 @@ class HttpResponseValidator extends AbstractValidator {
 	/**
 	 * Verify that the HTTP response code is as expected.
 	 *
-	 * @param int  $expected_status
-	 * @param null $hop             The zero indexed redirect hop. Defaults to the final hop.
+	 * @param int|null $hop The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
-	public function expectStatus( $expected_status = 200, $hop = null ) {
+	public function expectStatus( int $expected_status, ?int $hop = null ) {
 
 		$status = $this->response->getStatus($hop);
 
-		if( $status != $expected_status ) {
+		if( $status !== $expected_status ) {
 			$this->expectations[] = new FailingExpectationResult($this, "Unexpected HTTP Status", $expected_status, $status);
 		} else {
 			$this->expectations[] = new PassingExpectationResult($this, "Expected HTTP Status", $status);
@@ -129,7 +128,7 @@ class HttpResponseValidator extends AbstractValidator {
 	 * @param int $expectedCount The expected number of redirect hops.
 	 * @return $this
 	 */
-	public function expectHopCount( $expectedCount ) {
+	public function expectHopCount( int $expectedCount ) : self {
 		$hops = $this->response->getHopCount();
 
 		if( $hops != $expectedCount ) {

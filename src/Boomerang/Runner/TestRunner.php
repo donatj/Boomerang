@@ -21,7 +21,6 @@ class TestRunner {
 	}
 
 	/**
-	 * @param $path
 	 * @return \Iterator
 	 */
 	private function getFileList( $path ) {

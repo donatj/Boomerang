@@ -50,6 +50,9 @@ class UserInterface {
 		Output::string(PHP_EOL);
 	}
 
+	/**
+	 * @param ValidatorInterface[] $validators
+	 */
 	public function updateExpectationDisplay( string $file, array $validators, int $verbose = 0 ) : void {
 
 		foreach( $validators as $validator ) {

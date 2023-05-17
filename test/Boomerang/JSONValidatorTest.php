@@ -28,7 +28,6 @@ class JSONValidatorTest extends TestCase {
 	}
 
 	/**
-	 * @param $data
 	 * @return \PHPUnit\Framework\MockObject\MockObject|ResponseInterface
 	 */
 	private function _getMockResponse( $data ) {

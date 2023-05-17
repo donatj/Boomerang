@@ -11,16 +11,15 @@ use Boomerang\Interfaces\TypeExpectationInterface;
  */
 class StringEx implements TypeExpectationInterface {
 
-	/** @var int|null */
-	protected $minLength;
-	/** @var int|null */
-	protected $maxLength;
+	protected ?int $minLength;
+
+	protected ?int $maxLength;
 
 	/**
 	 * @param int|null $minLength Optional minimum length in bytes of a valid value
 	 * @param int|null $maxLength Optional maximum length in bytes of a valid value
 	 */
-	public function __construct( $minLength = null, $maxLength = null ) {
+	public function __construct( ?int $minLength = null, ?int $maxLength = null ) {
 		$this->minLength = $minLength;
 		$this->maxLength = $maxLength;
 	}
@@ -30,7 +29,7 @@ class StringEx implements TypeExpectationInterface {
 			   && $this->rangeValidation($data);
 	}
 
-	protected function rangeValidation( $data ) {
+	protected function rangeValidation( $data ) : bool {
 		$len = strlen($data);
 
 		return ($len >= $this->minLength || $this->minLength === null)
@@ -38,7 +37,11 @@ class StringEx implements TypeExpectationInterface {
 	}
 
 	public function getMatchingTypeName() : string {
-		return sprintf('string{%s,%s}', intval($this->minLength), $this->maxLength ?? '∞');
+		if($this->minLength === null && $this->maxLength === null) {
+			return 'string';
+		}
+
+		return sprintf('string{%s,%s}', strval((int)$this->minLength), strval($this->maxLength ?? '∞'));
 	}
 
 }
