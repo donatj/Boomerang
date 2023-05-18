@@ -112,8 +112,17 @@ class StructureEx implements TypeExpectationInterface {
 			$reflect    = new \ReflectionFunction($validation);
 			$parameters = $reflect->getParameters();
 
-			// todo: Replace shutup operator with a better way to check if the parameter is an array when PHP 7+ is required
-			if( count($parameters) > 0 && (@$parameters[0]->isArray()) && !is_array($data) ) {
+			$expectsArray = false;
+			if( count($parameters) > 0 ) {
+				$firstParameter     = $parameters[0];
+				$firstParameterType = $firstParameter->getType();
+				// @todo proper DNF check (union types, etc)
+				if( $firstParameterType instanceof \ReflectionNamedType && $firstParameterType->getName() === 'array' ) {
+					$expectsArray = true;
+				}
+			}
+
+			if( $expectsArray && !is_array($data) ) {
 				$pass = false;
 
 				$typeName       = $this->getScalarTypeName($data);
