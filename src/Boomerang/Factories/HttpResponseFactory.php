@@ -2,12 +2,15 @@
 
 namespace Boomerang\Factories;
 
+use Boomerang\HttpRequest;
+use Psr\Http\Message\ResponseInterface;
+
 class HttpResponseFactory {
 
 	public function newInstance(
-		\Boomerang\HttpRequest $request,
+		HttpRequest $request,
 		string $rawHeaders,
-		\Psr\Http\Message\ResponseInterface ...$responses
+		ResponseInterface ...$responses
 	) : \Boomerang\HttpResponse {
 		return new \Boomerang\HttpResponse($request, $rawHeaders, ...$responses);
 	}

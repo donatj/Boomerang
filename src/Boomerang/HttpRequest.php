@@ -43,8 +43,8 @@ class HttpRequest {
 	private string $method = self::GET;
 
 	private ResponseFactoryInterface $responseFactory;
-	/** @var \GuzzleHttp\Psr7\HttpFactory|\Psr\Http\Message\StreamFactoryInterface */
-	private $streamFactory;
+
+	private StreamFactoryInterface $streamFactory;
 
 	/**
 	 * @param string $endpoint URI to request.
@@ -140,7 +140,7 @@ class HttpRequest {
 	/**
 	 * Set an outgoing header by name.
 	 *
-	 * @param string $key The name of the header.
+	 * @param string $key   The name of the header.
 	 * @param string $value The value to set the header to.
 	 */
 	public function setHeader( string $key, string $value ) : void {
@@ -370,7 +370,6 @@ class HttpRequest {
 	}
 
 	/**
-	 * @return array
 	 * @internal This method is public for testing purposes only
 	 */
 	public function parseStartLine( string $start ) : ?array {
@@ -386,8 +385,7 @@ class HttpRequest {
 	}
 
 	/**
-	 * @param string $rawHeaders
-	 * @return array<int, array<string|int, string>>
+	 * @return array<int, array<int|string, string>>
 	 * @internal This method is public for testing purposes only
 	 */
 	public function parseMultipleRequestHeaders( string $rawHeaders ) : array {
@@ -462,7 +460,9 @@ class HttpRequest {
 		return $output;
 	}
 
-	/** @return array|false|null */
+	/**
+	 * @return array|false|null
+	 */
 	public function getCurlInfo() {
 		return $this->curlInfo;
 	}

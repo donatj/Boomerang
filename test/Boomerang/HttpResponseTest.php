@@ -2,7 +2,6 @@
 
 namespace Tests\Boomerang;
 
-use Boomerang\Exceptions\ResponseException;
 use Boomerang\HttpResponse;
 use donatj\MockWebServer\MockWebServer;
 use Http\Discovery\Psr17Factory;
@@ -26,7 +25,6 @@ class HttpResponseTest extends TestCase {
 
 		$this->request = $this->getMockBuilder(\Boomerang\HttpRequest::class)->disableOriginalConstructor()->getMock();
 	}
-
 
 	public function testGetRawHeaders() : void {
 		$headers  = <<<'EOT'

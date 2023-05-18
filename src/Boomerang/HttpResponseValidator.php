@@ -59,6 +59,7 @@ class HttpResponseValidator extends AbstractValidator {
 		foreach($header as $headerValue) {
 			if( $headerValue == $value ) {
 				$this->expectations[] = new PassingExpectationResult($this, "Expected header: " . var_export($key, true), $headerValue);
+
 				return $this;
 			}
 		}
@@ -88,6 +89,7 @@ class HttpResponseValidator extends AbstractValidator {
 		foreach($header as $headerValue) {
 			if( strpos($headerValue, $value) !== false ) {
 				$this->expectations[] = new PassingExpectationResult($this, "Expected header contains: " . var_export($key, true), $header);
+
 				return $this;
 			}
 		}
