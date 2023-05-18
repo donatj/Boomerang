@@ -16,7 +16,10 @@ use Boomerang\Interfaces\ValidatorInterface;
  */
 class StructureEx implements TypeExpectationInterface {
 
+	/** @var array|\Closure|float|int|string|StructureEx|TypeExpectationInterface */
 	protected $structure;
+
+	/** @var array<int, scalar> */
 	protected array $path = [];
 
 	/** @var \Boomerang\Interfaces\ExpectationResultInterface[] */
@@ -25,7 +28,7 @@ class StructureEx implements TypeExpectationInterface {
 	private ValidatorInterface $validator;
 
 	/**
-	 * @param callable|mixed|TypeExpectationInterface $structure
+	 * @param array|\Closure|float|int|string|StructureEx|TypeExpectationInterface $structure
 	 */
 	public function __construct( $structure ) {
 		$this->structure = $structure;
