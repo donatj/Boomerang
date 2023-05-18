@@ -2,6 +2,7 @@
 
 namespace Boomerang;
 
+use Boomerang\Exceptions\RuntimeException;
 use Boomerang\Interfaces\HttpResponseInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -89,7 +90,14 @@ class HttpResponse implements HttpResponseInterface {
 			return '';
 		}
 
-		return $response->getBody()->getContents();
+		$body = $response->getBody();
+		try {
+			$body->rewind();
+		} catch( \RuntimeException $e ) {
+			throw new RuntimeException('Unable to rewind response body: ' . $e->getMessage(), $e->getCode(), $e);
+		}
+
+		return $body->getContents();
 	}
 
 }
