@@ -12,13 +12,16 @@
 		"issues": "https://github.com/donatj/Boomerang/issues"
 	},
 	"require": {
-		"psr/http-message": "^1.0",
+		"psr/http-message": "^1.0 || ^2.0",
 		"psr/http-factory": "^1.0",
 		"php-http/discovery": "^1.18",
+		"psr/http-message-implementation": "*",
 		"psr/http-factory-implementation": "*",
+
 		"corpus/http": "^1.0",
 		"donatj/cli-toolkit": "^0.3.1",
 		"donatj/flags": "^1.5",
+
 		"php": ">=7.4.0",
 		"ext-curl": "*",
 		"ext-SPL": "*",
