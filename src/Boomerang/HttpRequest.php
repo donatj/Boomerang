@@ -2,7 +2,14 @@
 
 namespace Boomerang;
 
+use Boomerang\Exceptions\InvalidArgumentException;
+use Boomerang\Exceptions\ResponseException;
 use Boomerang\Factories\HttpResponseFactory;
+use Boomerang\Interfaces\HttpResponseInterface;
+use Http\Discovery\Psr17Factory;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * Utility for generating HTTP Requests and receiving Responses into `HttpResponse` objects.
@@ -17,36 +24,43 @@ class HttpRequest {
 	public const TRACE   = "TRACE";
 	public const OPTIONS = "OPTIONS";
 
+	/** @var array|false|null */
 	private $curlInfo;
 
 	private string $tmp;
 
 	private int $maxRedirects = 10;
 	private array $headers = [];
-	private $endpointParts;
-	private $cookies = [];
-	private $cookiesFollowRedirects = false;
+	private array $endpointParts;
+	private array $cookies = [];
+	private bool $cookiesFollowRedirects = false;
 	/** @var array|string */
 	private $body = [];
 	private ?float $lastRequestTime = null;
 
-	private HttpResponseFactory $responseFactory;
+	private HttpResponseFactory $responseCollectionFactory;
 
 	private string $method = self::GET;
 
+	private ResponseFactoryInterface $responseFactory;
+	/** @var \GuzzleHttp\Psr7\HttpFactory|\Psr\Http\Message\StreamFactoryInterface */
+	private $streamFactory;
+
 	/**
-	 * @param string                   $endpoint        URI to request.
-	 * @param HttpResponseFactory|null $responseFactory A factory for creating Response objects.
+	 * @param string $endpoint URI to request.
 	 */
-	public function __construct( string $endpoint, ?HttpResponseFactory $responseFactory = null ) {
+	public function __construct(
+		string $endpoint,
+		?ResponseFactoryInterface $responseFactory = null,
+		?StreamFactoryInterface $streamFactory = null,
+		?HttpResponseFactory $responseCollectionFactory = null
+	) {
 		$this->setEndpoint($endpoint);
 		$this->tmp = sys_get_temp_dir() ?: '/tmp';
 
-		if( $responseFactory === null ) {
-			$this->responseFactory = new HttpResponseFactory;
-		} else {
-			$this->responseFactory = $responseFactory;
-		}
+		$this->responseFactory           = $responseFactory ?? new Psr17Factory;
+		$this->streamFactory             = $streamFactory ?? new Psr17Factory;
+		$this->responseCollectionFactory = $responseCollectionFactory ?? new HttpResponseFactory;
 	}
 
 	/**
@@ -126,7 +140,7 @@ class HttpRequest {
 	/**
 	 * Set an outgoing header by name.
 	 *
-	 * @param string $key   The name of the header.
+	 * @param string $key The name of the header.
 	 * @param string $value The value to set the header to.
 	 */
 	public function setHeader( string $key, string $value ) : void {
@@ -255,7 +269,7 @@ class HttpRequest {
 	public function setEndpoint( string $endpoint ) : void {
 		$parts = parse_url($endpoint);
 		if( $parts === false ) {
-			throw new \InvalidArgumentException("Failed to parse url '{$endpoint}'");
+			throw new InvalidArgumentException("Failed to parse url '{$endpoint}'");
 		}
 
 		$this->endpointParts = $parts;
@@ -264,9 +278,9 @@ class HttpRequest {
 	/**
 	 * Execute the request
 	 *
-	 * @return HttpResponse An object representing the result of the request
+	 * @return HttpResponseInterface An object representing the result of the request
 	 */
-	public function makeRequest() : HttpResponse {
+	public function makeRequest() : HttpResponseInterface {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->getEndpoint());
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -305,14 +319,118 @@ class HttpRequest {
 
 		$this->curlInfo = curl_getinfo($ch);
 
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$headers     = substr($response, 0, $header_size);
+		$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$headers    = substr($response, 0, $headerSize);
 
-		$body = substr($response, $header_size);
+		$body = substr($response, $headerSize);
 
 		curl_close($ch);
 
-		return $this->responseFactory->newInstance($body, $headers, $this);
+		/** @var ResponseInterface[] $responses */
+		$responses               = [];
+		$parsedHeadersByResponse = $this->parseMultipleRequestHeaders($headers);
+		foreach( $parsedHeadersByResponse as $parsedHeaders ) {
+
+			$response = $this->responseFactory->createResponse();
+			foreach( $parsedHeaders as $key => $value ) {
+				if( $key === 0 ) {
+					continue;
+				}
+
+				$response = $response->withAddedHeader($key, $value);
+			}
+
+			if( isset($parsedHeaders[0]) && $parts = $this->parseStartLine($parsedHeaders[0]) ) {
+				[$version, $statusCode, $statusText] = $parts;
+
+				$response = $response
+					->withStatus($statusCode, $statusText)
+					->withProtocolVersion($version);
+			} else {
+				throw new ResponseException('Unable to parse response');
+			}
+
+			$responses[] = $response;
+		}
+
+		$lastResponse = end($responses);
+		if( $lastResponse === false ) {
+			throw new ResponseException('Unable to parse response');
+		}
+
+		$responses[count($responses) - 1] = $lastResponse->withBody(
+			$this->streamFactory->createStream($body)
+		);
+
+		return $this->responseCollectionFactory->newInstance(
+			$this,
+			$headers,
+			...$responses
+		);
+	}
+
+	/**
+	 * @return array
+	 * @internal This method is public for testing purposes only
+	 */
+	public function parseStartLine( string $start ) : ?array {
+		if( !preg_match('%^HTTP/([\d.]+)\s+(\d+)(?:\s+(.*))?$%', $start, $match) ) {
+			return null;
+		}
+
+		$version    = $match[1];
+		$statusCode = (int)$match[2];
+		$statusText = $match[3] ?? '';
+
+		return [ $version, $statusCode, $statusText ];
+	}
+
+	/**
+	 * @param string $rawHeaders
+	 * @return array<int, array<string|int, string>>
+	 * @internal This method is public for testing purposes only
+	 */
+	public function parseMultipleRequestHeaders( string $rawHeaders ) : array {
+		$output = [];
+
+		$perResponseHeaders = explode("\r\n\r\n", trim($rawHeaders));
+		foreach( $perResponseHeaders as $responseHeaders ) {
+			$parsedResponseHeaders = $this->parseRequestHeaders($responseHeaders);
+
+			$output[] = $parsedResponseHeaders;
+		}
+
+		return $output;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private function parseRequestHeaders( string $rawHeaders ) : array {
+		$headers = [];
+		$key     = '';
+
+		foreach( explode("\n", $rawHeaders) as $h ) {
+			$h = explode(':', $h, 2);
+
+			if( isset($h[1]) ) {
+				if( !isset($headers[$h[0]]) ) {
+					$headers[$h[0]] = trim($h[1]);
+				} elseif( is_array($headers[$h[0]]) ) {
+					$headers[$h[0]] = array_merge($headers[$h[0]], [ trim($h[1]) ]);
+				} else {
+					$headers[$h[0]] = array_merge([ $headers[$h[0]] ], [ trim($h[1]) ]);
+				}
+
+				$key = $h[0];
+			} elseif( strpos($h[0], "\t") === 0 ) {
+				$headers[$key] .= "\r\n\t" . trim($h[0]);
+			} elseif( !$key ) {
+				$headers[0] = trim($h[0]);
+			}
+		}
+
+		return array_change_key_case($headers);
 	}
 
 	private function detectAccept( string $endpoint ) : string {
@@ -344,6 +462,7 @@ class HttpRequest {
 		return $output;
 	}
 
+	/** @return array|false|null */
 	public function getCurlInfo() {
 		return $this->curlInfo;
 	}

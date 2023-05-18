@@ -2,6 +2,7 @@
 
 namespace Boomerang;
 
+use Boomerang\Exceptions\InvalidArgumentException;
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\Interfaces\HttpResponseInterface;
@@ -52,14 +53,17 @@ class HttpResponseValidator extends AbstractValidator {
 	 * @param int|null $hop   The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
-	public function expectHeader( $key, $value, $hop = null ) {
+	public function expectHeader( string $key, string $value, ?int $hop = null ) : self {
 		$header = $this->response->getHeader($key, $hop);
 
-		if( $header != $value ) {
-			$this->expectations[] = new FailingExpectationResult($this, "Unexpected header exact match: " . var_export($key, true), $value, $header);
-		} else {
-			$this->expectations[] = new PassingExpectationResult($this, "Expected header exact match: " . var_export($key, true), $header);
+		foreach($header as $headerValue) {
+			if( $headerValue == $value ) {
+				$this->expectations[] = new PassingExpectationResult($this, "Expected header: " . var_export($key, true), $headerValue);
+				return $this;
+			}
 		}
+
+		$this->expectations[] = new FailingExpectationResult($this, "Unexpected header exact match: " . var_export($key, true), $value, $header);
 
 		return $this;
 	}
@@ -74,14 +78,21 @@ class HttpResponseValidator extends AbstractValidator {
 	 * @param int|null $hop   The zero indexed redirect hop. Defaults to the final hop.
 	 * @return $this
 	 */
-	public function expectHeaderContains( $key, $value, $hop = null ) {
+	public function expectHeaderContains( string $key, string $value, ?int $hop = null ) : self {
+		if($value === '') {
+			throw new InvalidArgumentException("Search value may not be empty");
+		}
+
 		$header = $this->response->getHeader($key, $hop);
 
-		if( !$header || !$value || strpos($header, $value) === false ) {
-			$this->expectations[] = new FailingExpectationResult($this, "Unexpected header contains: " . var_export($key, true), $value, $header);
-		} else {
-			$this->expectations[] = new PassingExpectationResult($this, "Expected header contains: " . var_export($key, true), $header);
+		foreach($header as $headerValue) {
+			if( strpos($headerValue, $value) !== false ) {
+				$this->expectations[] = new PassingExpectationResult($this, "Expected header contains: " . var_export($key, true), $header);
+				return $this;
+			}
 		}
+
+		$this->expectations[] = new FailingExpectationResult($this, "Unexpected header contains: " . var_export($key, true), $value, $header);
 
 		return $this;
 	}
