@@ -91,6 +91,7 @@ class HttpResponse implements HttpResponseInterface {
 		}
 
 		$body = $response->getBody();
+
 		try {
 			$body->rewind();
 		} catch( \RuntimeException $e ) {
