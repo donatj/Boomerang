@@ -148,21 +148,22 @@ class StructureEx implements TypeExpectationInterface {
 		return [ $pass, $expectations ];
 	}
 
+	/**
+	 * @param array<int, scalar> $path
+	 */
 	protected function makePathName( array $path ) : string {
-		$s_path = "";
+		$s_path = '';
 		foreach( $path as $loc ) {
-			if( is_numeric($loc) ) {
-				if( is_int($loc) ) {
-					if( $s_path == "" ) {
-						$s_path = ".";
-					}
-
-					$s_path .= "[$loc]";
-				} else {
-					$s_path .= '."' . $loc . '"';
+			if( is_int($loc) ) {
+				if( $s_path === '' ) {
+					$s_path = '.';
 				}
-			} else {
+
+				$s_path .= "[$loc]";
+			} elseif (preg_match('/^[a-z_][a-z\d_]*$/i', $loc, $regs)) {
 				$s_path .= ".$loc";
+			} else {
+				$s_path .= '."' . $loc . '"';
 			}
 		}
 
