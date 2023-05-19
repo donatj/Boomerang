@@ -2,6 +2,7 @@
 
 namespace Boomerang\TypeExpectations;
 
+use Boomerang\Exceptions\InvalidArgumentException;
 use Boomerang\Exceptions\InvalidStateException;
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
@@ -197,7 +198,7 @@ class StructureEx implements TypeExpectationInterface {
 				// @todo ideally I shouldn't need to do this
 				$this->expectationResults[spl_object_hash($expect)] = $expect;
 			} else {
-				throw new \InvalidArgumentException('Expectation Results must implement ExpectationResultInterface');
+				throw new InvalidArgumentException('Expectation Results must implement ExpectationResultInterface');
 			}
 		}
 	}

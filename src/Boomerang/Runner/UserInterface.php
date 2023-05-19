@@ -11,6 +11,7 @@ use Boomerang\ExpectationResults\MutedExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\ExpectationResultInterface;
+use Boomerang\Interfaces\HttpResponseInterface;
 use Boomerang\Interfaces\ResponseValidatorInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 use CLI\Output;
@@ -104,10 +105,17 @@ class UserInterface {
 							$initialWhitespace = true;
 						}
 
+						$endpoint          = false;
+						$validatorResponse = null;
+						$validatorRequest  = null;
 						if( $validator instanceof ResponseValidatorInterface ) {
-							$endpoint = $validator->getResponse()->getRequest()->getEndpoint();
-						} else {
-							$endpoint = false;
+							$validatorResponse = $validator->getResponse();
+							if( $validatorResponse instanceof HttpResponseInterface ) {
+								$validatorRequest = $validatorResponse->getRequest();
+								if( $validatorRequest ) {
+									$endpoint = $validatorRequest->getEndpoint();
+								}
+							}
 						}
 
 						if( $notPassing || $verbose > 1 ) {
@@ -119,13 +127,10 @@ class UserInterface {
 							$fileDisplayed = true;
 						}
 
-						if( $endpoint && $endpoint != $lastEndpoint ) {
+						if( $endpoint && $endpoint !== $lastEndpoint ) {
 							Output::string("[ " . Style::blue($endpoint, 'underline') . " ]");
 							if( $verbose ) {
-								/**
-								 * @var ResponseValidatorInterface $validator
-								 */
-								Output::string('( ' . $validator->getResponse()->getRequest()->getLastRequestTime() . 's )');
+								Output::string('( ' . $validatorRequest->getLastRequestTime() . 's )');
 							}
 
 							Output::string(PHP_EOL);

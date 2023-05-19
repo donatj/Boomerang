@@ -6,11 +6,7 @@ use Boomerang\HttpRequest;
 
 interface HttpResponseInterface extends ResponseInterface {
 
-	/**
-	 * @return string|string[]|null
-	 * @todo Fix this ridiculous return type
-	 */
-	public function getHeader( string $header, ?int $hop = null );
+	public function getHeader( string $header, ?int $hop = null ) : array;
 
 	public function getHeaders( ?int $hop = null ) : ?array;
 
@@ -21,6 +17,8 @@ interface HttpResponseInterface extends ResponseInterface {
 	public function getRequest() : ?HttpRequest;
 
 	public function getHopCount() : int;
+
+	public function getProtocolVersion( ?int $hop = null ) : ?string;
 
 	public function getStatus( ?int $hop = null ) : ?int;
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Boomerang;
 
+use Boomerang\Exceptions\InvalidArgumentException;
 use Boomerang\HttpResponseValidator;
 use Boomerang\Interfaces\HttpResponseInterface;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +48,7 @@ class HttpResponseValidatorTest extends TestCase {
 		 */
 		$mock = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
 		$mock->method('getHeader')
-			->willReturn('test');
+			->willReturn(['test']);
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectHeader('test', 'test');
@@ -67,7 +68,7 @@ class HttpResponseValidatorTest extends TestCase {
 		// == False
 
 		$mock->method('getHeader')
-			->willReturn(false);
+			->willReturn([]);
 
 		$valid->expectHeader('test', false);
 		$expResults      = $valid->getExpectationResults();
@@ -82,7 +83,8 @@ class HttpResponseValidatorTest extends TestCase {
 		 */
 		$mock = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
 		$mock->method('getHeader')
-			->willReturn('thisIsMyTestHeader');
+			->with('test')
+			->willReturn(['thisIsMyTestHeader']);
 
 		$valid = new HttpResponseValidator($mock);
 		$valid->expectHeaderContains('test', 'IsMyTest');
@@ -102,13 +104,21 @@ class HttpResponseValidatorTest extends TestCase {
 		// == False
 
 		$mock->method('getHeader')
-			->willReturn(false);
+			->willReturn([]);
 
-		$valid->expectHeaderContains('test', false);
+		$valid->expectHeaderContains('test', 'funky');
 		$expResults      = $valid->getExpectationResults();
 		$lastExpectation = end($expResults);
 
 		$this->assertTrue($lastExpectation->getFail());
+	}
+
+	public function testExpectHeaderContains_exception() : void {
+		$mock = $this->getMockBuilder(HttpResponseInterface::class)->getMock();
+		$valid = new HttpResponseValidator($mock);
+
+		$this->expectException(InvalidArgumentException::class);
+		$valid->expectHeaderContains('test', '');
 	}
 
 	public function testExpectBody() : void {

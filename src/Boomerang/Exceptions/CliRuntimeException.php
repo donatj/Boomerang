@@ -2,7 +2,7 @@
 
 namespace Boomerang\Exceptions;
 
-class CliRuntimeException extends \RuntimeException implements CliExceptionInterface {
+class CliRuntimeException extends RuntimeException implements CliExceptionInterface {
 
 	use CliExceptionTrait;
 

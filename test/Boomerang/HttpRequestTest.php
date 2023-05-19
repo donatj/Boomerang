@@ -2,9 +2,7 @@
 
 namespace Tests\Boomerang;
 
-use Boomerang\Factories\HttpResponseFactory;
 use Boomerang\HttpRequest;
-use Boomerang\HttpResponse;
 use donatj\MockWebServer\MockWebServer;
 use donatj\MockWebServer\Response;
 use PHPUnit\Framework\TestCase;
@@ -71,63 +69,66 @@ class HttpRequestTest extends TestCase {
 			HttpRequest::OPTIONS,
 		];
 
-		// , [], [], '', false
-		$mockResponse = $this->getMockBuilder(HttpResponse::class)->disableOriginalConstructor()->getMock();
-
 		foreach( $methods as $method ) {
-			$mockFactory     = $this->getMockBuilder(HttpResponseFactory::class)->getMock();
-			$mockNewInstance = $mockFactory->method('newInstance');
-
-			$mockNewInstance->willReturnCallback(function (
-				string $body,
-				$headers,
-				HttpRequest $request
-			) use ( $mockResponse, $method ) {
-				$data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-				$this->assertSame($data['METHOD'], $method);
-				$this->assertSame($data['INPUT'], 'This is the requests body');
-
-				$this->assertSame($data['REQUEST_URI'], '/path?param1=1&param2=2');
-
-				$this->assertSame([
-					'param1' => '1',
-					'param2' => '2',
-				], $data['_GET']);
-
-				return $mockResponse;
-			});
-
-			$req = new HttpRequest(self::$server->getServerRoot() . '/path?param1=1&param2=2', $mockFactory);
+			$req = new HttpRequest(self::$server->getServerRoot() . '/path?param1=1&param2=2');
 			$req->setMethod($method);
 			$req->setBody('This is the requests body');
 			$resp = $req->makeRequest();
-			$this->assertSame($mockResponse, $resp);
+
+			$data = json_decode($resp->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+			$this->assertSame($data['METHOD'], $method);
+			$this->assertSame($data['INPUT'], 'This is the requests body');
+			$this->assertSame($data['REQUEST_URI'], '/path?param1=1&param2=2');
+
+			$this->assertSame([
+				'param1' => '1',
+				'param2' => '2',
+			], $data['_GET']);
 		}
 	}
 
+	public function testParseStartLine() : void {
+		$req = new HttpRequest('http://example.com/');
+		[$version, $status, $statusText] = $req->parseStartLine('HTTP/1.1 200 OK');
+		$this->assertSame('1.1', $version);
+		$this->assertSame(200, $status);
+		$this->assertSame('OK', $statusText);
+
+		[$version, $status, $statusText] = $req->parseStartLine('HTTP/1.1 200');
+		$this->assertSame('1.1', $version);
+		$this->assertSame(200, $status);
+		$this->assertSame('', $statusText);
+
+		[$version, $status, $statusText] = $req->parseStartLine('HTTP/2 200');
+		$this->assertSame('2', $version);
+		$this->assertSame(200, $status);
+		$this->assertSame('', $statusText);
+	}
+
 	public function testCookiesFollowRedirects() : void {
-		$mockResponse    = $this->getMockBuilder(HttpResponse::class)->disableOriginalConstructor()->getMock();
-		$mockFactory     = $this->getMockBuilder(HttpResponseFactory::class)->getMock();
-		$mockNewInstance = $mockFactory->method('newInstance');
-
-		$mockNewInstance->willReturnCallback(function ( string $body, string $headers, HttpRequest $request ) use ( $mockResponse ) {
-			$data = json_decode($body, true);
-			$this->assertSame($data['_COOKIE'], [
-				'sessionid' => '38afes7a8',
-			]);
-
-			$this->assertSame($data['REQUEST_URI'], '/sauce');
-			$headerParts = explode("\r\n\r\n", trim($headers));
-			$this->assertCount(2, $headerParts);
-
-			$this->assertStringStartsWith("HTTP/1.1 301 Moved Permanently\r\n", $headerParts[0]);
-			$this->assertNotFalse(stripos($headerParts[0], "\r\nSet-Cookie: sessionid=38afes7a8; Path=/\r\n"));
-
-			$this->assertStringStartsWith("HTTP/1.1 200 OK\r\n", $headerParts[1]);
-			$this->assertFalse(stripos($headerParts[1], "\r\nSet-Cookie: \r\n"));
-
-			return $mockResponse;
-		});
+		//		$mockResponse    = $this->getMockBuilder(HttpResponse::class)->disableOriginalConstructor()->getMock();
+		//		$mockFactory     = $this->getMockBuilder(HttpResponseFactory::class)->getMock();
+		//		$mockNewInstance = $mockFactory->method('newInstance');
+		//
+		//		$mockNewInstance->willReturnCallback(function ( string $body, string $headers, HttpRequest $request ) use ( $mockResponse ) {
+		//			$data = json_decode($body, true);
+		//			$this->assertSame($data['_COOKIE'], [
+		//				'sessionid' => '38afes7a8',
+		//			]);
+		//
+		//			$this->assertSame($data['REQUEST_URI'], '/sauce');
+		//			$headerParts = explode("\r\n\r\n", trim($headers));
+		//			$this->assertCount(2, $headerParts);
+		//
+		//			$this->assertStringStartsWith("HTTP/1.1 301 Moved Permanently\r\n", $headerParts[0]);
+		//			$this->assertNotFalse(stripos($headerParts[0], "\r\nSet-Cookie: sessionid=38afes7a8; Path=/\r\n"));
+		//
+		//			$this->assertStringStartsWith("HTTP/1.1 200 OK\r\n", $headerParts[1]);
+		//			$this->assertFalse(stripos($headerParts[1], "\r\nSet-Cookie: \r\n"));
+		//
+		//			return $mockResponse;
+		//		});
 
 		$endpoint = self::$server->getUrlOfResponse(
 			new Response(
@@ -140,12 +141,24 @@ class HttpRequestTest extends TestCase {
 			)
 		);
 
-		$req = new HttpRequest($endpoint, $mockFactory);
+		$req = new HttpRequest($endpoint);
 		$req->setMaxRedirects(2);
 		$req->setCookiesFollowRedirects(true);
 
 		$resp = $req->makeRequest();
-		$this->assertSame($mockResponse, $resp);
+
+		$data = json_decode($resp->getBody(), true);
+		$this->assertSame($data['_COOKIE'], [
+			'sessionid' => '38afes7a8',
+		]);
+		$this->assertSame($data['REQUEST_URI'], '/sauce');
+
+		$headerParts = explode("\r\n\r\n", trim($resp->getRawHeaders()));
+		$this->assertCount(2, $headerParts);
+		$this->assertStringStartsWith("HTTP/1.1 301 Moved Permanently\r\n", $headerParts[0]);
+		$this->assertNotFalse(stripos($headerParts[0], "\r\nSet-Cookie: sessionid=38afes7a8; Path=/\r\n"));
+		$this->assertStringStartsWith("HTTP/1.1 200 OK\r\n", $headerParts[1]);
+		$this->assertFalse(stripos($headerParts[1], "\r\nSet-Cookie: \r\n"));
 	}
 
 }
