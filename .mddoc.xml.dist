@@ -1,0 +1,29 @@
+<mddoc>
+	<docpage target="README.md" autoloader="psr4" autoloader-root="src" autoloader-root-namespace="Corpus\Router">
+
+		<section title="Boomerang_!_">
+			<badge-poser type="version"/>
+			<badge-poser type="downloads"/>
+			<badge-poser type="license"/>
+			<badge-github-action name="donatj/Boomerang" workflow-file="ci.yml"/>
+			<text><![CDATA[
+Boomerang_!_ is a simple Frisby.js inspired API E2E endpoint testing framework, providing the tools you need to validate REST responses.
+
+Boomerang_!_ consumes your API and validates your defined set of expectations, alerting you to any problems that arise.
+
+Documentation and more information is available at https://boomerang.work/
+			]]></text>
+			<section title="Requirements">
+				<composer-requires/>
+			</section>
+			<section title="Installing">
+				<composer-install  dev="true" package-names="boomerang/boomerang, [Any PSR-7 provider], [Any PSR-17 provider]"/>
+				<text>If your project already includes a PSR-7 and PSR-17 implementation there is no need to require a new one.</text>
+				<section title="Guzzle PSR-7">
+					<text>An easy solution is [Guzzle PSR-7](https://github.com/guzzle/psr7) as it provides both PSR-7 and PSR-17. It can be used as follows.</text>
+					<composer-install  dev="true" package-names="boomerang/boomerang,guzzlehttp/psr7"/>
+				</section>
+			</section>
+		</section>
+	</docpage>
+</mddoc>
