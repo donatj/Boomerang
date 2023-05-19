@@ -275,6 +275,19 @@ class HttpRequest {
 		$this->endpointParts = $parts;
 	}
 
+	protected function buildCookieHeader(array $cookies) : string {
+		if( function_exists('http_build_cookie') ) {
+			return http_build_cookie($cookies);
+		}
+
+		$output = [];
+		foreach( $cookies as $key => $value ) {
+			$output[] = sprintf("%s=%s", $key, rawurlencode($value));
+		}
+
+		return implode('; ', $output);
+	}
+
 	/**
 	 * Execute the request
 	 *
@@ -299,8 +312,7 @@ class HttpRequest {
 		}
 
 		if( count($this->cookies) > 0 ) {
-			// @todo This does not work without http extension… find a better solution
-			curl_setopt($ch, CURLOPT_COOKIE, http_build_cookie($this->cookies));
+			curl_setopt($ch, CURLOPT_COOKIE, $this->buildCookieHeader($this->cookies));
 		}
 
 		curl_setopt($ch, CURLOPT_HEADER, 1);
