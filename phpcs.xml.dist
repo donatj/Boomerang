@@ -2,7 +2,8 @@
 <ruleset>
 	<file>src</file>
 	<file>test</file>
-	<file>sample</file>
+	<file>examples</file>
+	<file>composer/bin/boomerang</file>
 
 	<rule ref="Corpus"/>
 </ruleset>

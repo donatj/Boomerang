@@ -1,8 +1,8 @@
 <?php
 
 use Boomerang\Boomerang;
-use Boomerang\HttpResponseValidator;
 use Boomerang\HttpRequest;
+use Boomerang\HttpResponseValidator;
 
 $req      = new HttpRequest('https://httpbin.org/get');
 $response = $req->makeRequest();

@@ -4,9 +4,9 @@ $finder = PhpCsFixer\Finder::create()
 	->files()
 	->in(__DIR__ . '/src')
 	->in(__DIR__ . '/test')
-	->in(__DIR__ . '/sample')
+	->in(__DIR__ . '/examples')
 	->name('*.php')
-	->append([ __DIR__ . '/app' ]);
+	->append([ __DIR__ . '/composer/bin/boomerang' ]);
 
 
 return (new PhpCsFixer\Config)
