@@ -120,18 +120,19 @@ class Boomerang {
 		self::$boomerangPath = realpath($args[0]);
 		self::$pathInfo      = pathinfo(self::$boomerangPath);
 
-		$scan = self::init($args, $ui);
+		$paths = self::init($args, $ui);
 
 		self::versionMarker($ui);
 
 		try {
-			$runner = new TestRunner(end($scan), self::$bootstrap);
+			$runner = new TestRunner($paths, self::$bootstrap);
 
 			$verbosity = self::$verbosity;
 			$displayed = [];
-			$runner->runTests(function ( $file ) use ( $ui, $verbosity, &$displayed ) {
+			$tests = $runner->runTests();
+			foreach($tests as $file => $_) {
 				$validators = [];
-				foreach( Boomerang::$validators as $validator ) {
+				foreach( self::$validators as $validator ) {
 					$hash = spl_object_hash($validator);
 
 					if( !isset($displayed[$hash]) ) {
@@ -141,7 +142,7 @@ class Boomerang {
 				}
 
 				$ui->updateExpectationDisplay($file, $validators, $verbosity);
-			});
+			}
 
 			$tests = 0;
 			$total = 0;
