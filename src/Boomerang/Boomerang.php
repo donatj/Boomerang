@@ -17,7 +17,7 @@ class Boomerang {
 	/** @access private */
 	public const VERSION = ".0.2.0";
 	/** @access private */
-	public const CONFIG_FILE = "boomerang.ini";
+	public const CONFIG_FILES = [".boomerang.ini", "boomerang.ini", ".boomerang.dist.ini", "boomerang.dist.ini"];
 
 	/** @access private */
 	public static $boomerangPath;
@@ -36,15 +36,19 @@ class Boomerang {
 	 * @return array|string[]
 	 */
 	private static function init( array $args, UserInterface $ui ) : array {
-
 		$flags     = new Flags;
 		$testSuite = &$flags->string('testsuite', 'default', 'Which test suite to run.');
 		$flags->parse($args, true);
 
-		if( is_readable(self::CONFIG_FILE) ) {
-			$config = parse_ini_file(self::CONFIG_FILE, true);
-		} else {
-			$config = [];
+		foreach(self::CONFIG_FILES as $configFile) {
+			if( is_readable($configFile) ) {
+				$config = parse_ini_file($configFile, true);
+				if( $config === false ) {
+					$ui->dropError("Unable to parse config file '{$configFile}'", 2, $flags->getDefaults());
+				}
+			} else {
+				$config = [];
+			}
 		}
 
 		if( isset($config[$testSuite]) ) {
