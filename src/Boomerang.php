@@ -24,8 +24,8 @@ class Boomerang {
 	/** @access private */
 	public static $pathInfo;
 
-	private static $bootstrap;
-	private static $verbosity;
+	private static ?string $bootstrap;
+	private static int $verbosity;
 
 	/** @var ValidatorInterface[] */
 	private static array $validators = [];
@@ -71,7 +71,7 @@ class Boomerang {
 			}
 		}
 
-		self::$bootstrap = &$flags->string('bootstrap', $suite['bootstrap'] ?? false, 'A "bootstrap" PHP file that is run before the specs.');
+		self::$bootstrap = &$flags->string('bootstrap', $suite['bootstrap'] ?? '', 'A "bootstrap" PHP file that is run before the specs.');
 		self::$verbosity = &$flags->short('v', 'Output in verbose mode');
 
 		$displayHelp    = &$flags->bool('help', false, 'Display this help message.');

@@ -50,8 +50,8 @@
 		}
 	],
 	"autoload": {
-		"psr-0": {
-			"Boomerang": "src/"
+		"psr-4": {
+			"Boomerang\\": "src/"
 		}
 	},
 	"autoload-dev": {
