@@ -46,8 +46,8 @@ class Boomerang {
 				if( $config === false ) {
 					$ui->dropError("Unable to parse config file '{$configFile}'", 2, $flags->getDefaults());
 				}
-			} else {
-				$config = [];
+
+				break;
 			}
 		}
 
