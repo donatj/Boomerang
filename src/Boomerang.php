@@ -24,7 +24,7 @@ class Boomerang {
 	/** @access private */
 	public static $pathInfo;
 
-	private static ?string $bootstrap;
+	private static string $bootstrap;
 	private static int $verbosity;
 
 	/** @var ValidatorInterface[] */
@@ -109,7 +109,7 @@ class Boomerang {
 	/**
 	 * @access private
 	 */
-	public static function main( array $args ) : void {
+	public static function main( array $args ) : int {
 		$start = microtime(true);
 
 		$stdout = fopen('php://stdout', 'w');
@@ -124,13 +124,17 @@ class Boomerang {
 
 		self::versionMarker($ui);
 
+		$tests = 0;
+		$total = 0;
+		$fails = 0;
+
 		try {
 			$runner = new TestRunner($paths, self::$bootstrap);
 
 			$verbosity = self::$verbosity;
 			$displayed = [];
-			$tests = $runner->runTests();
-			foreach($tests as $file => $_) {
+			$testRuns = $runner->runTests();
+			foreach($testRuns as $file => $_) {
 				$validators = [];
 				foreach( self::$validators as $validator ) {
 					$hash = spl_object_hash($validator);
@@ -144,9 +148,6 @@ class Boomerang {
 				$ui->updateExpectationDisplay($file, $validators, $verbosity);
 			}
 
-			$tests = 0;
-			$total = 0;
-			$fails = 0;
 			foreach( self::$validators as $v_data ) {
 				$tests++;
 				$ex_res = $v_data->getExpectationResults();
@@ -155,20 +156,20 @@ class Boomerang {
 					$fails += $ex->getFail();
 				}
 			}
-
-			$currMen = number_format(memory_get_usage() / 1048576, 2);
-			$peakMem = number_format(memory_get_peak_usage() / 1048576, 2);
-			$seconds = number_format(microtime(true) - $start, 2);
-
-			$ui->outputMsg(PHP_EOL);
-			$ui->outputMsg("{$tests} tests, {$total} assertions, {$fails} failures, [{$currMen}]{$peakMem}mb peak memory use, {$seconds} seconds");
-
-			exit($fails ? 2 : 0);
 		} catch( CliExceptionInterface $ex ) {
 			$ui->dropError($ex->getMessage(), $ex->getExitCode());
 		} catch ( BoomerangException $ex ) {
 			$ui->dropError($ex->getMessage(), 3);
 		}
+
+		$currMen = number_format(memory_get_usage() / 1048576, 2);
+		$peakMem = number_format(memory_get_peak_usage() / 1048576, 2);
+		$seconds = number_format(microtime(true) - $start, 2);
+
+		$ui->outputMsg(PHP_EOL);
+		$ui->outputMsg("{$tests} tests, {$total} assertions, {$fails} failures, [{$currMen}]{$peakMem}mb peak memory use, {$seconds} seconds");
+
+		return $fails ? 2 : 0;
 	}
 
 	private static function versionMarker( UserInterface $ui ) : void {

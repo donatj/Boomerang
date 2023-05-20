@@ -7,12 +7,12 @@ use Boomerang\Exceptions\CliRuntimeException;
 class TestRunner {
 
 	private iterable $files;
-	private string $bootstrap;
+	private ?string $bootstrap;
 
 	/**
 	 * TestRunner constructor.
 	 */
-	public function __construct( array $paths, string $bootstrap ) {
+	public function __construct( array $paths, ?string $bootstrap ) {
 		$this->bootstrap = $bootstrap;
 		$this->files     = $this->getFileListForPaths($paths);
 	}
