@@ -22,7 +22,7 @@
 	"require-dev": {
 		"donatj/drop": "*",
 		"donatj/mock-webserver": "~2.3",
-		"phpunit/phpunit": "~4|~8",
+		"phpunit/phpunit": "~4|~8|~9",
 		"ralouphie/getallheaders": "^2.0"
 	},
 	"authors": [
