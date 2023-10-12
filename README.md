@@ -1,62 +1,49 @@
-# Boomerang!
-[![Latest Stable Version](https://poser.pugx.org/boomerang/boomerang/v/stable.svg)](https://packagist.org/packages/boomerang/boomerang)
-[![Total Downloads](https://poser.pugx.org/boomerang/boomerang/downloads.svg)](https://packagist.org/packages/boomerang/boomerang) 
-[![Latest Unstable Version](https://poser.pugx.org/boomerang/boomerang/v/unstable.svg)](https://packagist.org/packages/boomerang/boomerang)
-[![License](https://poser.pugx.org/boomerang/boomerang/license.svg)](https://packagist.org/packages/boomerang/boomerang)
-![CI](https://github.com/donatj/Boomerang/workflows/CI/badge.svg)
+# Boomerang_!_
 
-Boomerang! is a simple Frisby.js inspired API E2E endpoint testing framework, providing the tools you need to validate REST responses.
+[![Latest Stable Version](https://poser.pugx.org/boomerang/boomerang/version)](https://packagist.org/packages/boomerang/boomerang)
+[![Total Downloads](https://poser.pugx.org/boomerang/boomerang/downloads)](https://packagist.org/packages/boomerang/boomerang)
+[![License](https://poser.pugx.org/boomerang/boomerang/license)](https://packagist.org/packages/boomerang/boomerang)
+[![ci.yml](https://github.com/donatj/Boomerang/actions/workflows/ci.yml/badge.svg?)](https://github.com/donatj/Boomerang/actions/workflows/ci.yml)
 
-Boomerang! consumes your API and validates your defined set of expectations, alerting you to any problems that arise.
 
-Boomerang! is still in active development and more info is coming soon!
+Boomerang_!_ is a simple Frisby.js inspired API E2E endpoint testing framework, providing the tools you need to validate REST responses.
 
-Documentation and more information is availible at http://boomerang.work/
+Boomerang_!_ consumes your API and validates your defined set of expectations, alerting you to any problems that arise.
+
+Documentation and more information is available at https://boomerang.work/
+			
 
 ## Requirements
 
-- PHP 5.4.0+ with CLI and SPL
-- *nix or cygwin on windows.
+- **psr/http-message**: ^1.0 || ^2.0
+- **psr/http-factory**: ^1.0
+- **php-http/discovery**: ^1.18
+- **psr/http-message-implementation**: *
+- **psr/http-factory-implementation**: *
+- **corpus/http**: ^1.0
+- **donatj/cli-toolkit**: ^0.3.1
+- **donatj/flags**: ^1.5
+- **php**: >=7.4.0
+- **ext-curl**: *
+- **ext-SPL**: *
+- **ext-json**: *
 
-## Installation
+## Installing
 
-Using composer, `boomerang` can be installed globally via: 
-
-```bash
-$ composer global require 'boomerang/boomerang'
-```
-
-Or if you are using composer for the project you wish to test, you can simply add it as a [vendor binary](https://getcomposer.org/doc/articles/vendor-binaries.md):
-
-```json
-{
-  "require-dev": {
-      "boomerang/boomerang": "~0.2.0"
-  }
-}
-```
-
-## Development
+Install the latest version with:
 
 ```bash
-$ git clone https://github.com/donatj/Boomerang.git Boomerang
-$ cd Boomerang
-$ composer.phar install
+composer require --dev 'boomerang/boomerang' '[Any PSR-7 provider]' '[Any PSR-17 provider]'
 ```
 
-### Basic Execution
+If your project already includes a PSR-7 and PSR-17 implementation there is no need to require a new one.
 
-The easiest way to test is simply using the composer executable.
+### Guzzle PSR-7
 
-From the root of the cloned project, execute 
-```bash
-$ ./vendor/bin/boomerang
-```
+An easy solution is [Guzzle PSR-7](https://github.com/guzzle/psr7) as it provides both PSR-7 and PSR-17. It can be used as follows.
 
-### Building a Phar
-
-You will need Composer to fetch the requirements
+Install the latest version with:
 
 ```bash
-$ php create-phar.php
+composer require --dev 'boomerang/boomerang' 'guzzlehttp/psr7'
 ```

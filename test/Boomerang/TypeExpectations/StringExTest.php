@@ -1,29 +1,28 @@
 <?php
 
-namespace Boomerang\TypeExpectations\Test;
+namespace Tests\Boomerang\TypeExpectations;
 
 use Boomerang\TypeExpectations\StringEx;
 use PHPUnit\Framework\TestCase;
 
 class StringExTest extends TestCase {
 
-	public function testBasicMatching() {
+	public function testBasicMatching() : void {
 
-		$x = new StringEx();
+		$x = new StringEx;
 
-		$this->assertEquals(false, $x->match(false));
-		$this->assertEquals(false, $x->match(true));
-		$this->assertEquals(false, $x->match(null));
-		$this->assertEquals(true, $x->match('abc'));
-		$this->assertEquals(true, $x->match('23'));
-		$this->assertEquals(false, $x->match(23));
-		$this->assertEquals(true, $x->match('23.5'));
-		$this->assertEquals(false, $x->match(23.5));
-		$this->assertEquals(true, $x->match(''));
-		$this->assertEquals(true, $x->match(' '));
-		$this->assertEquals(true, $x->match('0'));
-		$this->assertEquals(false, $x->match(0));
-
+		$this->assertFalse($x->match(false));
+		$this->assertFalse($x->match(true));
+		$this->assertFalse($x->match(null));
+		$this->assertTrue($x->match('abc'));
+		$this->assertTrue($x->match('23'));
+		$this->assertFalse($x->match(23));
+		$this->assertTrue($x->match('23.5'));
+		$this->assertFalse($x->match(23.5));
+		$this->assertTrue($x->match(''));
+		$this->assertTrue($x->match(' '));
+		$this->assertTrue($x->match('0'));
+		$this->assertFalse($x->match(0));
 	}
 
 }

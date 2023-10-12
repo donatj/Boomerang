@@ -1,6 +1,6 @@
 <?php
 
-namespace Boomerang\ExpectationResults\Test;
+namespace Tests\Boomerang\ExpectationResults;
 
 use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\Interfaces\ValidatorInterface;
@@ -8,11 +8,11 @@ use PHPUnit\Framework\TestCase;
 
 class FailingResultTest extends TestCase {
 
-	function testGetFail() {
+	public function testGetFail() : void {
 		/**
-		 * @var $mockValidator ValidatorInterface
+		 * @var ValidatorInterface $mockValidator
 		 */
-		$mockValidator = $this->getMockBuilder('Boomerang\\Interfaces\\ValidatorInterface')->getMock();
+		$mockValidator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
 		$result        = new FailingResult($mockValidator);
 		$this->assertTrue($result->getFail());
 	}

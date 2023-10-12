@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset>
+	<file>src</file>
+	<file>test</file>
+	<file>examples</file>
+	<file>composer/bin/boomerang</file>
+
+	<rule ref="Corpus"/>
+</ruleset>
