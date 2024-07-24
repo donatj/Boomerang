@@ -46,11 +46,11 @@ class TestRunner {
 
 	public function runTests() : \Generator {
 		if( $this->bootstrap ) {
-			if( is_readable($this->bootstrap) ) {
-				require_once $this->bootstrap;
-			} else {
+			if( !is_readable($this->bootstrap) ) {
 				throw new CliRuntimeException("Failed to load bootstrap");
 			}
+
+			require_once $this->bootstrap;
 		}
 
 		$scope = static fn ( string $file ) => require $file;

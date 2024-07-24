@@ -194,12 +194,12 @@ class StructureEx implements TypeExpectationInterface {
 	 */
 	protected function addExpectationResults( array $expectations ) : void {
 		foreach( $expectations as $expect ) {
-			if( $expect instanceof ExpectationResultInterface ) {
-				// @todo ideally I shouldn't need to do this
-				$this->expectationResults[spl_object_hash($expect)] = $expect;
-			} else {
+			if( !$expect instanceof ExpectationResultInterface ) {
 				throw new InvalidArgumentException('Expectation Results must implement ExpectationResultInterface');
 			}
+
+			// @todo ideally I shouldn't need to do this
+			$this->expectationResults[spl_object_hash($expect)] = $expect;
 		}
 	}
 

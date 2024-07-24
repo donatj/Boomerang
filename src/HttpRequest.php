@@ -352,15 +352,15 @@ class HttpRequest {
 				$response = $response->withAddedHeader($key, $value);
 			}
 
-			if( isset($parsedHeaders[0]) && $parts = $this->parseStartLine($parsedHeaders[0]) ) {
-				[$version, $statusCode, $statusText] = $parts;
-
-				$response = $response
-					->withStatus($statusCode, $statusText)
-					->withProtocolVersion($version);
-			} else {
+			if( !isset($parsedHeaders[0]) || !($parts = $this->parseStartLine($parsedHeaders[0])) ) {
 				throw new ResponseException('Unable to parse response');
 			}
+
+			[ $version, $statusCode, $statusText ] = $parts;
+
+			$response = $response
+				->withStatus($statusCode, $statusText)
+				->withProtocolVersion($version);
 
 			$responses[] = $response;
 		}
