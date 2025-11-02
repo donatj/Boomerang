@@ -41,9 +41,5 @@
 	},
 	"bin": [
 		"composer/bin/boomerang"
-	],
-	"config": {
-		"github-protocols": ["https"],
-		"use-github-api": false
-	}
+	]
 }

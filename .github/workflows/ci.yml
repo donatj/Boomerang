@@ -28,16 +28,6 @@ jobs:
       - name: Install dependencies with composer
         run: composer install
 
-      - name: Install PHPStan
-        run: |
-          mkdir -p vendor/bin
-          curl -L https://github.com/phpstan/phpstan/releases/download/1.12.32/phpstan.phar -o vendor/bin/phpstan.phar
-          chmod +x vendor/bin/phpstan.phar
-          echo '#!/usr/bin/env php' > vendor/bin/phpstan
-          echo '<?php' >> vendor/bin/phpstan
-          echo 'require __DIR__ . "/phpstan.phar";' >> vendor/bin/phpstan
-          chmod +x vendor/bin/phpstan
-
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse
 
