@@ -14,7 +14,7 @@
 	"require": {
 		"donatj/cli-toolkit": "~0.3",
 		"donatj/flags": "~1",
-		"php": ">=5.4.0",
+		"php": ">=7.4.0",
 		"ext-curl": "*",
 		"ext-SPL": "*",
 		"ext-json": "*"
@@ -22,6 +22,7 @@
 	"require-dev": {
 		"donatj/drop": "*",
 		"donatj/mock-webserver": "~2.3",
+		"phpstan/phpstan": "^2.1",
 		"phpunit/phpunit": "~4|~8",
 		"ralouphie/getallheaders": "^2.0"
 	},

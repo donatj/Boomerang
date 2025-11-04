@@ -73,7 +73,7 @@ class StructureEx implements TypeExpectationInterface {
 	 */
 	protected function __validate( $data, $validation, array $path = null ) {
 		/**
-		 * @var $expectations \Boomerang\ExpectationResults\AbstractResult[]
+		 * @var \Boomerang\ExpectationResults\AbstractResult[] $expectations
 		 */
 		$expectations = array();
 
@@ -195,8 +195,6 @@ class StructureEx implements TypeExpectationInterface {
 			if( $expect instanceof ExpectationResultInterface ) {
 				// @todo ideally I shouldn't need to do this
 				$this->expectationResults[spl_object_hash($expect)] = $expect;
-			} else {
-				throw new \InvalidArgumentException('Expectation Results must implement ExpectationResultInterface');
 			}
 		}
 	}
