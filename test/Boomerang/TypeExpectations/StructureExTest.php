@@ -63,13 +63,13 @@ class StructureExTest extends TestCase {
 	}
 
 	/**
-	 * Test that a closure throwing an Error is handled gracefully
+	 * Test that a closure throwing an InvalidArgumentException is handled gracefully
 	 */
-	public function testClosureThrowingErrorIsHandled() {
+	public function testClosureThrowingInvalidArgumentExceptionIsHandled() {
 		$mockValidator = $this->getMockBuilder('Boomerang\\Interfaces\\ValidatorInterface')->getMock();
 
 		$structure = new StructureEx(function($data) {
-			throw new \Error('Test error message');
+			throw new \InvalidArgumentException('Invalid argument test');
 		});
 		$structure->setValidator($mockValidator);
 
@@ -83,33 +83,30 @@ class StructureExTest extends TestCase {
 
 		$expectation = reset($expectations);
 		$this->assertInstanceOf(FailingExpectationResult::class, $expectation);
-		$this->assertStringContainsString('Error', $expectation->getMessage());
-		$this->assertEquals('Test error message', $expectation->getActual());
+		$this->assertStringContainsString('InvalidArgumentException', $expectation->getMessage());
+		$this->assertEquals('Invalid argument test', $expectation->getActual());
 	}
 
 	/**
-	 * Test that a closure with TypeError (invalid argument) is handled gracefully
+	 * Test that the error message includes the path information
 	 */
-	public function testClosureWithTypeErrorIsHandled() {
+	public function testClosureExceptionIncludesPath() {
 		$mockValidator = $this->getMockBuilder('Boomerang\\Interfaces\\ValidatorInterface')->getMock();
 
 		$structure = new StructureEx(function($data) {
-			// Trigger a TypeError by calling a non-existent method
-			$obj = new \stdClass();
-			$obj->nonExistentMethod();
+			throw new \LogicException('Path test message');
 		});
 		$structure->setValidator($mockValidator);
 
-		// Should not throw, should return false
 		$result = $structure->match('test');
 		$this->assertFalse($result);
 
-		// Should have a failing expectation result
 		$expectations = $structure->getExpectationResults();
-		$this->assertCount(1, $expectations);
-
 		$expectation = reset($expectations);
-		$this->assertInstanceOf(FailingExpectationResult::class, $expectation);
+		
+		// The message should contain "threw" and the exception class name
+		$this->assertStringContainsString('threw', $expectation->getMessage());
+		$this->assertStringContainsString('LogicException', $expectation->getMessage());
 	}
 
 }

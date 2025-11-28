@@ -136,16 +136,7 @@ class StructureEx implements TypeExpectationInterface {
 					} else {
 						$expectations[] = new PassingExpectationResult($this->validator, "Expected \\Closure structure validator result\n { {$pathName} } ", $result);
 					}
-				} catch( \Throwable $e ) {
-					$pass = false;
-					$expectations[] = new FailingExpectationResult(
-						$this->validator,
-						"\\Closure threw " . get_class($e) . "\n { {$pathName} } ",
-						'(no exception)',
-						$e->getMessage()
-					);
 				} catch( \Exception $e ) {
-					// For PHP 5.x compatibility
 					$pass = false;
 					$expectations[] = new FailingExpectationResult(
 						$this->validator,
