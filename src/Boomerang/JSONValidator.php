@@ -32,6 +32,11 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 		}
 	}
 
+	/**
+	 * @param mixed $json
+	 * @param mixed $result
+	 * @return string|false
+	 */
 	private function jsonDecode( $json, &$result ) {
 		$result = json_decode($json, true);
 

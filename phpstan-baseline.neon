@@ -37,34 +37,10 @@ parameters:
 			path: src/Boomerang/Boomerang.php
 
 		-
-			message: '#^Property Boomerang\\Boomerang\:\:\$bootstrap has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/Boomerang.php
-
-		-
 			message: '#^Property Boomerang\\Boomerang\:\:\$pathInfo has no type specified\.$#'
 			identifier: missingType.property
 			count: 1
 			path: src/Boomerang/Boomerang.php
-
-		-
-			message: '#^Property Boomerang\\Boomerang\:\:\$verbosity has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/Boomerang.php
-
-		-
-			message: '#^Method Boomerang\\Exceptions\\CliRuntimeException\:\:__construct\(\) has parameter \$exit_code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/Exceptions/CliRuntimeException.php
-
-		-
-			message: '#^Method Boomerang\\Exceptions\\CliRuntimeException\:\:__construct\(\) has parameter \$message with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/Exceptions/CliRuntimeException.php
 
 		-
 			message: '#^Method Boomerang\\HttpRequest\:\:composeUrl\(\) has parameter \$parsed_url with no value type specified in iterable type array\.$#'
@@ -241,24 +217,6 @@ parameters:
 			path: src/Boomerang/HttpRequest.php
 
 		-
-			message: '#^Property Boomerang\\HttpRequest\:\:\$body type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/HttpRequest.php
-
-		-
-			message: '#^Property Boomerang\\HttpRequest\:\:\$cookies has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/HttpRequest.php
-
-		-
-			message: '#^Property Boomerang\\HttpRequest\:\:\$cookiesFollowRedirects has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/HttpRequest.php
-
-		-
 			message: '#^Property Boomerang\\HttpRequest\:\:\$curlInfo has no type specified\.$#'
 			identifier: missingType.property
 			count: 1
@@ -271,24 +229,6 @@ parameters:
 			path: src/Boomerang/HttpRequest.php
 
 		-
-			message: '#^Property Boomerang\\HttpRequest\:\:\$headers has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/HttpRequest.php
-
-		-
-			message: '#^Property Boomerang\\HttpRequest\:\:\$lastRequestTime has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/HttpRequest.php
-
-		-
-			message: '#^Property Boomerang\\HttpRequest\:\:\$maxRedirects has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/HttpRequest.php
-
-		-
 			message: '#^Method Boomerang\\HttpResponse\:\:getAllHeaders\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -296,12 +236,6 @@ parameters:
 
 		-
 			message: '#^Method Boomerang\\HttpResponse\:\:getHeaders\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/HttpResponse.php
-
-		-
-			message: '#^Property Boomerang\\HttpResponse\:\:\$headerSets type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/Boomerang/HttpResponse.php
@@ -379,70 +313,10 @@ parameters:
 			path: src/Boomerang/Interfaces/ResponseInterface.php
 
 		-
-			message: '#^Method Boomerang\\Interfaces\\TypeExpectationInterface\:\:match\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/Interfaces/TypeExpectationInterface.php
-
-		-
-			message: '#^Method Boomerang\\JSONValidator\:\:jsonDecode\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/Boomerang/JSONValidator.php
-
-		-
-			message: '#^Method Boomerang\\JSONValidator\:\:jsonDecode\(\) has parameter \$json with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/JSONValidator.php
-
-		-
-			message: '#^Method Boomerang\\JSONValidator\:\:jsonDecode\(\) has parameter \$result with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/JSONValidator.php
-
-		-
-			message: '#^Method Boomerang\\Runner\\TestRunner\:\:getFileList\(\) has parameter \$path with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/Runner/TestRunner.php
-
-		-
 			message: '#^Method Boomerang\\Runner\\TestRunner\:\:runTests\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: src/Boomerang/Runner/TestRunner.php
-
-		-
-			message: '#^Property Boomerang\\Runner\\TestRunner\:\:\$bootstrap has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/Runner/TestRunner.php
-
-		-
-			message: '#^Property Boomerang\\Runner\\TestRunner\:\:\$path has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/Runner/TestRunner.php
-
-		-
-			message: '#^Call to function is_string\(\) with \*NEVER\* will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Boomerang/Runner/UserInterface.php
-
-		-
-			message: '#^Instanceof between Boomerang\\Interfaces\\ExpectationResultInterface and Boomerang\\Interfaces\\ExpectationResultInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/Boomerang/Runner/UserInterface.php
-
-		-
-			message: '#^Instanceof between Boomerang\\Interfaces\\ValidatorInterface and Boomerang\\Interfaces\\ValidatorInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/Boomerang/Runner/UserInterface.php
 
 		-
 			message: '#^Method Boomerang\\Runner\\UserInterface\:\:dropError\(\) has no return type specified\.$#'
@@ -469,156 +343,6 @@ parameters:
 			path: src/Boomerang/Runner/UserInterface.php
 
 		-
-			message: '#^Property Boomerang\\StructureValidator\:\:\$data has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/StructureValidator.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\AllEx\:\:match\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/AllEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\AnyEx\:\:match\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/AnyEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\IntEx\:\:match\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/IntEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\Iterate\\IterateArrayEx\:\:isAssoc\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/Boomerang/TypeExpectations/Iterate/IterateArrayEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\Iterate\\IterateArrayEx\:\:isAssoc\(\) has parameter \$arr with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/Iterate/IterateArrayEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\Iterate\\IterateArrayEx\:\:match\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/Iterate/IterateArrayEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\Iterate\\IterateArrayEx\:\:validType\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/Boomerang/TypeExpectations/Iterate/IterateArrayEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\Iterate\\IterateArrayEx\:\:validType\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/Iterate/IterateArrayEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\Iterate\\IterateStructureEx\:\:match\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/Iterate/IterateStructureEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\NullEx\:\:match\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/NullEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\NumberEx\:\:match\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/NumberEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\NumericEx\:\:match\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/NumericEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\NumericEx\:\:rangeValidation\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/Boomerang/TypeExpectations/NumericEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\NumericEx\:\:rangeValidation\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/NumericEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\NumericStringEx\:\:match\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/NumericStringEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\RegexEx\:\:match\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/RegexEx.php
-
-		-
-			message: '#^Property Boomerang\\TypeExpectations\\RegexEx\:\:\$pattern has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/TypeExpectations/RegexEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StringEx\:\:match\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/StringEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StringEx\:\:rangeValidation\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/Boomerang/TypeExpectations/StringEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StringEx\:\:rangeValidation\(\) has parameter \$data with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/TypeExpectations/StringEx.php
-
-		-
-			message: '#^Instanceof between Boomerang\\Interfaces\\ExpectationResultInterface and Boomerang\\Interfaces\\ExpectationResultInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:__validate\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:__validate\(\) has parameter \$path with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:__validate\(\) has parameter \$validation with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
 			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:__validate\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -631,32 +355,8 @@ parameters:
 			path: src/Boomerang/TypeExpectations/StructureEx.php
 
 		-
-			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:getScalarTypeName\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:makePathName\(\) has parameter \$path with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:match\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
 			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:setPath\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:setPath\(\) has parameter \$path with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Boomerang/TypeExpectations/StructureEx.php
 
@@ -665,27 +365,3 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Property Boomerang\\TypeExpectations\\StructureEx\:\:\$path has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Property Boomerang\\TypeExpectations\\StructureEx\:\:\$structure has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/TypeExpectations/StructureEx.php
-
-		-
-			message: '#^Function includeIfExists\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: src/bootstrap.php
-
-		-
-			message: '#^Function includeIfExists\(\) has parameter \$file with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/bootstrap.php
