@@ -14,11 +14,18 @@ namespace Boomerang\TypeExpectations;
  */
 class NumericStringEx extends NumericEx {
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 		return is_string($data)
 			   && parent::match($data);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'numeric string';
 	}

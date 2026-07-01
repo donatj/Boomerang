@@ -24,13 +24,18 @@ class HttpRequest {
 	/** @var string */
 	private $tmp;
 
+	/** @var int */
 	private $maxRedirects = 10;
-	private $headers = array();
+	/** @var array<string, string> */
+	private $headers = [];
 	private $endpointParts;
-	private $cookies = array();
+	/** @var array<string, string> */
+	private $cookies = [];
+	/** @var bool */
 	private $cookiesFollowRedirects = false;
-	/** @var array|string */
-	private $body = array();
+	/** @var array<string, mixed>|string */
+	private $body = [];
+	/** @var float|null */
 	private $lastRequestTime = null;
 
 	/**
@@ -47,15 +52,11 @@ class HttpRequest {
 	 * @param string              $endpoint URI to request.
 	 * @param HttpResponseFactory $responseFactory A factory for creating Response objects.
 	 */
-	public function __construct( $endpoint, HttpResponseFactory $responseFactory = null ) {
+	public function __construct( string $endpoint, HttpResponseFactory $responseFactory = null ) {
 		$this->setEndpoint($endpoint);
 		$this->tmp = sys_get_temp_dir() ?: '/tmp';
 
-		if( $responseFactory === null ) {
-			$this->responseFactory = new HttpResponseFactory();
-		} else {
-			$this->responseFactory = $responseFactory;
-		}
+		$this->responseFactory = $responseFactory ?? new HttpResponseFactory();
 	}
 
 	/**
@@ -91,7 +92,7 @@ class HttpRequest {
 	public function getUrlParam( $param ) {
 		$params = $this->getUrlParams();
 
-		return isset($params[$param]) ? $params[$param] : null;
+		return $params[$param] ?? null;
 	}
 
 	/**
@@ -135,7 +136,7 @@ class HttpRequest {
 	 * @return string|null Null on failure.
 	 */
 	public function getHeader( $key ) {
-		return isset($this->headers[$key]) ? $this->headers[$key] : null;
+		return $this->headers[$key] ?? null;
 	}
 
 	/**
@@ -190,7 +191,7 @@ class HttpRequest {
 	 * @return string|null
 	 */
 	public function getPost( $key ) {
-		return isset($this->body[$key]) ? $this->body[$key] : null;
+		return $this->body[$key] ?? null;
 	}
 
 	/**
@@ -230,7 +231,7 @@ class HttpRequest {
 	 * @return mixed|null
 	 */
 	public function getFormValue( $key ) {
-		return isset($this->body[$key]) ? $this->body[$key] : null;
+		return $this->body[$key] ?? null;
 	}
 
 	/**
@@ -312,12 +313,12 @@ class HttpRequest {
 	 */
 	private function composeUrl( array $parsed_url ) {
 		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-		$host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+		$host     = $parsed_url['host'] ?? '';
 		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
-		$user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+		$user     = $parsed_url['user'] ?? '';
 		$pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
 		$pass     = ($user || $pass) ? "{$pass}@" : '';
-		$path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+		$path     = $parsed_url['path'] ?? '';
 		$query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
 		$fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
@@ -427,7 +428,7 @@ class HttpRequest {
 	 * @return array
 	 */
 	private function getFlatHeaders() {
-		$output = array();
+		$output = [];
 		foreach( $this->getHeaders() as $key => $value ) {
 			$output[] = "$key: $value";
 		}

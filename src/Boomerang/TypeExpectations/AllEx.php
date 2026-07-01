@@ -26,17 +26,21 @@ class AllEx extends StructureEx {
 	protected $structures;
 
 	/**
-	 * @param TypeExpectationInterface|callable|mixed $structure,... One or more structure definitions to match
+	 * @param TypeExpectationInterface|callable|mixed ...$structures One or more structure definitions to match
 	 */
-	public function __construct( $structure ) {
-		$this->structures = func_get_args();
+	public function __construct( ...$structures ) {
+		$this->structures = $structures;
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 		$pass = true;
 
 		foreach( $this->structures as $struct ) {
-			list($passing, $expectations) = $this->__validate($data, $struct);
+			[$passing, $expectations] = $this->__validate($data, $struct);
 			$this->addExpectationResults($expectations);
 			$pass = $pass && $passing;
 		}
@@ -44,6 +48,9 @@ class AllEx extends StructureEx {
 		return $pass;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'All (&&) Matcher';
 	}

@@ -12,6 +12,7 @@ class StructureValidator extends AbstractValidator {
 	 * @var ResponseInterface
 	 */
 	protected $response;
+	/** @var mixed */
 	protected $data;
 
 	/**

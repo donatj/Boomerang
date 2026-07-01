@@ -14,17 +14,21 @@ use Boomerang\TypeExpectations\StructureEx;
  */
 class IterateStructureEx extends StructureEx {
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 
 		if( !is_array($data) ) {
-			$this->addExpectationResults(array( new FailingExpectationResult($this->getValidator(), "Data not Iterable", static::getMatchingTypeName(), gettype($data)) ));
+			$this->addExpectationResults([ new FailingExpectationResult($this->getValidator(), "Data not Iterable", static::getMatchingTypeName(), gettype($data)) ]);
 
 			return false;
 		}
 
 		$pass = true;
 		foreach( $data as $key => $value ) {
-			list($passing, $expectations) = $this->__validate($value, $this->structure, array_merge($this->path, array( $key )));
+			[$passing, $expectations] = $this->__validate($value, $this->structure, array_merge($this->path, [ $key ]));
 			$pass = $pass && $passing;
 
 			$this->addExpectationResults($expectations);
@@ -33,6 +37,9 @@ class IterateStructureEx extends StructureEx {
 		return $pass;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'object|array';
 	}

@@ -10,6 +10,7 @@ class FailingExpectationResult extends FailingResult {
 	 * @var mixed
 	 */
 	protected $expected;
+
 	/**
 	 * @var mixed
 	 */
@@ -21,7 +22,7 @@ class FailingExpectationResult extends FailingResult {
 	 * @param mixed              $expected
 	 * @param mixed              $actual
 	 */
-	public function __construct( ValidatorInterface $validator, $message = null, $expected = null, $actual = null ) {
+	public function __construct( ValidatorInterface $validator, ?string $message = null, $expected = null, $actual = null ) {
 		parent::__construct($validator, $message);
 		$this->expected = $expected;
 		$this->actual   = $actual;

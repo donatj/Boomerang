@@ -7,7 +7,7 @@ abstract class AbstractValidator implements Interfaces\ResponseValidatorInterfac
 	/**
 	 * @var Interfaces\ExpectationResultInterface[]
 	 */
-	protected $expectations = array();
+	protected $expectations = [];
 
 	/**
 	 * @return Interfaces\ExpectationResultInterface[]

@@ -17,18 +17,18 @@ use Boomerang\Interfaces\ValidatorInterface;
  */
 class StructureEx implements TypeExpectationInterface {
 
+	/** @var TypeExpectationInterface|callable|mixed */
 	protected $structure;
-	protected $path = array();
+
+	/** @var array<int|string, mixed> */
+	protected $path = [];
 
 	/**
 	 * @var \Boomerang\Interfaces\ExpectationResultInterface[]
 	 */
-	protected $expectationResults = array();
+	protected $expectationResults = [];
 
-	/**
-	 * @var ValidatorInterface
-	 */
-	private $validator;
+	private ValidatorInterface $validator;
 
 	/**
 	 * @param TypeExpectationInterface|callable|mixed $structure
@@ -55,27 +55,27 @@ class StructureEx implements TypeExpectationInterface {
 	/**
 	 * @access private
 	 *
-	 * @param array|int|float|string $data
+	 * @param mixed $data
 	 * @return bool
 	 */
 	public function match( $data ) {
-		list($pass, $expectations) = $this->__validate($data, $this->structure);
+		[$pass, $expectations] = $this->__validate($data, $this->structure);
 		$this->addExpectationResults($expectations);
 
 		return $pass;
 	}
 
 	/**
-	 * @param array|int|float|string                                               $data
-	 * @param array|int|float|string|StructureEx|TypeExpectationInterface|\Closure $validation
-	 * @param array                                                                $path
+	 * @param mixed                                                                $data
+	 * @param array<mixed>|int|float|string|StructureEx|TypeExpectationInterface|\Closure $validation
+	 * @param array<int|string, mixed>                                             $path
 	 * @return array
 	 */
-	protected function __validate( $data, $validation, array $path = null ) {
+	protected function __validate( $data, $validation, array $path = [] ) {
 		/** @var \Boomerang\ExpectationResults\AbstractResult[] $expectations */
-		$expectations = array();
+		$expectations = [];
 
-		if( !$path ) {
+		if( $path === [] ) {
 			$path = $this->path;
 		}
 
@@ -89,7 +89,7 @@ class StructureEx implements TypeExpectationInterface {
 				$firstIsZero = key($validation) === 0;
 				foreach( $validation as $key => $value ) {
 					if( array_key_exists($key, $data) ) {
-						list($passing, $sub_expectations) = $this->__validate($data[$key], $value, array_merge($path, array( $key )));
+						[$passing, $sub_expectations] = $this->__validate($data[$key], $value, array_merge($path, [ $key ]));
 						$expectations = array_merge($expectations, $sub_expectations);
 						$pass         = $passing && $pass;
 					} else {
@@ -118,8 +118,7 @@ class StructureEx implements TypeExpectationInterface {
 			$reflect    = new \ReflectionFunction($validation);
 			$parameters = $reflect->getParameters();
 
-			// todo: Replace shutup operator with a better way to check if the parameter is an array when PHP 7+ is required
-			if( count($parameters) > 0 && (@$parameters[0]->isArray()) && !is_array($data) ) {
+			if( count($parameters) > 0 && $parameters[0]->isArray() && !is_array($data) ) {
 				$pass = false;
 
 				$typeName       = $this->getScalarTypeName($data);
@@ -142,11 +141,11 @@ class StructureEx implements TypeExpectationInterface {
 			}
 		}
 
-		return array( $pass, $expectations );
+		return [ $pass, $expectations ];
 	}
 
 	/**
-	 * @param array $path
+	 * @param array<int|string, mixed> $path
 	 * @return string
 	 */
 	protected function makePathName( array $path ) {
@@ -171,7 +170,7 @@ class StructureEx implements TypeExpectationInterface {
 
 	/**
 	 * @access private
-	 * @param array $path
+	 * @param array<int|string, mixed> $path
 	 */
 	public function setPath( array $path ) {
 		$this->path = $path;
@@ -190,21 +189,19 @@ class StructureEx implements TypeExpectationInterface {
 	 */
 	protected function addExpectationResults( array $expectations ) {
 		foreach( $expectations as $expect ) {
-			if( $expect instanceof ExpectationResultInterface ) {
-				// @todo ideally I shouldn't need to do this
-				$this->expectationResults[spl_object_hash($expect)] = $expect;
-			} else {
-				throw new \InvalidArgumentException('Expectation Results must implement ExpectationResultInterface');
-			}
+			$this->expectationResults[spl_object_hash($expect)] = $expect;
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'structure';
 	}
 
 	/**
-	 * @param float|int|string|array $data
+	 * @param mixed $data
 	 * @return string
 	 */
 	private function getScalarTypeName( $data ) {

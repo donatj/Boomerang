@@ -14,11 +14,18 @@ namespace Boomerang\TypeExpectations;
  */
 class IntEx extends NumberEx {
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 		return intval($data) == $data
 			   && parent::match($data);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'int';
 	}
