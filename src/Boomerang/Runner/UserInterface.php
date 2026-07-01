@@ -82,8 +82,6 @@ EOT;
 				if( !$verbose ) {
 					Output::string($dot ?: Style::green("."));
 				}
-			} else {
-				throw new CliRuntimeException("Error: Unexpected ValidatorInterface");
 			}
 		}
 
@@ -125,10 +123,7 @@ EOT;
 
 						if( $endpoint && $endpoint != $lastEndpoint ) {
 							Output::string("[ " . Style::blue($endpoint, 'underline') . " ]");
-							if( $verbose ) {
-								/**
-								 * @var $validator ResponseValidatorInterface
-								 */
+							if( $verbose && $validator instanceof ResponseValidatorInterface ) {
 								Output::string('( ' . $validator->getResponse()->getRequest()->getLastRequestTime() . 's )');
 							}
 							Output::string(PHP_EOL);
@@ -168,10 +163,6 @@ EOT;
 
 						$lastEndpoint = $endpoint;
 					}
-				} elseif( is_string($expectationResult) ) {
-					$this->outputMsg('MSG: ' . $expectationResult);
-				} else {
-					$this->outputMsg("Error: Unexpected Expectation:" . var_export($expectationResult, true));
 				}
 			}
 		}
