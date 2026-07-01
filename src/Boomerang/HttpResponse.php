@@ -31,7 +31,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param string           $headers
 	 * @param HttpRequest|null $request
 	 */
-	public function __construct( string $body, string $headers, HttpRequest $request = null ) {
+	public function __construct( $body, $headers, HttpRequest $request = null ) {
 		$this->body       = $body;
 		$this->headersRaw = $headers;
 

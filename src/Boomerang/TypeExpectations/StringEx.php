@@ -22,7 +22,7 @@ class StringEx implements TypeExpectationInterface {
 	 * @param null|int $minLength Optional minimum length in bytes of a valid value
 	 * @param null|int $maxLength Optional maximum length in bytes of a valid value
 	 */
-	public function __construct( ?int $minLength = null, ?int $maxLength = null ) {
+	public function __construct( $minLength = null, $maxLength = null ) {
 		$this->minLength = $minLength;
 		$this->maxLength = $maxLength;
 	}
