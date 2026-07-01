@@ -72,9 +72,7 @@ class StructureEx implements TypeExpectationInterface {
 	 * @return array
 	 */
 	protected function __validate( $data, $validation, array $path = null ) {
-		/**
-		 * @var $expectations \Boomerang\ExpectationResults\AbstractResult[]
-		 */
+		/** @var \Boomerang\ExpectationResults\AbstractResult[] $expectations */
 		$expectations = array();
 
 		if( !$path ) {

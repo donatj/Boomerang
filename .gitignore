@@ -8,3 +8,4 @@ composer.lock
 coverage.xml
 coverage_report/
 phpunit.xml
+*.cache
