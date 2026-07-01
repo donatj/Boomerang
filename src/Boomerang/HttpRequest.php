@@ -374,7 +374,7 @@ class HttpRequest {
 			curl_setopt($ch, CURLOPT_COOKIE, http_build_cookie($this->cookies));
 		}
 
-		curl_setopt($ch, CURLOPT_HEADER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, true);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getFlatHeaders());
 
