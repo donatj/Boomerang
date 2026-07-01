@@ -11,5 +11,4 @@ class FailingResult extends AbstractResult {
 		return true;
 	}
 
-
 }

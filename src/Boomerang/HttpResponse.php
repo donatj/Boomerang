@@ -20,7 +20,7 @@ class HttpResponse implements HttpResponseInterface {
 	/** @var string */
 	private $headersRaw;
 
-	/** @var array */
+	/** @var array<int, array<string, mixed>> */
 	private $headerSets;
 
 	/** @var \Boomerang\HttpRequest|null */

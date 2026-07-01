@@ -32,16 +32,27 @@ class NumericEx implements TypeExpectationInterface {
 		$this->max = $max;
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 		return is_numeric($data)
 			   && $this->rangeValidation($data);
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	protected function rangeValidation( $data ) {
 		return ($data >= $this->min || $this->min === null)
 			   && ($data <= $this->max || $this->max === null);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'int|float|numeric string';
 	}

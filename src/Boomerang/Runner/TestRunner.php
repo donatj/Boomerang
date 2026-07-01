@@ -8,14 +8,16 @@ class TestRunner {
 
 	/** @var \Iterator */
 	private $files;
+	/** @var string */
 	private $path;
+	/** @var string|false */
 	private $bootstrap;
 
 	/**
 	 * TestRunner constructor.
 	 *
-	 * @param string $path
-	 * @param string $bootstrap
+	 * @param string       $path
+	 * @param string|false $bootstrap
 	 */
 	public function __construct( $path, $bootstrap ) {
 		$this->path      = $path;
@@ -24,10 +26,10 @@ class TestRunner {
 	}
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 * @return \Iterator
 	 */
-	private function getFileList( $path ) {
+	private function getFileList( string $path ) {
 		if( $real = realpath($path) ) {
 			$path = $real;
 		}
@@ -35,14 +37,14 @@ class TestRunner {
 		$path = rtrim($path, DIRECTORY_SEPARATOR);
 
 		if( is_dir($path) ) {
-			$dir   = new \RecursiveDirectoryIterator($path);
-			$ite   = new \RecursiveIteratorIterator($dir);
+			$dir = new \RecursiveDirectoryIterator($path);
+			$ite = new \RecursiveIteratorIterator($dir);
 
 			return new \RegexIterator($ite, "/Spec\.php$/");
 		}
 
 		if( is_readable($path) ) {
-			return new \ArrayIterator(array( $path ));
+			return new \ArrayIterator([ $path ]);
 		}
 
 		throw new CliRuntimeException("Cannot find file \"$path\"");

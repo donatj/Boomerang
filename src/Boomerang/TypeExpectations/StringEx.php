@@ -27,11 +27,19 @@ class StringEx implements TypeExpectationInterface {
 		$this->maxLength = $maxLength;
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 		return is_string($data)
 			   && $this->rangeValidation($data);
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	protected function rangeValidation( $data ) {
 		$len = strlen($data);
 
@@ -39,6 +47,9 @@ class StringEx implements TypeExpectationInterface {
 			   && ($len <= $this->maxLength || $this->maxLength === null);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return sprintf('string{%s,%s}', intval($this->minLength), is_null($this->maxLength) ? '∞' : $this->maxLength);
 	}

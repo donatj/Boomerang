@@ -21,6 +21,9 @@ class IterateObjectEx extends IterateArrayEx {
 		return self::isAssoc($data);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'object';
 	}

@@ -8,7 +8,7 @@ use Boomerang\Interfaces\ValidatorInterface;
 abstract class AbstractResult implements ExpectationResultInterface {
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
 	protected $message;
 
@@ -26,23 +26,14 @@ abstract class AbstractResult implements ExpectationResultInterface {
 		$this->validator = $validator;
 	}
 
-	/**
-	 * @return String
-	 */
 	public function getMessage() {
-		return $this->message;
+		return $this->message ?? '';
 	}
 
-	/**
-	 * @return ValidatorInterface
-	 */
 	public function getValidator() {
 		return $this->validator;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function getFail() {
 		return false;
 	}

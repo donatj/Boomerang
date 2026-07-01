@@ -10,6 +10,7 @@ class FailingExpectationResult extends FailingResult {
 	 * @var mixed
 	 */
 	protected $expected;
+
 	/**
 	 * @var mixed
 	 */
