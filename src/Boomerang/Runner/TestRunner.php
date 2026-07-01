@@ -19,7 +19,7 @@ class TestRunner {
 	 * @param string       $path
 	 * @param string|false $bootstrap
 	 */
-	public function __construct( string $path, $bootstrap ) {
+	public function __construct( $path, $bootstrap ) {
 		$this->path      = $path;
 		$this->bootstrap = $bootstrap;
 		$this->files     = $this->getFileList($this->path);

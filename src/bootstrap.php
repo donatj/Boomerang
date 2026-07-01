@@ -14,9 +14,10 @@ error_reporting(E_ALL & ~E_STRICT);
 date_default_timezone_set(@date_default_timezone_get()); //feels hackish
 
 /**
+ * @param string $file
  * @return mixed
  */
-function includeIfExists( string $file ) {
+function includeIfExists( $file ) {
 	return file_exists($file) ? include $file : false;
 }
 

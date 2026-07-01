@@ -16,7 +16,7 @@ class RegexEx extends StringEx {
 	/**
 	 * @param string $pattern The preg pattern to search for
 	 */
-	public function __construct( string $pattern ) {
+	public function __construct( $pattern ) {
 		$this->pattern = $pattern;
 	}
 

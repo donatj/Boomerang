@@ -6,7 +6,12 @@ class CliRuntimeException extends \RuntimeException implements CliExceptionInter
 
 	use CliExceptionTrait;
 
-	public function __construct( string $message = "", int $exit_code = 3, \Exception $previous = null ) {
+	/**
+	 * @param string          $message
+	 * @param int             $exit_code
+	 * @param \Exception|null $previous
+	 */
+	public function __construct( $message = "", $exit_code = 3, \Exception $previous = null ) {
 		parent::__construct($message, $exit_code, $previous);
 	}
 
