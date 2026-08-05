@@ -4,6 +4,7 @@ namespace Boomerang\TypeExpectations;
 
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
+use Boomerang\Interfaces\ExpectationResultInterface;
 use Boomerang\Interfaces\TypeExpectationInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 
@@ -112,8 +113,9 @@ class StructureEx implements TypeExpectationInterface {
 		} elseif( $validation instanceof \Closure ) {
 			$reflect    = new \ReflectionFunction($validation);
 			$parameters = $reflect->getParameters();
+			$parameterType = count($parameters) > 0 ? $parameters[0]->getType() : null;
 
-			if( count($parameters) > 0 && $parameters[0]->isArray() && !is_array($data) ) {
+			if( $parameterType instanceof \ReflectionNamedType && $parameterType->getName() === 'array' && !is_array($data) ) {
 				$pass = false;
 
 				$typeName       = $this->getScalarTypeName($data);
@@ -181,10 +183,14 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
-	 * @param \Boomerang\Interfaces\ExpectationResultInterface[] $expectations
+	 * @param array<int, mixed> $expectations
 	 */
 	protected function addExpectationResults( array $expectations ) {
 		foreach( $expectations as $expect ) {
+			if( !$expect instanceof ExpectationResultInterface ) {
+				throw new \InvalidArgumentException('Expectation Results must implement ExpectationResultInterface');
+			}
+
 			$this->expectationResults[spl_object_hash($expect)] = $expect;
 		}
 	}
