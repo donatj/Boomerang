@@ -14,7 +14,7 @@ return (new PhpCsFixer\Config)
 	->setRiskyAllowed(true)
 	->setRules(
 		[
-			'@PHPUnit60Migration:risky' => true,
+			'@PHPUnit9x1Migration:risky' => true,
 			'php_unit_test_case_static_method_calls' => [
 				'call_type' => 'this',
 			],
