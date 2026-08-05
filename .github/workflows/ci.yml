@@ -38,6 +38,10 @@ jobs:
         if: matrix.php-versions == '8.3'
         run: vendor/bin/phpstan analyse
 
+      - name: Run PHP_CodeSniffer
+        if: matrix.php-versions == '8.3'
+        run: vendor/bin/phpcs
+
       - name: Check PHP coding style
         if: matrix.php-versions == '8.1'
         run: vendor/bin/php-cs-fixer fix --dry-run
