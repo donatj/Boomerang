@@ -21,8 +21,12 @@ class AllEx extends StructureEx {
 	/** @var TypeExpectationInterface[] */
 	protected $structures;
 
-	public function __construct( $structure ) {
-		$this->structures = func_get_args();
+	/**
+	 * @param mixed $structure
+	 * @param mixed ...$structures
+	 */
+	public function __construct( $structure, ...$structures ) {
+		$this->structures = [ $structure, ...$structures ];
 	}
 
 	/**
