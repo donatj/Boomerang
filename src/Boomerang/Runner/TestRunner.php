@@ -26,9 +26,13 @@ class TestRunner {
 	 * @return \Iterator<int|string, \SplFileInfo|string>
 	 */
 	private function getFileListForPaths( array $paths ) : \Iterator {
+		$files = new \AppendIterator;
+
 		foreach( $paths as $path ) {
-			yield from $this->getFileList($path);
+			$files->append($this->getFileList($path));
 		}
+
+		return $files;
 	}
 
 	/**

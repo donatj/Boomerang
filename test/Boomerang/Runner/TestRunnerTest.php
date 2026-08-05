@@ -17,8 +17,11 @@ class TestRunnerTest extends TestCase {
 			$runner->runTests(function ( $path ) use ( &$executed ) {
 				$executed[] = $path;
 			});
+			$runner->runTests(function ( $path ) use ( &$executed ) {
+				$executed[] = $path;
+			});
 
-			$this->assertSame([ $firstPath, $secondPath ], $executed);
+			$this->assertSame([ $firstPath, $secondPath, $firstPath, $secondPath ], $executed);
 		} finally {
 			unlink($firstPath);
 			unlink($secondPath);
