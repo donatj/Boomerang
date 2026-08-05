@@ -9,40 +9,36 @@ use Boomerang\Interfaces\HttpResponseInterface;
  * Represents an HTTP Response.
  *
  * Usually received from an `HttpRequest` object
- *
- * @package Boomerang
  */
 class HttpResponse implements HttpResponseInterface {
 
-	/** @var string */
-	private $body;
+	private string $body;
 
-	/** @var string */
-	private $headersRaw;
+	private string $headersRaw;
 
-	/** @var array */
-	private $headerSets;
+	/** @var array<int, array<int|string, mixed>> */
+	private array $headerSets;
 
 	/** @var \Boomerang\HttpRequest|null */
-	private $request;
+	private ?HttpRequest $request;
 
 	/**
-	 * @param string           $body The body of the HTTP Request
-	 * @param string           $headers
-	 * @param HttpRequest|null $request
+	 * @param string $body    The body of the HTTP Request
+	 * @param string $headers
 	 */
-	public function __construct( $body, $headers, HttpRequest $request = null ) {
+	public function __construct( $body, $headers, ?HttpRequest $request = null ) {
 		$this->body       = $body;
 		$this->headersRaw = $headers;
 
 		$headers = $this->normalizeHeaders($headers);
 
 		$headers_split = explode("\r\n\r\n", $headers);
-		foreach( $headers_split as &$h ) {
-			$h = $this->parseHeaders($h);
+		$header_sets    = [];
+		foreach( $headers_split as $h ) {
+			$header_sets[] = $this->parseHeaders($h);
 		}
 
-		$this->headerSets = $headers_split;
+		$this->headerSets = $header_sets;
 		$this->request    = $request;
 	}
 
@@ -50,9 +46,8 @@ class HttpResponse implements HttpResponseInterface {
 	 * Headers need to be \r\n by spec
 	 *
 	 * @param string $s
-	 * @return string
 	 */
-	private function normalizeHeaders( $s ) {
+	private function normalizeHeaders( $s ) : string {
 		$s = str_replace([ "\r\n", "\r", "\n" ], [ "\n", "\n", "\r\n" ], $s);
 
 		return trim($s);
@@ -62,7 +57,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param string $rawHeaders
 	 * @return string[]
 	 */
-	private function parseHeaders( $rawHeaders ) {
+	private function parseHeaders( $rawHeaders ) : array {
 		$headers = [];
 		$key     = '';
 
@@ -93,8 +88,8 @@ class HttpResponse implements HttpResponseInterface {
 	 * Get a response header by name.
 	 *
 	 * @param string   $header
-	 * @param null|int $hop
-	 * @return null|string Header value or null on not found
+	 * @param int|null $hop
+	 * @return string|null Header value or null on not found
 	 */
 	public function getHeader( $header, $hop = null ) {
 		$headers = $this->getHeaders($hop);
@@ -109,12 +104,14 @@ class HttpResponse implements HttpResponseInterface {
 	/**
 	 * Get response headers as a HeaderName => Value array
 	 *
-	 * @param null|int $hop The zero indexed hop(redirect). Defaults to the final hop.
+	 * @param int|null $hop The zero indexed hop(redirect). Defaults to the final hop.
 	 * @return array|null
 	 */
 	public function getHeaders( $hop = null ) {
 		if( $hop === null ) {
-			return end($this->headerSets);
+			$headers = end($this->headerSets);
+
+			return $headers === false ? null : $headers;
 		}
 
 		if( isset($this->headerSets[$hop]) ) {
@@ -186,6 +183,7 @@ class HttpResponse implements HttpResponseInterface {
 				if($this->request) {
 					throw new ResponseException("Failed to parse response protocol '{$headers[0]}' on request '{$this->request->getEndpoint()}'");
 				}
+
 				throw new ResponseException("Failed to parse protocol '{$headers[0]}'");
 			}
 

@@ -7,42 +7,28 @@ use Boomerang\Interfaces\ValidatorInterface;
 
 abstract class AbstractResult implements ExpectationResultInterface {
 
-	/**
-	 * @var string
-	 */
+	/** @var string|null */
 	protected $message;
 
-	/**
-	 * @var ValidatorInterface
-	 */
+	/** @var ValidatorInterface */
 	protected $validator;
 
 	/**
-	 * @param ValidatorInterface $validator
-	 * @param null|string        $message
+	 * @param string|null $message
 	 */
 	public function __construct( ValidatorInterface $validator, $message = null ) {
 		$this->message   = $message;
 		$this->validator = $validator;
 	}
 
-	/**
-	 * @return String
-	 */
 	public function getMessage() {
 		return $this->message;
 	}
 
-	/**
-	 * @return ValidatorInterface
-	 */
 	public function getValidator() {
 		return $this->validator;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function getFail() {
 		return false;
 	}

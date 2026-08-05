@@ -11,8 +11,6 @@ use Boomerang\Interfaces\ResponseInterface;
  * JSON Validator
  *
  * Used to validate JSON encoding and structure.
- *
- * @package Boomerang
  */
 class JSONValidator extends StructureValidator implements Interfaces\ResponseValidatorInterface {
 
@@ -22,8 +20,8 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 	public function __construct( ResponseInterface $response ) {
 		parent::__construct($response);
 
-		$result = false;
-		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
+		[$result, $error] = $this->jsonDecode($response->getBody());
+		if( $error !== null ) {
 			$this->expectations[] = new FailingResult($this, "Failed to Parse JSON Document: " . $error);
 			$this->data           = null;
 		} else {
@@ -32,12 +30,16 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 		}
 	}
 
-	private function jsonDecode( $json, &$result ) {
+	/**
+	 * @param mixed $json
+	 * @return array{mixed, string|null}
+	 */
+	private function jsonDecode( $json ) : array {
 		$result = json_decode($json, true);
 
 		switch( json_last_error() ) {
 			case JSON_ERROR_NONE:
-				$error = false; // JSON is valid
+				$error = null; // JSON is valid
 				break;
 			case JSON_ERROR_DEPTH:
 				$error = 'Maximum stack depth exceeded.';
@@ -60,7 +62,7 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 				break;
 		}
 
-		return $error;
+		return [ $result, $error ];
 	}
 
 	/**

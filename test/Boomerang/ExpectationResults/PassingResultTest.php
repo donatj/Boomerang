@@ -8,13 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class PassingResultTest extends TestCase {
 
-	function testGetFail() {
+	public function testGetFail() {
 		/**
-		 * @var $mockValidator ValidatorInterface
+		 * @var ValidatorInterface $mockValidator
 		 */
 		$mockValidator = $this->getMockBuilder('Boomerang\\Interfaces\\ValidatorInterface')->getMock();
 		$result        = new PassingResult($mockValidator);
 		$this->assertFalse($result->getFail());
+		$this->assertNull($result->getMessage());
 	}
 
 }

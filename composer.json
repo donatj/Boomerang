@@ -24,7 +24,10 @@
 		"donatj/mock-webserver": "~2.10",
 		"phpunit/phpunit": "^8",
 		"ralouphie/getallheaders": "^3.0",
-		"phpstan/phpstan": "2.2.7"
+		"phpstan/phpstan": "2.2.7",
+		"friendsofphp/php-cs-fixer": "^3.1",
+		"squizlabs/php_codesniffer": "^4.0",
+		"corpus/coding-standard": "^0.10"
 	},
 	"authors": [
 		{
@@ -41,5 +44,10 @@
 	},
 	"bin": [
 		"composer/bin/boomerang"
-	]
+	],
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
 }

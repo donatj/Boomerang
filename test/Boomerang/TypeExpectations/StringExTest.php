@@ -9,7 +9,7 @@ class StringExTest extends TestCase {
 
 	public function testBasicMatching() {
 
-		$x = new StringEx();
+		$x = new StringEx;
 
 		$this->assertEquals(false, $x->match(false));
 		$this->assertEquals(false, $x->match(true));

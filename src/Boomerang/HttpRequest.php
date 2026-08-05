@@ -6,56 +6,49 @@ use Boomerang\Factories\HttpResponseFactory;
 
 /**
  * Utility for generating HTTP Requests and receiving Responses into `HttpResponse` objects.
- *
- * @package Boomerang
  */
 class HttpRequest {
 
-	const GET     = "GET";
-	const POST    = "POST";
-	const PUT     = "PUT";
-	const PATCH   = "PATCH";
-	const DELETE  = "DELETE";
-	const TRACE   = "TRACE";
-	const OPTIONS = "OPTIONS";
+	public const GET     = "GET";
+	public const POST    = "POST";
+	public const PUT     = "PUT";
+	public const PATCH   = "PATCH";
+	public const DELETE  = "DELETE";
+	public const TRACE   = "TRACE";
+	public const OPTIONS = "OPTIONS";
 
-	private $curlInfo;
+	/** @var array<string, mixed>|null */
+	private ?array $curlInfo = null;
 
-	/** @var string */
-	private $tmp;
+	private string $tmp;
 
-	private $maxRedirects = 10;
-	private $headers = array();
-	private $endpointParts;
-	private $cookies = array();
-	private $cookiesFollowRedirects = false;
-	/** @var array|string */
-	private $body = array();
-	private $lastRequestTime = null;
+	private int $maxRedirects = 10;
+	/** @var array<string, string> */
+	private array $headers = [];
+	/** @var array{scheme?: string, host?: string, port?: int, user?: string, pass?: string, path?: string, query?: string, fragment?: string} */
+	private array $endpointParts;
+	/** @var array<string, string> */
+	private array $cookies = [];
+
+	private bool $cookiesFollowRedirects = false;
+	/** @var array<string, mixed>|string */
+	private $body = [];
+
+	private ?float $lastRequestTime = null;
+
+	private HttpResponseFactory $responseFactory;
+
+	private string $method = self::GET;
 
 	/**
-	 * @var HttpResponseFactory
+	 * @param string                   $endpoint        URI to request.
+	 * @param HttpResponseFactory|null $responseFactory A factory for creating Response objects.
 	 */
-	private $responseFactory;
-
-	/**
-	 * @var string
-	 */
-	private $method = self::GET;
-
-	/**
-	 * @param string              $endpoint URI to request.
-	 * @param HttpResponseFactory $responseFactory A factory for creating Response objects.
-	 */
-	public function __construct( $endpoint, HttpResponseFactory $responseFactory = null ) {
+	public function __construct( $endpoint, ?HttpResponseFactory $responseFactory = null ) {
 		$this->setEndpoint($endpoint);
 		$this->tmp = sys_get_temp_dir() ?: '/tmp';
 
-		if( $responseFactory === null ) {
-			$this->responseFactory = new HttpResponseFactory();
-		} else {
-			$this->responseFactory = $responseFactory;
-		}
+		$this->responseFactory = $responseFactory ?? new HttpResponseFactory;
 	}
 
 	/**
@@ -86,19 +79,19 @@ class HttpRequest {
 	 * Retrieve a url param by name
 	 *
 	 * @param string $param The name of the param.
-	 * @return string|array|null Null on failure.
+	 * @return array|string|null Null on failure.
 	 */
 	public function getUrlParam( $param ) {
 		$params = $this->getUrlParams();
 
-		return isset($params[$param]) ? $params[$param] : null;
+		return $params[$param] ?? null;
 	}
 
 	/**
 	 * Set a url param by name.
 	 *
 	 * @param string                 $param The name of the param.
-	 * @param string|int|float|array $value
+	 * @param array|float|int|string $value
 	 */
 	public function setUrlParam( $param, $value ) {
 		$params         = $this->getUrlParams();
@@ -135,13 +128,13 @@ class HttpRequest {
 	 * @return string|null Null on failure.
 	 */
 	public function getHeader( $key ) {
-		return isset($this->headers[$key]) ? $this->headers[$key] : null;
+		return $this->headers[$key] ?? null;
 	}
 
 	/**
 	 * Set an outgoing header by name.
 	 *
-	 * @param string $key The name of the header.
+	 * @param string $key   The name of the header.
 	 * @param string $value The value to set the header to.
 	 */
 	public function setHeader( $key, $value ) {
@@ -190,7 +183,7 @@ class HttpRequest {
 	 * @return string|null
 	 */
 	public function getPost( $key ) {
-		return isset($this->body[$key]) ? $this->body[$key] : null;
+		return $this->body[$key] ?? null;
 	}
 
 	/**
@@ -220,6 +213,7 @@ class HttpRequest {
 		if( !is_array($this->body) ) {
 			$this->body = [];
 		}
+
 		$this->body[$key] = $value;
 	}
 
@@ -230,7 +224,7 @@ class HttpRequest {
 	 * @return mixed|null
 	 */
 	public function getFormValue( $key ) {
-		return isset($this->body[$key]) ? $this->body[$key] : null;
+		return $this->body[$key] ?? null;
 	}
 
 	/**
@@ -250,8 +244,6 @@ class HttpRequest {
 	 * Note that this has the side effect of changing the HTTP Method to POST
 	 *
 	 * @deprecated Use setBody instead
-	 *
-	 * @param array $post
 	 */
 	public function setPostData( array $post ) {
 		$this->method = self::POST;
@@ -306,18 +298,14 @@ class HttpRequest {
 		$this->cookies[$key] = $value;
 	}
 
-	/**
-	 * @param array $parsed_url
-	 * @return string
-	 */
-	private function composeUrl( array $parsed_url ) {
+	private function composeUrl( array $parsed_url ) : string {
 		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-		$host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+		$host     = $parsed_url['host'] ?? '';
 		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
-		$user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+		$user     = $parsed_url['user'] ?? '';
 		$pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
 		$pass     = ($user || $pass) ? "{$pass}@" : '';
-		$path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+		$path     = $parsed_url['path'] ?? '';
 		$query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
 		$fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
@@ -343,6 +331,7 @@ class HttpRequest {
 		if( $parts === false ) {
 			throw new \InvalidArgumentException("Failed to parse url '{$endpoint}'");
 		}
+
 		$this->endpointParts = $parts;
 	}
 
@@ -388,23 +377,21 @@ class HttpRequest {
 
 		$this->lastRequestTime = microtime(true) - $startTime;
 
-		$this->curlInfo = curl_getinfo($ch);
+		$curlInfo        = curl_getinfo($ch);
+		$this->curlInfo = $curlInfo === false ? null : $curlInfo;
 
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 		$headers     = substr($response, 0, $header_size);
 
 		$body = substr($response, $header_size);
 
-		curl_close($ch);
-
 		return $this->responseFactory->newInstance($body, $headers, $this);
 	}
 
 	/**
 	 * @param string $endpoint
-	 * @return string
 	 */
-	private function detectAccept( $endpoint ) {
+	private function detectAccept( $endpoint ) : string {
 		$url = parse_url($endpoint);
 		if( isset($url['path']) ) {
 			$path = pathinfo($url['path']);
@@ -424,10 +411,10 @@ class HttpRequest {
 	/**
 	 * Gets headers as a flattened array for cURL $key => $val --> $key: $val
 	 *
-	 * @return array
+	 * @return list<string>
 	 */
-	private function getFlatHeaders() {
-		$output = array();
+	private function getFlatHeaders() : array {
+		$output = [];
 		foreach( $this->getHeaders() as $key => $value ) {
 			$output[] = "$key: $value";
 		}
@@ -445,7 +432,7 @@ class HttpRequest {
 	/**
 	 * Get the time the last request took in seconds a float
 	 *
-	 * @return null|float null if there is no last request
+	 * @return float|null null if there is no last request
 	 */
 	public function getLastRequestTime() {
 		return $this->lastRequestTime;

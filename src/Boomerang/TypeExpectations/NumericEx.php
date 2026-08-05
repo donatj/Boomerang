@@ -12,8 +12,6 @@ use Boomerang\Interfaces\TypeExpectationInterface;
  * See: [php.net/is_numeric](http://php.net/is_numeric)
  *
  * **Passes**: `numeric string` / `int` / `float`
- *
- * @package Boomerang\TypeExpectations
  */
 class NumericEx implements TypeExpectationInterface {
 
@@ -24,24 +22,35 @@ class NumericEx implements TypeExpectationInterface {
 	protected $max;
 
 	/**
-	 * @param null|int|float $min Optional minimum valid value
-	 * @param null|int|float $max Optional maximum valid value
+	 * @param float|int|null $min Optional minimum valid value
+	 * @param float|int|null $max Optional maximum valid value
 	 */
 	public function __construct( $min = null, $max = null ) {
 		$this->min = $min;
 		$this->max = $max;
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 		return is_numeric($data)
 			   && $this->rangeValidation($data);
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	protected function rangeValidation( $data ) {
 		return ($data >= $this->min || $this->min === null)
 			   && ($data <= $this->max || $this->max === null);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'int|float|numeric string';
 	}

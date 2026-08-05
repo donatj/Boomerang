@@ -8,7 +8,7 @@ interface TypeExpectationInterface {
 	 * Method to pass data to compare against
 	 *
 	 * @access private
-	 * @param $data
+	 * @param mixed $data
 	 * @return bool
 	 */
 	public function match( $data );

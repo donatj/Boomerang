@@ -11,40 +11,36 @@ use donatj\Flags;
 
 /**
  * Boomerang Application
- *
- * @package Boomerang
  */
 class Boomerang {
 
 	/** @access private */
-	const VERSION = ".0.2.0";
+	public const VERSION = ".0.2.0";
 	/** @access private */
-	const PHAR_URL = "http://phar.boomerang.so/builds/dev/boomerang.phar";
+	public const PHAR_URL = "http://phar.boomerang.so/builds/dev/boomerang.phar";
 	/** @access private */
-	const CONFIG_FILE = "boomerang.ini";
+	public const CONFIG_FILE = "boomerang.ini";
 
 	/** @access private */
 	public static $boomerangPath;
 	/** @access private */
 	public static $pathInfo;
 
-	private static $bootstrap;
-	private static $verbosity;
+	private static ?string $bootstrap = null;
+
+	private static int $verbosity = 0;
+
+	/** @var ValidatorInterface[] */
+	private static array $validators = [];
 
 	/**
-	 * @var ValidatorInterface[]
-	 */
-	private static $validators = [];
-
-	/**
-	 * @param  string[]                       $args
-	 * @param \Boomerang\Runner\UserInterface $ui
-	 * @return array|string[]
+	 * @param string[] $args
 	 * @throws \donatj\Exceptions\AbstractFlagException
+	 * @return array|string[]
 	 */
-	private static function init( $args, UserInterface $ui ) {
+	private static function init( $args, UserInterface $ui ) : array {
 
-		$flags     = new Flags();
+		$flags     = new Flags;
 		$testSuite = &$flags->string('testsuite', 'default', 'Which test suite to run.');
 		$flags->parse($args, true);
 
@@ -74,8 +70,8 @@ class Boomerang {
 			}
 		}
 
-		self::$bootstrap = &$flags->string('bootstrap', isset($suite['bootstrap']) ? $suite['bootstrap'] : false, 'A "bootstrap" PHP file that is run before the specs.');
-		self::$verbosity = &$flags->short('v', 'Output in verbose mode');
+		$bootstrap = &$flags->string('bootstrap', $suite['bootstrap'] ?? false, 'A "bootstrap" PHP file that is run before the specs.');
+		$verbosity = &$flags->short('v', 'Output in verbose mode');
 
 		$displayHelp    = &$flags->bool('help', false, 'Display this help message.');
 		$displayVersion = &$flags->bool('version', false, 'Display this applications version.');
@@ -90,6 +86,9 @@ class Boomerang {
 			$ui->dropError($e->getMessage(), 1, $flags->getDefaults());
 		}
 
+		self::$bootstrap = is_string($bootstrap) ? $bootstrap : null;
+		self::$verbosity = $verbosity;
+
 		$paths = [];
 
 		if( $flags->args() ) {
@@ -101,13 +100,16 @@ class Boomerang {
 		switch( true ) {
 			case isset($selfUpdate) && $selfUpdate:
 				self::selfUpdate($ui);
+
 				die(0);
 			case $displayVersion:
 				self::versionMarker($ui);
+
 				die(0);
 			case $displayHelp:
 			case count($paths) < 1: //should come last because of this
 				$ui->dumpOptions($flags->getDefaults());
+
 				die(1);
 		}
 
@@ -116,8 +118,9 @@ class Boomerang {
 
 	/**
 	 * @access private
+	 * @param mixed $args
 	 */
-	static function main( $args ) {
+	public static function main( $args ) {
 		$start = microtime(true);
 
 		$stdout = fopen('php://stdout', 'w');
@@ -139,7 +142,7 @@ class Boomerang {
 			$displayed = [];
 			$runner->runTests(function ( $file ) use ( $ui, $verbosity, &$displayed ) {
 				$validators = [];
-				foreach( Boomerang::$validators as $validator ) {
+				foreach( self::$validators as $validator ) {
 					$hash = spl_object_hash($validator);
 
 					if( !isset($displayed[$hash]) ) {
@@ -154,7 +157,7 @@ class Boomerang {
 			$tests = 0;
 			$total = 0;
 			$fails = 0;
-			foreach( Boomerang::$validators as $v_data ) {
+			foreach( self::$validators as $v_data ) {
 				$tests++;
 				$ex_res = $v_data->getExpectationResults();
 				foreach( $ex_res as $ex ) {
@@ -178,7 +181,7 @@ class Boomerang {
 		}
 	}
 
-	private static function selfUpdate( UserInterface $ui ) {
+	private static function selfUpdate( UserInterface $ui ) : void {
 		$ui->outputMsg("Starting self update ... ");
 
 		$localFile = $_SERVER['argv'][0];
@@ -219,7 +222,7 @@ class Boomerang {
 		$ui->outputMsg("Success!");
 	}
 
-	private static function versionMarker( UserInterface $ui ) {
+	private static function versionMarker( UserInterface $ui ) : void {
 		$ui->outputMsg("Boomerang! " . self::VERSION . " by Jesse G. Donat" . PHP_EOL);
 	}
 
@@ -228,8 +231,6 @@ class Boomerang {
 	 *
 	 * After creating an instance of a Validator, it needs to be registered with Boomerang in order for results to be
 	 * tallied and displayed.
-	 *
-	 * @param ValidatorInterface $validator
 	 */
 	public static function addValidator( ValidatorInterface $validator ) {
 		self::$validators[] = $validator;

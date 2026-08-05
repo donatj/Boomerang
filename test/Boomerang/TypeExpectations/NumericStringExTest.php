@@ -9,7 +9,7 @@ class NumericStringExTest extends TestCase {
 
 	public function testBasicMatching() {
 
-		$x = new NumericStringEx();
+		$x = new NumericStringEx;
 		$this->assertEquals(false, $x->match(1));
 		$this->assertEquals(false, $x->match(1.0));
 		$this->assertEquals(false, $x->match(1000));
@@ -23,7 +23,7 @@ class NumericStringExTest extends TestCase {
 		$this->assertEquals(true, $x->match("-1000"));
 
 		$this->assertEquals(false, $x->match(1.1));
-		$this->assertEquals(false, $x->match(array( 1 )));
+		$this->assertEquals(false, $x->match([ 1 ]));
 		$this->assertEquals(true, $x->match("1"));
 		$this->assertEquals(false, $x->match(true));
 
@@ -66,9 +66,8 @@ class NumericStringExTest extends TestCase {
 		$this->assertEquals(false, $x->match('1000'));
 		$this->assertEquals(false, $x->match('-1000'));
 
-
 //		$this->assertEquals(false, $x->match(9.9999999999999999999999));  this one is troublesome
-		$this->assertEquals(false, $x->match(array( 1 )));
+		$this->assertEquals(false, $x->match([ 1 ]));
 		$this->assertEquals(true, $x->match("1"));
 		$this->assertEquals(true, $x->match("-1"));
 		$this->assertEquals(false, $x->match(false));

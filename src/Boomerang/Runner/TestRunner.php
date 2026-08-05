@@ -6,28 +6,28 @@ use Boomerang\Exceptions\CliRuntimeException;
 
 class TestRunner {
 
-	/** @var \Iterator */
-	private $files;
-	private $path;
-	private $bootstrap;
+	/** @var \Iterator<int|string, \SplFileInfo|string> */
+	private \Iterator $files;
+
+	private string $path;
+
+	private ?string $bootstrap;
 
 	/**
 	 * TestRunner constructor.
 	 *
 	 * @param string $path
-	 * @param string $bootstrap
 	 */
-	public function __construct( $path, $bootstrap ) {
+	public function __construct( $path, ?string $bootstrap ) {
 		$this->path      = $path;
-		$this->bootstrap = $bootstrap;
+		$this->bootstrap = is_string($bootstrap) ? $bootstrap : null;
 		$this->files     = $this->getFileList($this->path);
 	}
 
 	/**
-	 * @param $path
-	 * @return \Iterator
+	 * @return \Iterator<int|string, \SplFileInfo|string>
 	 */
-	private function getFileList( $path ) {
+	private function getFileList( string $path ) : \Iterator {
 		if( $real = realpath($path) ) {
 			$path = $real;
 		}
@@ -35,32 +35,29 @@ class TestRunner {
 		$path = rtrim($path, DIRECTORY_SEPARATOR);
 
 		if( is_dir($path) ) {
-			$dir   = new \RecursiveDirectoryIterator($path);
-			$ite   = new \RecursiveIteratorIterator($dir);
+			$dir = new \RecursiveDirectoryIterator($path);
+			$ite = new \RecursiveIteratorIterator($dir);
 
-			return new \RegexIterator($ite, "/Spec\.php$/");
+			return new \RegexIterator($ite, "/Spec\\.php$/");
 		}
 
 		if( is_readable($path) ) {
-			return new \ArrayIterator(array( $path ));
+			return new \ArrayIterator([ $path ]);
 		}
 
 		throw new CliRuntimeException("Cannot find file \"$path\"");
 	}
 
-	/**
-	 * @param \Closure $afterExecution
-	 */
-	public function runTests( \Closure $afterExecution = null ) {
+	public function runTests( ?\Closure $afterExecution = null ) {
 		if( $this->bootstrap ) {
 			if( is_readable($this->bootstrap) ) {
-				require_once($this->bootstrap);
+				require_once $this->bootstrap;
 			} else {
 				throw new CliRuntimeException("Failed to load bootstrap");
 			}
 		}
 
-		$scope = function ( $file ) { require($file); };
+		$scope = function ( $file ) { require $file; };
 
 		foreach( $this->files as $file ) {
 			$scope($file);

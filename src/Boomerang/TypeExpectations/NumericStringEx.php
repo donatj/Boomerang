@@ -9,16 +9,21 @@ namespace Boomerang\TypeExpectations;
  *
  * **Passes**: `numeric string` eg: "1.2"
  * **Fails**: `int` / `float`
- *
- * @package Boomerang\TypeExpectations
  */
 class NumericStringEx extends NumericEx {
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 		return is_string($data)
 			   && parent::match($data);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'numeric string';
 	}

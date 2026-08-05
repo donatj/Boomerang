@@ -17,19 +17,21 @@ use Boomerang\Interfaces\ExpectationResultInterface;
  *         array(1,2,3),
  *         function($data) { return count($data) == 4; }
  *     );
- *
- * @package Boomerang\TypeExpectations
  */
 class AnyEx extends AllEx {
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public function match( $data ) {
 
 		// @todo: __validate should do something other than throw the exceptions into an array, because this can't currently work
 
-		$all_expectations = array();
+		$all_expectations = [];
 
 		foreach( $this->structures as $struct ) {
-			list($pass, $expectationResults) = $this->__validate($data, $struct);
+			[$pass, $expectationResults] = $this->__validate($data, $struct);
 
 			if( $pass ) {
 
@@ -54,6 +56,9 @@ class AnyEx extends AllEx {
 		return false;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMatchingTypeName() {
 		return 'Any (||) Matcher';
 	}
