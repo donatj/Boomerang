@@ -28,14 +28,10 @@ Using composer, `boomerang` can be installed globally via:
 $ composer global require 'boomerang/boomerang'
 ```
 
-Or if you are using composer for the project you wish to test, you can simply add it as a [vendor binary](https://getcomposer.org/doc/articles/vendor-binaries.md):
+Or add it to the project you wish to test as a [vendor binary](https://getcomposer.org/doc/articles/vendor-binaries.md):
 
-```json
-{
-  "require-dev": {
-      "boomerang/boomerang": "~0.2.0"
-  }
-}
+```bash
+$ composer require --dev boomerang/boomerang
 ```
 
 ## Development
