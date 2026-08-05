@@ -20,7 +20,7 @@ class StructureEx implements TypeExpectationInterface {
 	/** @var TypeExpectationInterface|callable|mixed */
 	protected $structure;
 
-	/** @var array<int|string, mixed> */
+	/** @var list<int|string> */
 	protected $path = [];
 
 	/**
@@ -68,7 +68,7 @@ class StructureEx implements TypeExpectationInterface {
 	/**
 	 * @param mixed                                                                $data
 	 * @param array<mixed>|int|float|string|StructureEx|TypeExpectationInterface|\Closure $validation
-	 * @param array<int|string, mixed>|null                                        $path
+	 * @param list<int|string>|null                                                $path
 	 * @return array
 	 */
 	protected function __validate( $data, $validation, ?array $path = null ) {
@@ -145,7 +145,7 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
-	 * @param array<int|string, mixed> $path
+	 * @param list<int|string> $path
 	 * @return string
 	 */
 	protected function makePathName( array $path ) {
@@ -170,7 +170,7 @@ class StructureEx implements TypeExpectationInterface {
 
 	/**
 	 * @access private
-	 * @param array<int|string, mixed> $path
+	 * @param list<int|string> $path
 	 */
 	public function setPath( array $path ) {
 		$this->path = $path;
