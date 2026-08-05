@@ -20,7 +20,7 @@ class HttpResponse implements HttpResponseInterface {
 	/** @var string */
 	private $headersRaw;
 
-	/** @var array<int, array<string, mixed>> */
+	/** @var array<int, array<int|string, mixed>> */
 	private $headerSets;
 
 	/** @var \Boomerang\HttpRequest|null */
@@ -38,11 +38,12 @@ class HttpResponse implements HttpResponseInterface {
 		$headers = $this->normalizeHeaders($headers);
 
 		$headers_split = explode("\r\n\r\n", $headers);
-		foreach( $headers_split as &$h ) {
-			$h = $this->parseHeaders($h);
+		$header_sets    = [];
+		foreach( $headers_split as $h ) {
+			$header_sets[] = $this->parseHeaders($h);
 		}
 
-		$this->headerSets = $headers_split;
+		$this->headerSets = $header_sets;
 		$this->request    = $request;
 	}
 
@@ -114,7 +115,9 @@ class HttpResponse implements HttpResponseInterface {
 	 */
 	public function getHeaders( $hop = null ) {
 		if( $hop === null ) {
-			return end($this->headerSets);
+			$headers = end($this->headerSets);
+
+			return $headers === false ? null : $headers;
 		}
 
 		if( isset($this->headerSets[$hop]) ) {
