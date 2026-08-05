@@ -35,7 +35,7 @@ class Boomerang {
 	/**
 	 * @param string[] $args
 	 * @throws \donatj\Exceptions\AbstractFlagException
-	 * @return array|string[]
+	 * @return list<string>
 	 */
 	private static function init( $args, UserInterface $ui ) : array {
 

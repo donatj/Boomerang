@@ -14,7 +14,7 @@ class TestRunner {
 	/**
 	 * TestRunner constructor.
 	 *
-	 * @param array<int|string, string>|string $paths
+	 * @param list<string>|string $paths
 	 */
 	public function __construct( $paths, ?string $bootstrap ) {
 		$this->bootstrap = is_string($bootstrap) ? $bootstrap : null;
@@ -22,7 +22,7 @@ class TestRunner {
 	}
 
 	/**
-	 * @param array<int|string, string> $paths
+	 * @param list<string> $paths
 	 * @return \Iterator<int|string, \SplFileInfo|string>
 	 */
 	private function getFileListForPaths( array $paths ) : \Iterator {
