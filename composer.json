@@ -21,7 +21,7 @@
 	},
 	"require-dev": {
 		"donatj/drop": "*",
-		"donatj/mock-webserver": "~2.3",
+		"donatj/mock-webserver": "~2.10",
 		"phpunit/phpunit": "^8",
 		"ralouphie/getallheaders": "^2.0",
 		"phpstan/phpstan": "2.2.3"
