@@ -179,7 +179,7 @@ class HttpRequest {
 	 *
 	 * @deprecated Use getFormValue instead
 	 *
-	 * @param $key
+	 * @param mixed $key
 	 * @return string|null
 	 */
 	public function getPost( $key ) {
