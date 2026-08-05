@@ -209,7 +209,7 @@ class StructureEx implements TypeExpectationInterface {
 	 */
 	private function getScalarTypeName( $data ) {
 		$typeName = gettype($data);
-		if( $typeName == 'string' ) {
+		if( is_string($data) ) {
 			$typeName .= "{" . strlen($data) . "}";
 		}
 
