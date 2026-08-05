@@ -9,9 +9,9 @@ class CliRuntimeException extends \RuntimeException implements CliExceptionInter
 	/**
 	 * @param string          $message
 	 * @param int             $exit_code
-	 * @param \Exception|null $previous
+	 * @param \Throwable|null $previous
 	 */
-	public function __construct( $message = "", $exit_code = 3, ?\Exception $previous = null ) {
+	public function __construct( $message = "", $exit_code = 3, ?\Throwable $previous = null ) {
 		parent::__construct($message, $exit_code, $previous);
 	}
 
