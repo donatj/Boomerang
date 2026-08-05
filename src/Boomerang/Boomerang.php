@@ -7,6 +7,7 @@ use Boomerang\Exceptions\CliExceptionInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 use Boomerang\Runner\TestRunner;
 use Boomerang\Runner\UserInterface;
+use Composer\InstalledVersions;
 use donatj\Flags;
 
 /**
@@ -14,8 +15,6 @@ use donatj\Flags;
  */
 class Boomerang {
 
-	/** @access private */
-	public const VERSION = ".0.2.0";
 	/** @access private */
 	public const PHAR_URL = "http://phar.boomerang.so/builds/dev/boomerang.phar";
 	/** @access private */
@@ -223,7 +222,9 @@ class Boomerang {
 	}
 
 	private static function versionMarker( UserInterface $ui ) : void {
-		$ui->outputMsg("Boomerang! " . self::VERSION . " by Jesse G. Donat" . PHP_EOL);
+		$version = InstalledVersions::getPrettyVersion('boomerang/boomerang') ?? 'unknown';
+
+		$ui->outputMsg("Boomerang! {$version} by Jesse G. Donat" . PHP_EOL);
 	}
 
 	/**
