@@ -19,12 +19,6 @@ parameters:
 			path: src/Boomerang/Boomerang.php
 
 		-
-			message: '#^Parameter \#1 \$path of class Boomerang\\Runner\\TestRunner constructor expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Boomerang/Boomerang.php
-
-		-
 			message: '#^Parameter \#1 \$path of function pathinfo expects string, string\|false given\.$#'
 			identifier: argument.type
 			count: 1

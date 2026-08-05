@@ -9,19 +9,26 @@ class TestRunner {
 	/** @var \Iterator<int|string, \SplFileInfo|string> */
 	private \Iterator $files;
 
-	private string $path;
-
 	private ?string $bootstrap;
 
 	/**
 	 * TestRunner constructor.
 	 *
-	 * @param string $path
+	 * @param array<int|string, string>|string $paths
 	 */
-	public function __construct( $path, ?string $bootstrap ) {
-		$this->path      = $path;
+	public function __construct( $paths, ?string $bootstrap ) {
 		$this->bootstrap = is_string($bootstrap) ? $bootstrap : null;
-		$this->files     = $this->getFileList($this->path);
+		$this->files     = $this->getFileListForPaths(is_array($paths) ? $paths : [ $paths ]);
+	}
+
+	/**
+	 * @param array<int|string, string> $paths
+	 * @return \Iterator<int|string, \SplFileInfo|string>
+	 */
+	private function getFileListForPaths( array $paths ) : \Iterator {
+		foreach( $paths as $path ) {
+			yield from $this->getFileList($path);
+		}
 	}
 
 	/**
