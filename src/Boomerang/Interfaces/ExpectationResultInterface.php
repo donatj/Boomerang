@@ -7,7 +7,7 @@ interface ExpectationResultInterface {
 	//	public function __construct( ValidatorInterface $validator, $message = null );
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
 	public function getMessage();
 

@@ -22,7 +22,7 @@ abstract class AbstractResult implements ExpectationResultInterface {
 	}
 
 	public function getMessage() {
-		return $this->message ?? '';
+		return $this->message;
 	}
 
 	public function getValidator() {
