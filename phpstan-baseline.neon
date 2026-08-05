@@ -259,18 +259,6 @@ parameters:
 			path: src/Boomerang/HttpRequest.php
 
 		-
-			message: '#^Property Boomerang\\HttpRequest\:\:\$curlInfo has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/HttpRequest.php
-
-		-
-			message: '#^Property Boomerang\\HttpRequest\:\:\$endpointParts has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Boomerang/HttpRequest.php
-
-		-
 			message: '#^Method Boomerang\\HttpResponse\:\:getAllHeaders\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1

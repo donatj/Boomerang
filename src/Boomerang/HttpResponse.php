@@ -15,16 +15,16 @@ use Boomerang\Interfaces\HttpResponseInterface;
 class HttpResponse implements HttpResponseInterface {
 
 	/** @var string */
-	private $body;
+	private string $body;
 
 	/** @var string */
-	private $headersRaw;
+	private string $headersRaw;
 
 	/** @var array<int, array<int|string, mixed>> */
-	private $headerSets;
+	private array $headerSets;
 
 	/** @var \Boomerang\HttpRequest|null */
-	private $request;
+	private ?HttpRequest $request;
 
 	/**
 	 * @param string           $body The body of the HTTP Request

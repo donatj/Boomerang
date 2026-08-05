@@ -7,21 +7,21 @@ use Boomerang\Exceptions\CliRuntimeException;
 class TestRunner {
 
 	/** @var \Iterator */
-	private $files;
+	private \Iterator $files;
 	/** @var string */
-	private $path;
-	/** @var string|false */
-	private $bootstrap;
+	private string $path;
+	/** @var string|null */
+	private ?string $bootstrap;
 
 	/**
 	 * TestRunner constructor.
 	 *
 	 * @param string       $path
-	 * @param string|false $bootstrap
+	 * @param string|false|null $bootstrap
 	 */
 	public function __construct( $path, $bootstrap ) {
 		$this->path      = $path;
-		$this->bootstrap = $bootstrap;
+		$this->bootstrap = is_string($bootstrap) ? $bootstrap : null;
 		$this->files     = $this->getFileList($this->path);
 	}
 

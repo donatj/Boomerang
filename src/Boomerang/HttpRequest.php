@@ -19,34 +19,36 @@ class HttpRequest {
 	const TRACE   = "TRACE";
 	const OPTIONS = "OPTIONS";
 
-	private $curlInfo;
+	/** @var array<string, mixed>|null */
+	private ?array $curlInfo = null;
 
 	/** @var string */
-	private $tmp;
+	private string $tmp;
 
 	/** @var int */
-	private $maxRedirects = 10;
+	private int $maxRedirects = 10;
 	/** @var array<string, string> */
-	private $headers = [];
-	private $endpointParts;
+	private array $headers = [];
+	/** @var array{scheme?: string, host?: string, port?: int, user?: string, pass?: string, path?: string, query?: string, fragment?: string} */
+	private array $endpointParts;
 	/** @var array<string, string> */
-	private $cookies = [];
+	private array $cookies = [];
 	/** @var bool */
-	private $cookiesFollowRedirects = false;
+	private bool $cookiesFollowRedirects = false;
 	/** @var array<string, mixed>|string */
 	private $body = [];
 	/** @var float|null */
-	private $lastRequestTime = null;
+	private ?float $lastRequestTime = null;
 
 	/**
 	 * @var HttpResponseFactory
 	 */
-	private $responseFactory;
+	private HttpResponseFactory $responseFactory;
 
 	/**
 	 * @var string
 	 */
-	private $method = self::GET;
+	private string $method = self::GET;
 
 	/**
 	 * @param string              $endpoint URI to request.
@@ -389,7 +391,8 @@ class HttpRequest {
 
 		$this->lastRequestTime = microtime(true) - $startTime;
 
-		$this->curlInfo = curl_getinfo($ch);
+		$curlInfo        = curl_getinfo($ch);
+		$this->curlInfo = $curlInfo === false ? null : $curlInfo;
 
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 		$headers     = substr($response, 0, $header_size);

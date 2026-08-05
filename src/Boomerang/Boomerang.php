@@ -28,15 +28,15 @@ class Boomerang {
 	/** @access private */
 	public static $pathInfo;
 
-	/** @var string|false */
-	private static $bootstrap;
+	/** @var string|null */
+	private static ?string $bootstrap = null;
 	/** @var int */
-	private static $verbosity;
+	private static int $verbosity = 0;
 
 	/**
 	 * @var ValidatorInterface[]
 	 */
-	private static $validators = [];
+	private static array $validators = [];
 
 	/**
 	 * @param  string[]                       $args
@@ -76,8 +76,8 @@ class Boomerang {
 			}
 		}
 
-		self::$bootstrap = &$flags->string('bootstrap', $suite['bootstrap'] ?? false, 'A "bootstrap" PHP file that is run before the specs.');
-		self::$verbosity = &$flags->short('v', 'Output in verbose mode');
+		$bootstrap = &$flags->string('bootstrap', $suite['bootstrap'] ?? false, 'A "bootstrap" PHP file that is run before the specs.');
+		$verbosity = &$flags->short('v', 'Output in verbose mode');
 
 		$displayHelp    = &$flags->bool('help', false, 'Display this help message.');
 		$displayVersion = &$flags->bool('version', false, 'Display this applications version.');
@@ -91,6 +91,9 @@ class Boomerang {
 		} catch( \Exception $e ) {
 			$ui->dropError($e->getMessage(), 1, $flags->getDefaults());
 		}
+
+		self::$bootstrap = is_string($bootstrap) ? $bootstrap : null;
+		self::$verbosity = $verbosity;
 
 		$paths = [];
 

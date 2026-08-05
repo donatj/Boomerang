@@ -18,7 +18,7 @@ class HttpResponseValidator extends AbstractValidator {
 	/**
 	 * @var HttpResponseInterface
 	 */
-	private $response;
+	private HttpResponseInterface $response;
 
 	/**
 	 * @param HttpResponseInterface $response
