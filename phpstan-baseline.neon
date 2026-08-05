@@ -31,6 +31,30 @@ parameters:
 			path: src/Boomerang/Boomerang.php
 
 		-
+			message: '#^Parameter \#1 \$STDOUT of class Boomerang\\Runner\\UserInterface constructor expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Boomerang/Boomerang.php
+
+		-
+			message: '#^Parameter \#1 \$path of class Boomerang\\Runner\\TestRunner constructor expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Boomerang/Boomerang.php
+
+		-
+			message: '#^Parameter \#1 \$path of function pathinfo expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Boomerang/Boomerang.php
+
+		-
+			message: '#^Parameter \#2 \$STDERR of class Boomerang\\Runner\\UserInterface constructor expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Boomerang/Boomerang.php
+
+		-
 			message: '#^Property Boomerang\\Boomerang\:\:\$boomerangPath has no type specified\.$#'
 			identifier: missingType.property
 			count: 1
@@ -65,6 +89,12 @@ parameters:
 			identifier: missingType.parameter
 			count: 1
 			path: src/Boomerang/Exceptions/CliRuntimeException.php
+
+		-
+			message: '#^Property Boomerang\\ExpectationResults\\AbstractResult\:\:\$message \(string\) does not accept string\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Boomerang/ExpectationResults/AbstractResult.php
 
 		-
 			message: '#^Method Boomerang\\HttpRequest\:\:composeUrl\(\) has parameter \$parsed_url with no value type specified in iterable type array\.$#'
@@ -241,6 +271,24 @@ parameters:
 			path: src/Boomerang/HttpRequest.php
 
 		-
+			message: '#^Parameter \#1 \$string of function substr expects string, bool\|string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Boomerang/HttpRequest.php
+
+		-
+			message: '#^Parameter \#3 \$value of function curl_setopt expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Boomerang/HttpRequest.php
+
+		-
+			message: '#^Parameter \#3 \$value of function curl_setopt expects non\-empty\-string\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Boomerang/HttpRequest.php
+
+		-
 			message: '#^Property Boomerang\\HttpRequest\:\:\$body type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -297,6 +345,12 @@ parameters:
 		-
 			message: '#^Method Boomerang\\HttpResponse\:\:getHeaders\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
+			count: 1
+			path: src/Boomerang/HttpResponse.php
+
+		-
+			message: '#^Method Boomerang\\HttpResponse\:\:getRequest\(\) should return Boomerang\\HttpRequest but returns Boomerang\\HttpRequest\|null\.$#'
+			identifier: return.type
 			count: 1
 			path: src/Boomerang/HttpResponse.php
 
@@ -399,6 +453,12 @@ parameters:
 		-
 			message: '#^Method Boomerang\\JSONValidator\:\:jsonDecode\(\) has parameter \$result with no type specified\.$#'
 			identifier: missingType.parameter
+			count: 1
+			path: src/Boomerang/JSONValidator.php
+
+		-
+			message: '#^Parameter \#2 \$message of class Boomerang\\ExpectationResults\\InfoResult constructor expects string\|null, string\|false given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Boomerang/JSONValidator.php
 
@@ -663,6 +723,12 @@ parameters:
 		-
 			message: '#^Method Boomerang\\TypeExpectations\\StructureEx\:\:setValidator\(\) has no return type specified\.$#'
 			identifier: missingType.return
+			count: 1
+			path: src/Boomerang/TypeExpectations/StructureEx.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strlen expects string, array\|float\|int\|string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Boomerang/TypeExpectations/StructureEx.php
 
