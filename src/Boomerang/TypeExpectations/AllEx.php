@@ -26,10 +26,10 @@ class AllEx extends StructureEx {
 	protected $structures;
 
 	/**
-	 * @param TypeExpectationInterface|callable|mixed ...$structures One or more structure definitions to match
+	 * @param TypeExpectationInterface|callable|mixed $structure,... One or more structure definitions to match
 	 */
-	public function __construct( ...$structures ) {
-		$this->structures = $structures;
+	public function __construct( $structure ) {
+		$this->structures = func_get_args();
 	}
 
 	/**
