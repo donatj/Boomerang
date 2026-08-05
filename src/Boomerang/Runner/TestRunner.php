@@ -51,9 +51,9 @@ class TestRunner {
 	}
 
 	/**
-	 * @param \Closure $afterExecution
+	 * @param \Closure|null $afterExecution
 	 */
-	public function runTests( \Closure $afterExecution = null ) {
+	public function runTests( ?\Closure $afterExecution = null ) {
 		if( $this->bootstrap ) {
 			if( is_readable($this->bootstrap) ) {
 				require_once($this->bootstrap);

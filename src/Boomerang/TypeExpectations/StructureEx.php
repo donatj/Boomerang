@@ -71,7 +71,7 @@ class StructureEx implements TypeExpectationInterface {
 	 * @param array<int|string, mixed>|null                                        $path
 	 * @return array
 	 */
-	protected function __validate( $data, $validation, array $path = null ) {
+	protected function __validate( $data, $validation, ?array $path = null ) {
 		/** @var \Boomerang\ExpectationResults\AbstractResult[] $expectations */
 		$expectations = [];
 

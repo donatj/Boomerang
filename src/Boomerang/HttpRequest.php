@@ -50,9 +50,9 @@ class HttpRequest {
 
 	/**
 	 * @param string              $endpoint URI to request.
-	 * @param HttpResponseFactory $responseFactory A factory for creating Response objects.
+	 * @param HttpResponseFactory|null $responseFactory A factory for creating Response objects.
 	 */
-	public function __construct( $endpoint, HttpResponseFactory $responseFactory = null ) {
+	public function __construct( $endpoint, ?HttpResponseFactory $responseFactory = null ) {
 		$this->setEndpoint($endpoint);
 		$this->tmp = sys_get_temp_dir() ?: '/tmp';
 
