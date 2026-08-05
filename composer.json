@@ -24,7 +24,7 @@
 		"donatj/mock-webserver": "~2.10",
 		"phpunit/phpunit": "^8",
 		"ralouphie/getallheaders": "^3.0",
-		"phpstan/phpstan": "2.2.3"
+		"phpstan/phpstan": "2.2.7"
 	},
 	"authors": [
 		{
