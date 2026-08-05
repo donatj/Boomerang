@@ -14,7 +14,13 @@ error_reporting(E_ALL & ~E_STRICT);
 date_default_timezone_set(@date_default_timezone_get()); //feels hackish
 
 function includeIfExists( string $file ) : ?\Composer\Autoload\ClassLoader {
-	return file_exists($file) ? include $file : null;
+	if( !file_exists($file) ) {
+		return null;
+	}
+
+	$loader = include $file;
+
+	return $loader instanceof \Composer\Autoload\ClassLoader ? $loader : null;
 }
 
 if( (!$loader = includeIfExists(__DIR__ . '/../vendor/autoload.php')) && (!$loader = includeIfExists(__DIR__ . '/../../../autoload.php')) ) {
