@@ -15,8 +15,10 @@ Documentation and more information is availible at http://boomerang.work/
 
 ## Requirements
 
-- PHP 5.4.0+ with CLI and SPL
-- *nix or cygwin on windows.
+- PHP 7.4+ with the CLI, cURL, SPL, and JSON extensions
+- A Unix-like environment (or Cygwin on Windows)
+
+Continuous integration tests PHP 7.4 through PHP 8.5.
 
 ## Installation
 
@@ -41,7 +43,29 @@ Or if you are using composer for the project you wish to test, you can simply ad
 ```bash
 $ git clone https://github.com/donatj/Boomerang.git Boomerang
 $ cd Boomerang
-$ composer.phar install
+$ composer install
+```
+
+### Code-quality checks
+
+Run the same checks used by CI:
+
+```bash
+$ vendor/bin/phpunit
+$ vendor/bin/phpstan analyse
+$ vendor/bin/phpcs
+```
+
+PHP CS Fixer is run in CI with PHP 8.1:
+
+```bash
+$ vendor/bin/php-cs-fixer fix --dry-run
+```
+
+Apply automatic coding-standard fixes with:
+
+```bash
+$ vendor/bin/phpcbf
 ```
 
 ### Basic Execution
