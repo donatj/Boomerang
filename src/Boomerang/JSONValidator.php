@@ -22,8 +22,8 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 	public function __construct( ResponseInterface $response ) {
 		parent::__construct($response);
 
-		$result = false;
-		if( $error = $this->jsonDecode($response->getBody(), $result) ) {
+		[$result, $error] = $this->jsonDecode($response->getBody());
+		if( $error !== null ) {
 			$this->expectations[] = new FailingResult($this, "Failed to Parse JSON Document: " . $error);
 			$this->data           = null;
 		} else {
@@ -34,10 +34,9 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 
 	/**
 	 * @param mixed $json
-	 * @param mixed $result
-	 * @return string|null
+	 * @return array{mixed, string|null}
 	 */
-	private function jsonDecode( $json, &$result ): ?string {
+	private function jsonDecode( $json ): array {
 		$result = json_decode($json, true);
 
 		switch( json_last_error() ) {
@@ -65,7 +64,7 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 				break;
 		}
 
-		return $error;
+		return [ $result, $error ];
 	}
 
 	/**
