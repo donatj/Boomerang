@@ -35,7 +35,7 @@ class Boomerang {
 	/**
 	 * @param string[] $args
 	 * @throws \donatj\Exceptions\AbstractFlagException
-	 * @return array|string[]
+	 * @return list<string>
 	 */
 	private static function init( $args, UserInterface $ui ) : array {
 
@@ -130,12 +130,12 @@ class Boomerang {
 		self::$boomerangPath = realpath($args[0]);
 		self::$pathInfo      = pathinfo(self::$boomerangPath);
 
-		$scan = self::init($args, $ui);
+		$paths = self::init($args, $ui);
 
 		self::versionMarker($ui);
 
 		try {
-			$runner = new TestRunner(end($scan), self::$bootstrap);
+			$runner = new TestRunner($paths, self::$bootstrap);
 
 			$verbosity = self::$verbosity;
 			$displayed = [];
