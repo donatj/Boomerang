@@ -106,6 +106,7 @@ return (new PhpCsFixer\Config)
 			],
 
 			'no_superfluous_phpdoc_tags' => [
+				'allow_mixed' => true,
 				'remove_inheritdoc' => true,
 			],
 			'no_superfluous_elseif'      => true,

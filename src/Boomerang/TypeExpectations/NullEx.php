@@ -10,8 +10,6 @@ use Boomerang\Interfaces\TypeExpectationInterface;
  * Defines a placeholder expectation of a NULL value.
  *
  * **Passes**: `null`
- *
- * @package Boomerang\TypeExpectations
  */
 class NullEx implements TypeExpectationInterface {
 

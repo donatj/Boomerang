@@ -6,8 +6,6 @@ namespace Boomerang\TypeExpectations;
  * Regex Match Expectation
  *
  * Define a regex matching placeholder
- *
- * @package Boomerang\TypeExpectations
  */
 class RegexEx extends StringEx {
 

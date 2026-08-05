@@ -15,19 +15,12 @@ use Boomerang\Interfaces\TypeExpectationInterface;
  *         array(1,2,3),
  *         function($data) { return count($data) == 3; }
  *     );
- *
- * @package Boomerang\TypeExpectations
  */
 class AllEx extends StructureEx {
 
-	/**
-	 * @var TypeExpectationInterface[]
-	 */
+	/** @var TypeExpectationInterface[] */
 	protected $structures;
 
-	/**
-	 * @param TypeExpectationInterface|callable|mixed $structure,... One or more structure definitions to match
-	 */
 	public function __construct( $structure ) {
 		$this->structures = func_get_args();
 	}

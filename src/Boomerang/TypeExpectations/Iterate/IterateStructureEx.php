@@ -9,8 +9,6 @@ use Boomerang\TypeExpectations\StructureEx;
  * Iterating Structure (object/array) Expectation
  *
  * Iterates over every element of a iterable structure (object/array), ensuring it iterable, and matching against passed structure expectations.
- *
- * @package Boomerang\TypeExpectations\Iterate
  */
 class IterateStructureEx extends StructureEx {
 

@@ -17,8 +17,6 @@ use Boomerang\Interfaces\ExpectationResultInterface;
  *         array(1,2,3),
  *         function($data) { return count($data) == 4; }
  *     );
- *
- * @package Boomerang\TypeExpectations
  */
 class AnyEx extends AllEx {
 

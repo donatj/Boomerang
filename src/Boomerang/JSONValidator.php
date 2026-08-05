@@ -11,8 +11,6 @@ use Boomerang\Interfaces\ResponseInterface;
  * JSON Validator
  *
  * Used to validate JSON encoding and structure.
- *
- * @package Boomerang
  */
 class JSONValidator extends StructureValidator implements Interfaces\ResponseValidatorInterface {
 
@@ -36,7 +34,7 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 	 * @param mixed $json
 	 * @return array{mixed, string|null}
 	 */
-	private function jsonDecode( $json ): array {
+	private function jsonDecode( $json ) : array {
 		$result = json_decode($json, true);
 
 		switch( json_last_error() ) {

@@ -4,9 +4,7 @@ namespace Boomerang;
 
 abstract class AbstractValidator implements Interfaces\ResponseValidatorInterface {
 
-	/**
-	 * @var Interfaces\ExpectationResultInterface[]
-	 */
+	/** @var Interfaces\ExpectationResultInterface[] */
 	protected $expectations = [];
 
 	/**

@@ -6,21 +6,16 @@ use Boomerang\Interfaces\ValidatorInterface;
 
 class FailingExpectationResult extends FailingResult {
 
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	protected $expected;
 
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	protected $actual;
 
 	/**
-	 * @param ValidatorInterface $validator
-	 * @param null|string        $message
-	 * @param mixed              $expected
-	 * @param mixed              $actual
+	 * @param string|null $message
+	 * @param mixed       $expected
+	 * @param mixed       $actual
 	 */
 	public function __construct( ValidatorInterface $validator, $message = null, $expected = null, $actual = null ) {
 		parent::__construct($validator, $message);

@@ -13,12 +13,6 @@ parameters:
 			path: src/Boomerang/Boomerang.php
 
 		-
-			message: '#^Method Boomerang\\Boomerang\:\:main\(\) has parameter \$args with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/Boomerang/Boomerang.php
-
-		-
 			message: '#^Parameter \#1 \$STDOUT of class Boomerang\\Runner\\UserInterface constructor expects resource, resource\|false given\.$#'
 			identifier: argument.type
 			count: 1

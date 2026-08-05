@@ -6,26 +6,22 @@ use Boomerang\Factories\HttpResponseFactory;
 
 /**
  * Utility for generating HTTP Requests and receiving Responses into `HttpResponse` objects.
- *
- * @package Boomerang
  */
 class HttpRequest {
 
-	const GET     = "GET";
-	const POST    = "POST";
-	const PUT     = "PUT";
-	const PATCH   = "PATCH";
-	const DELETE  = "DELETE";
-	const TRACE   = "TRACE";
-	const OPTIONS = "OPTIONS";
+	public const GET     = "GET";
+	public const POST    = "POST";
+	public const PUT     = "PUT";
+	public const PATCH   = "PATCH";
+	public const DELETE  = "DELETE";
+	public const TRACE   = "TRACE";
+	public const OPTIONS = "OPTIONS";
 
 	/** @var array<string, mixed>|null */
 	private ?array $curlInfo = null;
 
-	/** @var string */
 	private string $tmp;
 
-	/** @var int */
 	private int $maxRedirects = 10;
 	/** @var array<string, string> */
 	private array $headers = [];
@@ -33,25 +29,19 @@ class HttpRequest {
 	private array $endpointParts;
 	/** @var array<string, string> */
 	private array $cookies = [];
-	/** @var bool */
+
 	private bool $cookiesFollowRedirects = false;
 	/** @var array<string, mixed>|string */
 	private $body = [];
-	/** @var float|null */
+
 	private ?float $lastRequestTime = null;
 
-	/**
-	 * @var HttpResponseFactory
-	 */
 	private HttpResponseFactory $responseFactory;
 
-	/**
-	 * @var string
-	 */
 	private string $method = self::GET;
 
 	/**
-	 * @param string              $endpoint URI to request.
+	 * @param string                   $endpoint        URI to request.
 	 * @param HttpResponseFactory|null $responseFactory A factory for creating Response objects.
 	 */
 	public function __construct( $endpoint, ?HttpResponseFactory $responseFactory = null ) {
@@ -89,7 +79,7 @@ class HttpRequest {
 	 * Retrieve a url param by name
 	 *
 	 * @param string $param The name of the param.
-	 * @return string|array|null Null on failure.
+	 * @return array|string|null Null on failure.
 	 */
 	public function getUrlParam( $param ) {
 		$params = $this->getUrlParams();
@@ -101,7 +91,7 @@ class HttpRequest {
 	 * Set a url param by name.
 	 *
 	 * @param string                 $param The name of the param.
-	 * @param string|int|float|array $value
+	 * @param array|float|int|string $value
 	 */
 	public function setUrlParam( $param, $value ) {
 		$params         = $this->getUrlParams();
@@ -144,7 +134,7 @@ class HttpRequest {
 	/**
 	 * Set an outgoing header by name.
 	 *
-	 * @param string $key The name of the header.
+	 * @param string $key   The name of the header.
 	 * @param string $value The value to set the header to.
 	 */
 	public function setHeader( $key, $value ) {
@@ -253,8 +243,6 @@ class HttpRequest {
 	 * Note that this has the side effect of changing the HTTP Method to POST
 	 *
 	 * @deprecated Use setBody instead
-	 *
-	 * @param array $post
 	 */
 	public function setPostData( array $post ) {
 		$this->method = self::POST;
@@ -309,11 +297,7 @@ class HttpRequest {
 		$this->cookies[$key] = $value;
 	}
 
-	/**
-	 * @param array $parsed_url
-	 * @return string
-	 */
-	private function composeUrl( array $parsed_url ): string {
+	private function composeUrl( array $parsed_url ) : string {
 		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
 		$host     = $parsed_url['host'] ?? '';
 		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
@@ -406,9 +390,8 @@ class HttpRequest {
 
 	/**
 	 * @param string $endpoint
-	 * @return string
 	 */
-	private function detectAccept( $endpoint ): string {
+	private function detectAccept( $endpoint ) : string {
 		$url = parse_url($endpoint);
 		if( isset($url['path']) ) {
 			$path = pathinfo($url['path']);
@@ -430,7 +413,7 @@ class HttpRequest {
 	 *
 	 * @return list<string>
 	 */
-	private function getFlatHeaders(): array {
+	private function getFlatHeaders() : array {
 		$output = [];
 		foreach( $this->getHeaders() as $key => $value ) {
 			$output[] = "$key: $value";
@@ -449,7 +432,7 @@ class HttpRequest {
 	/**
 	 * Get the time the last request took in seconds a float
 	 *
-	 * @return null|float null if there is no last request
+	 * @return float|null null if there is no last request
 	 */
 	public function getLastRequestTime() {
 		return $this->lastRequestTime;

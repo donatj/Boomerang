@@ -12,26 +12,22 @@ use Boomerang\Interfaces\ValidatorInterface;
  * Structure Expectation
  *
  * Used to define rules about structure.
- *
- * @package Boomerang\TypeExpectations
  */
 class StructureEx implements TypeExpectationInterface {
 
-	/** @var TypeExpectationInterface|callable|mixed */
+	/** @var callable|mixed|TypeExpectationInterface */
 	protected $structure;
 
 	/** @var list<int|string> */
 	protected $path = [];
 
-	/**
-	 * @var \Boomerang\Interfaces\ExpectationResultInterface[]
-	 */
+	/** @var \Boomerang\Interfaces\ExpectationResultInterface[] */
 	protected $expectationResults = [];
 
 	private ValidatorInterface $validator;
 
 	/**
-	 * @param TypeExpectationInterface|callable|mixed $structure
+	 * @param callable|mixed|TypeExpectationInterface $structure
 	 */
 	public function __construct( $structure ) {
 		$this->structure = $structure;
@@ -66,9 +62,9 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
-	 * @param mixed                                                                $data
-	 * @param array<mixed>|int|float|string|StructureEx|TypeExpectationInterface|\Closure $validation
-	 * @param list<int|string>|null                                                $path
+	 * @param mixed                                                                       $data
+	 * @param array<mixed>|\Closure|float|int|string|StructureEx|TypeExpectationInterface $validation
+	 * @param list<int|string>|null                                                       $path
 	 * @return array
 	 */
 	protected function __validate( $data, $validation, ?array $path = null ) {
@@ -202,9 +198,8 @@ class StructureEx implements TypeExpectationInterface {
 
 	/**
 	 * @param mixed $data
-	 * @return string
 	 */
-	private function getScalarTypeName( $data ): string {
+	private function getScalarTypeName( $data ) : string {
 		$typeName = gettype($data);
 		if( is_string($data) ) {
 			$typeName .= "{" . strlen($data) . "}";
