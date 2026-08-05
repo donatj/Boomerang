@@ -16,10 +16,9 @@ class TestRunner {
 	/**
 	 * TestRunner constructor.
 	 *
-	 * @param string            $path
-	 * @param false|string|null $bootstrap
+	 * @param string $path
 	 */
-	public function __construct( $path, $bootstrap ) {
+	public function __construct( $path, ?string $bootstrap ) {
 		$this->path      = $path;
 		$this->bootstrap = is_string($bootstrap) ? $bootstrap : null;
 		$this->files     = $this->getFileList($this->path);
