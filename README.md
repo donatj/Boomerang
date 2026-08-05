@@ -46,28 +46,6 @@ $ cd Boomerang
 $ composer install
 ```
 
-### Code-quality checks
-
-Run the same checks used by CI:
-
-```bash
-$ vendor/bin/phpunit
-$ vendor/bin/phpstan analyse
-$ vendor/bin/phpcs
-```
-
-PHP CS Fixer is run in CI with PHP 8.1:
-
-```bash
-$ vendor/bin/php-cs-fixer fix --dry-run
-```
-
-Apply automatic coding-standard fixes with:
-
-```bash
-$ vendor/bin/phpcbf
-```
-
 ### Basic Execution
 
 The easiest way to test is simply using the composer executable.
