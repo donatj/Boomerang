@@ -35,14 +35,14 @@ class JSONValidator extends StructureValidator implements Interfaces\ResponseVal
 	/**
 	 * @param mixed $json
 	 * @param mixed $result
-	 * @return string|false
+	 * @return string|null
 	 */
-	private function jsonDecode( $json, &$result ) {
+	private function jsonDecode( $json, &$result ): ?string {
 		$result = json_decode($json, true);
 
 		switch( json_last_error() ) {
 			case JSON_ERROR_NONE:
-				$error = false; // JSON is valid
+				$error = null; // JSON is valid
 				break;
 			case JSON_ERROR_DEPTH:
 				$error = 'Maximum stack depth exceeded.';

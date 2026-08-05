@@ -29,7 +29,7 @@ class TestRunner {
 	 * @param string $path
 	 * @return \Iterator<int|string, string|\SplFileInfo>
 	 */
-	private function getFileList( string $path ) {
+	private function getFileList( string $path ): \Iterator {
 		if( $real = realpath($path) ) {
 			$path = $real;
 		}

@@ -44,7 +44,7 @@ class Boomerang {
 	 * @return array|string[]
 	 * @throws \donatj\Exceptions\AbstractFlagException
 	 */
-	private static function init( $args, UserInterface $ui ) {
+	private static function init( $args, UserInterface $ui ): array {
 
 		$flags     = new Flags();
 		$testSuite = &$flags->string('testsuite', 'default', 'Which test suite to run.');
@@ -183,7 +183,7 @@ class Boomerang {
 		}
 	}
 
-	private static function selfUpdate( UserInterface $ui ) {
+	private static function selfUpdate( UserInterface $ui ): void {
 		$ui->outputMsg("Starting self update ... ");
 
 		$localFile = $_SERVER['argv'][0];
@@ -224,7 +224,7 @@ class Boomerang {
 		$ui->outputMsg("Success!");
 	}
 
-	private static function versionMarker( UserInterface $ui ) {
+	private static function versionMarker( UserInterface $ui ): void {
 		$ui->outputMsg("Boomerang! " . self::VERSION . " by Jesse G. Donat" . PHP_EOL);
 	}
 

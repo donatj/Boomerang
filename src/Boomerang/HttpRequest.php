@@ -313,7 +313,7 @@ class HttpRequest {
 	 * @param array $parsed_url
 	 * @return string
 	 */
-	private function composeUrl( array $parsed_url ) {
+	private function composeUrl( array $parsed_url ): string {
 		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
 		$host     = $parsed_url['host'] ?? '';
 		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
@@ -408,7 +408,7 @@ class HttpRequest {
 	 * @param string $endpoint
 	 * @return string
 	 */
-	private function detectAccept( $endpoint ) {
+	private function detectAccept( $endpoint ): string {
 		$url = parse_url($endpoint);
 		if( isset($url['path']) ) {
 			$path = pathinfo($url['path']);
@@ -428,9 +428,9 @@ class HttpRequest {
 	/**
 	 * Gets headers as a flattened array for cURL $key => $val --> $key: $val
 	 *
-	 * @return array
+	 * @return list<string>
 	 */
-	private function getFlatHeaders() {
+	private function getFlatHeaders(): array {
 		$output = [];
 		foreach( $this->getHeaders() as $key => $value ) {
 			$output[] = "$key: $value";

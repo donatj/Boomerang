@@ -204,7 +204,7 @@ class StructureEx implements TypeExpectationInterface {
 	 * @param mixed $data
 	 * @return string
 	 */
-	private function getScalarTypeName( $data ) {
+	private function getScalarTypeName( $data ): string {
 		$typeName = gettype($data);
 		if( is_string($data) ) {
 			$typeName .= "{" . strlen($data) . "}";
