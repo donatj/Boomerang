@@ -6,7 +6,7 @@ use Boomerang\Exceptions\CliRuntimeException;
 
 class TestRunner {
 
-	/** @var \Iterator */
+	/** @var \Iterator<int|string, string|\SplFileInfo> */
 	private \Iterator $files;
 	/** @var string */
 	private string $path;
@@ -27,7 +27,7 @@ class TestRunner {
 
 	/**
 	 * @param string $path
-	 * @return \Iterator
+	 * @return \Iterator<int|string, string|\SplFileInfo>
 	 */
 	private function getFileList( string $path ) {
 		if( $real = realpath($path) ) {
