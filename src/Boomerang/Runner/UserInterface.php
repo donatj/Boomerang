@@ -42,11 +42,11 @@ class UserInterface {
 		$fname = Boomerang::$pathInfo['basename'];
 
 		$options = <<<EOT
-usage: {$fname} [switches] <directory>
-       {$fname} [switches] [APISpec]
+			usage: {$fname} [switches] <directory>
+			       {$fname} [switches] [APISpec]
 
 
-EOT;
+			EOT;
 
 		Output::string($options);
 		Output::string($additional);

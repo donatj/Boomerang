@@ -11,7 +11,7 @@
  */
 error_reporting(E_ALL & ~E_STRICT);
 
-date_default_timezone_set(@date_default_timezone_get()); //feels hackish
+date_default_timezone_set(@date_default_timezone_get()); // feels hackish
 
 function includeIfExists( string $file ) : ?\Composer\Autoload\ClassLoader {
 	if( !file_exists($file) ) {
