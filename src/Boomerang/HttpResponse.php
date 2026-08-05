@@ -19,7 +19,6 @@ class HttpResponse implements HttpResponseInterface {
 	/** @var array<int, array<int|string, mixed>> */
 	private array $headerSets;
 
-	/** @var \Boomerang\HttpRequest|null */
 	private ?HttpRequest $request;
 
 	/**
