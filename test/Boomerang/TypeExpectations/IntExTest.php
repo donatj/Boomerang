@@ -9,7 +9,7 @@ class IntExTest extends TestCase {
 
 	public function testBasicMatching() {
 
-		$x = new IntEx();
+		$x = new IntEx;
 		$this->assertEquals(true, $x->match(1));
 		$this->assertEquals(true, $x->match(1.0));
 		$this->assertEquals(true, $x->match(1000));

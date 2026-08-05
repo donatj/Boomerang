@@ -79,6 +79,7 @@ EOT;
 						break;
 					}
 				}
+
 				if( !$verbose ) {
 					Output::string($dot ?: Style::green("."));
 				}
@@ -131,6 +132,7 @@ EOT;
 								 */
 								Output::string('( ' . $validator->getResponse()->getRequest()->getLastRequestTime() . 's )');
 							}
+
 							Output::string(PHP_EOL);
 						}
 

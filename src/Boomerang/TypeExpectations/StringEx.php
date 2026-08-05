@@ -49,7 +49,7 @@ class StringEx implements TypeExpectationInterface {
 	 * @return string
 	 */
 	public function getMatchingTypeName() {
-		return sprintf('string{%s,%s}', intval($this->minLength), $this->maxLength === null ? '∞' : $this->maxLength);
+		return sprintf('string{%s,%s}', intval($this->minLength), $this->maxLength ?? '∞');
 	}
 
 }

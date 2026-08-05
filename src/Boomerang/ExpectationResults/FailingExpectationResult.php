@@ -19,6 +19,7 @@ class FailingExpectationResult extends FailingResult {
 	 */
 	public function __construct( ValidatorInterface $validator, $message = null, $expected = null, $actual = null ) {
 		parent::__construct($validator, $message);
+
 		$this->expected = $expected;
 		$this->actual   = $actual;
 	}

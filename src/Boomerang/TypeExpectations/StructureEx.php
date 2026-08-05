@@ -4,7 +4,6 @@ namespace Boomerang\TypeExpectations;
 
 use Boomerang\ExpectationResults\FailingExpectationResult;
 use Boomerang\ExpectationResults\PassingExpectationResult;
-use Boomerang\Interfaces\ExpectationResultInterface;
 use Boomerang\Interfaces\TypeExpectationInterface;
 use Boomerang\Interfaces\ValidatorInterface;
 
@@ -96,7 +95,7 @@ class StructureEx implements TypeExpectationInterface {
 			} else {
 				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected scalar\n { {$pathName} } ", $validation, $data);
 			}
-		} elseif( $validation instanceof StructureEx ) {
+		} elseif( $validation instanceof self ) {
 			$validation->setPath($path);
 			$validation->setValidator($this->validator);
 
@@ -152,6 +151,7 @@ class StructureEx implements TypeExpectationInterface {
 					if( $s_path == "" ) {
 						$s_path = ".";
 					}
+
 					$s_path .= "[$loc]";
 				} else {
 					$s_path .= '."' . $loc . '"';

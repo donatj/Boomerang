@@ -15,6 +15,7 @@ class PassingExpectationResult extends PassingResult {
 	 */
 	public function __construct( ValidatorInterface $validator, $message = null, $actual = null ) {
 		parent::__construct($validator, $message);
+
 		$this->actual = $actual;
 	}
 

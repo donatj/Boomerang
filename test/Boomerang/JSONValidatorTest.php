@@ -2,7 +2,6 @@
 
 namespace Boomerang\Test;
 
-use Boomerang\ExpectationResults\FailingResult;
 use Boomerang\ExpectationResults\PassingResult;
 use Boomerang\Interfaces\ResponseInterface;
 use Boomerang\JSONValidator;

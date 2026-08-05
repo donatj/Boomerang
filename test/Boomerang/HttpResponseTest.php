@@ -253,7 +253,7 @@ EOT
 		$this->assertNull($response->getStatus());
 	}
 
-	public function testHttp2ProtocolParse(){
+	public function testHttp2ProtocolParse() {
 		$body = 'Testing the new HTTP-2 Body';
 		$response = new HttpResponse($body, <<<'EOT'
 HTTP/2 401
@@ -266,7 +266,7 @@ EOT
 		$this->assertSame( 401, $response->getStatus());
 	}
 
-	public function testProtocolException(){
+	public function testProtocolException() {
 		$this->expectException(\Boomerang\Exceptions\ResponseException::class);
 
 		$response = new HttpResponse('', <<<'EOT'

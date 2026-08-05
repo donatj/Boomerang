@@ -10,6 +10,7 @@ class MutedExpectationResult extends AbstractResult {
 
 	public function __construct( ExpectationResultInterface $expectationResult ) {
 		$this->expecationResult = $expectationResult;
+
 		parent::__construct($expectationResult->getValidator(), $expectationResult->getMessage());
 	}
 

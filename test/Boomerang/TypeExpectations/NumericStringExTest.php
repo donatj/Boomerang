@@ -9,7 +9,7 @@ class NumericStringExTest extends TestCase {
 
 	public function testBasicMatching() {
 
-		$x = new NumericStringEx();
+		$x = new NumericStringEx;
 		$this->assertEquals(false, $x->match(1));
 		$this->assertEquals(false, $x->match(1.0));
 		$this->assertEquals(false, $x->match(1000));

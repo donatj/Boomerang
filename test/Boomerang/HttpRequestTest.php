@@ -160,4 +160,5 @@ class HttpRequestTest extends \BaseServerTest {
 		$resp = $req->makeRequest();
 		$this->assertSame($mockResponse, $resp);
 	}
+
 }

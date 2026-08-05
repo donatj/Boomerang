@@ -51,4 +51,5 @@ class AllEx extends StructureEx {
 	public function getMatchingTypeName() {
 		return 'All (&&) Matcher';
 	}
+
 }

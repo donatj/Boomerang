@@ -40,7 +40,7 @@ class Boomerang {
 	 */
 	private static function init( $args, UserInterface $ui ) : array {
 
-		$flags     = new Flags();
+		$flags     = new Flags;
 		$testSuite = &$flags->string('testsuite', 'default', 'Which test suite to run.');
 		$flags->parse($args, true);
 
@@ -142,7 +142,7 @@ class Boomerang {
 			$displayed = [];
 			$runner->runTests(function ( $file ) use ( $ui, $verbosity, &$displayed ) {
 				$validators = [];
-				foreach( Boomerang::$validators as $validator ) {
+				foreach( self::$validators as $validator ) {
 					$hash = spl_object_hash($validator);
 
 					if( !isset($displayed[$hash]) ) {
@@ -157,7 +157,7 @@ class Boomerang {
 			$tests = 0;
 			$total = 0;
 			$fails = 0;
-			foreach( Boomerang::$validators as $v_data ) {
+			foreach( self::$validators as $v_data ) {
 				$tests++;
 				$ex_res = $v_data->getExpectationResults();
 				foreach( $ex_res as $ex ) {

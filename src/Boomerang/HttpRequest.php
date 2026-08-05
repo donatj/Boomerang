@@ -48,7 +48,7 @@ class HttpRequest {
 		$this->setEndpoint($endpoint);
 		$this->tmp = sys_get_temp_dir() ?: '/tmp';
 
-		$this->responseFactory = $responseFactory ?? new HttpResponseFactory();
+		$this->responseFactory = $responseFactory ?? new HttpResponseFactory;
 	}
 
 	/**
@@ -213,6 +213,7 @@ class HttpRequest {
 		if( !is_array($this->body) ) {
 			$this->body = [];
 		}
+
 		$this->body[$key] = $value;
 	}
 
@@ -330,6 +331,7 @@ class HttpRequest {
 		if( $parts === false ) {
 			throw new \InvalidArgumentException("Failed to parse url '{$endpoint}'");
 		}
+
 		$this->endpointParts = $parts;
 	}
 
@@ -382,8 +384,6 @@ class HttpRequest {
 		$headers     = substr($response, 0, $header_size);
 
 		$body = substr($response, $header_size);
-
-		curl_close($ch);
 
 		return $this->responseFactory->newInstance($body, $headers, $this);
 	}
