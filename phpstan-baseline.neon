@@ -361,6 +361,24 @@ parameters:
 			path: src/Boomerang/Runner/TestRunner.php
 
 		-
+			message: '#^Call to function is_string\(\) with \*NEVER\* will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Boomerang/Runner/UserInterface.php
+
+		-
+			message: '#^Instanceof between Boomerang\\Interfaces\\ExpectationResultInterface and Boomerang\\Interfaces\\ExpectationResultInterface will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Boomerang/Runner/UserInterface.php
+
+		-
+			message: '#^Instanceof between Boomerang\\Interfaces\\ValidatorInterface and Boomerang\\Interfaces\\ValidatorInterface will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Boomerang/Runner/UserInterface.php
+
+		-
 			message: '#^Method Boomerang\\Runner\\UserInterface\:\:dropError\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
