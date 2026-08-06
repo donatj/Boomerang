@@ -121,13 +121,23 @@ class StructureEx implements TypeExpectationInterface {
 				$typeName       = $this->getScalarTypeName($data);
 				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected \\Closure parameter type\n { {$pathName} } ", 'array', $typeName);
 			} else {
-				$result = $validation($data);
-				$pass   = $result === true;
+				try {
+					$result = $validation($data);
+					$pass   = $result === true;
 
-				if( !$pass ) {
-					$expectations[] = new FailingExpectationResult($this->validator, "Unexpected \\Closure structure validator result\n { {$pathName} } ", true, $result);
-				} else {
-					$expectations[] = new PassingExpectationResult($this->validator, "Expected \\Closure structure validator result\n { {$pathName} } ", $result);
+					if( !$pass ) {
+						$expectations[] = new FailingExpectationResult($this->validator, "Unexpected \\Closure structure validator result\n { {$pathName} } ", true, $result);
+					} else {
+						$expectations[] = new PassingExpectationResult($this->validator, "Expected \\Closure structure validator result\n { {$pathName} } ", $result);
+					}
+				} catch( \Throwable $throwable ) {
+					$pass           = false;
+					$expectations[] = new FailingExpectationResult(
+						$this->validator,
+						"\\Closure threw " . get_class($throwable) . "\n { {$pathName} } ",
+						'(no exception)',
+						$throwable->getMessage()
+					);
 				}
 			}
 		} elseif( is_scalar($validation) ) {
