@@ -106,7 +106,7 @@ class Boomerang {
 
 				die(0);
 			case $displayHelp:
-			case count($paths) < 1: //should come last because of this
+			case count($paths) < 1: // should come last because of this
 				$ui->dumpOptions($flags->getDefaults());
 
 				die(1);

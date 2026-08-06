@@ -14,7 +14,7 @@ return (new PhpCsFixer\Config)
 	->setRiskyAllowed(true)
 	->setRules(
 		[
-			'@PHPUnit60Migration:risky' => true,
+			'@PHPUnit9x1Migration:risky' => true,
 			'php_unit_test_case_static_method_calls' => [
 				'call_type' => 'this',
 			],
@@ -36,7 +36,10 @@ return (new PhpCsFixer\Config)
 			'no_leading_import_slash'         => true,
 			'no_leading_namespace_whitespace' => true,
 
+			'array_indentation' => true,
+
 			'no_whitespace_in_blank_line' => true,
+			'no_trailing_whitespace'      => true,
 
 			'phpdoc_add_missing_param_annotation' => [ 'only_untyped' => true, ],
 			'phpdoc_indent'                       => true,
@@ -84,6 +87,7 @@ return (new PhpCsFixer\Config)
 
 			'single_line_after_imports'          => true,
 			'single_blank_line_before_namespace' => true,
+			'single_line_comment_spacing'        => true,
 			'blank_line_after_namespace'         => true,
 			'single_blank_line_at_eof'           => true,
 			'ternary_to_null_coalescing'         => true,
@@ -113,10 +117,13 @@ return (new PhpCsFixer\Config)
 
 			'no_useless_else' => true,
 
+			'compact_nullable_type_declaration' => true,
+
 			'combine_consecutive_issets'  => true,
 			'escape_implicit_backslashes' => true,
 			'explicit_indirect_variable'  => true,
 			'heredoc_to_nowdoc'           => true,
+			'heredoc_indentation'         => true,
 
 
 			'no_singleline_whitespace_before_semicolons' => true,
@@ -163,6 +170,10 @@ return (new PhpCsFixer\Config)
 				'equal' => false,
 				'identical' => false,
 				'less_and_greater' => null,
+			],
+
+			'empty_loop_condition' => [
+				'style' => 'for',
 			],
 		]
 	)
