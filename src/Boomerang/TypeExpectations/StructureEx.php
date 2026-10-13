@@ -62,93 +62,100 @@ class StructureEx implements TypeExpectationInterface {
 	}
 
 	/**
-	 * @param mixed                                                                       $data
-	 * @param array<mixed>|\Closure|float|int|string|StructureEx|TypeExpectationInterface $validation
-	 * @param list<int|string>|null                                                       $path
+	 * @param mixed                                                                                 $data
+	 * @param array<mixed>|bool|\Closure|float|int|string|StructureEx|TypeExpectationInterface|null $validation
+	 * @param list<int|string>|null                                                                 $path
 	 * @return array
 	 */
 	protected function __validate( $data, $validation, ?array $path = null ) {
-		/** @var \Boomerang\ExpectationResults\AbstractResult[] $expectations */
-		$expectations = [];
-
 		if( !$path ) {
 			$path = $this->path;
 		}
 
 		$pathName = $this->makePathName($path);
 
-		$pass = true;
-
 		if( is_array($validation) ) {
-			if( is_array($data) ) {
-				reset($validation);
-				$firstIsZero = key($validation) === 0;
-				foreach( $validation as $key => $value ) {
-					if( array_key_exists($key, $data) ) {
-						[$passing, $sub_expectations] = $this->__validate($data[$key], $value, array_merge($path, [ $key ]));
-						$expectations = array_merge($expectations, $sub_expectations);
-						$pass         = $passing && $pass;
-					} else {
-						$subPathName    = $this->makePathName(array_merge($path, [ $firstIsZero ? $key : (string)$key ]));
-						$expectations[] = new FailingExpectationResult($this->validator, "Missing key\n { {$subPathName} } ", $key);
-					}
-				}
-			} else {
-				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected scalar\n { {$pathName} } ", $validation, $data);
+			if( !is_array($data) ) {
+				return [ false, [ new FailingExpectationResult($this->validator, "Unexpected scalar\n { {$pathName} } ", $validation, $data) ] ];
 			}
-		} elseif( $validation instanceof self ) {
+
+			/** @var \Boomerang\ExpectationResults\AbstractResult[] $expectations */
+			$expectations = [];
+			$pass         = true;
+
+			reset($validation);
+			$firstIsZero = key($validation) === 0;
+			foreach( $validation as $key => $value ) {
+				if( array_key_exists($key, $data) ) {
+					[$passing, $sub_expectations] = $this->__validate($data[$key], $value, array_merge($path, [ $key ]));
+					$expectations = array_merge($expectations, $sub_expectations);
+					$pass         = $passing && $pass;
+
+					continue;
+				}
+
+				$subPathName    = $this->makePathName(array_merge($path, [ $firstIsZero ? $key : (string)$key ]));
+				$expectations[] = new FailingExpectationResult($this->validator, "Missing key\n { {$subPathName} } ", $key);
+			}
+
+			return [ $pass, $expectations ];
+		}
+
+		if( $validation instanceof self ) {
 			$validation->setPath($path);
 			$validation->setValidator($this->validator);
 
-			$pass         = $validation->match($data);
-			$expectations = array_merge($expectations, $validation->getExpectationResults());
-		} elseif( $validation instanceof TypeExpectationInterface ) {
+			return [ $validation->match($data), $validation->getExpectationResults() ];
+		}
+
+		if( $validation instanceof TypeExpectationInterface ) {
 			$typeName = $this->getScalarTypeName($data);
 
-			if( !$pass = $validation->match($data) ) {
-				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), $typeName);
-			} else {
-				$expectations[] = new PassingExpectationResult($this->validator, "Expected structure type check result\n { {$pathName} } ", $typeName);
+			if( !$validation->match($data) ) {
+				return [ false, [ new FailingExpectationResult($this->validator, "Unexpected structure type check result\n { {$pathName} } ", $validation->getMatchingTypeName(), $typeName) ] ];
 			}
-		} elseif( $validation instanceof \Closure ) {
+
+			return [ true, [ new PassingExpectationResult($this->validator, "Expected structure type check result\n { {$pathName} } ", $typeName) ] ];
+		}
+
+		if( $validation instanceof \Closure ) {
 			$reflect    = new \ReflectionFunction($validation);
 			$parameters = $reflect->getParameters();
 			$parameterType = count($parameters) > 0 ? $parameters[0]->getType() : null;
 
 			if( $parameterType instanceof \ReflectionNamedType && $parameterType->getName() === 'array' && !is_array($data) ) {
-				$pass = false;
-
 				$typeName       = $this->getScalarTypeName($data);
-				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected \\Closure parameter type\n { {$pathName} } ", 'array', $typeName);
-			} else {
-				try {
-					$result = $validation($data);
-					$pass   = $result === true;
 
-					if( !$pass ) {
-						$expectations[] = new FailingExpectationResult($this->validator, "Unexpected \\Closure structure validator result\n { {$pathName} } ", true, $result);
-					} else {
-						$expectations[] = new PassingExpectationResult($this->validator, "Expected \\Closure structure validator result\n { {$pathName} } ", $result);
-					}
-				} catch( \Throwable $throwable ) {
-					$pass           = false;
-					$expectations[] = new FailingExpectationResult(
-						$this->validator,
-						"\\Closure threw " . get_class($throwable) . "\n { {$pathName} } ",
-						'(no exception)',
-						$throwable->getMessage()
-					);
-				}
+				return [ false, [ new FailingExpectationResult($this->validator, "Unexpected \\Closure parameter type\n { {$pathName} } ", 'array', $typeName) ] ];
 			}
-		} elseif( is_scalar($validation) ) {
-			if( !$pass = $validation == $data ) {
-				$expectations[] = new FailingExpectationResult($this->validator, "Unexpected value\n { {$pathName} } ", $validation, $data);
-			} else {
-				$expectations[] = new PassingExpectationResult($this->validator, "Expected value\n { {$pathName} } ", $validation);
+
+			try {
+				$result = $validation($data);
+			} catch( \Throwable $throwable ) {
+				return [ false, [ new FailingExpectationResult(
+					$this->validator,
+					"\\Closure threw " . get_class($throwable) . "\n { {$pathName} } ",
+					'(no exception)',
+					$throwable->getMessage()
+				) ] ];
 			}
+
+			if( $result !== true ) {
+				return [ false, [ new FailingExpectationResult($this->validator, "Unexpected \\Closure structure validator result\n { {$pathName} } ", true, $result) ] ];
+			}
+
+			return [ true, [ new PassingExpectationResult($this->validator, "Expected \\Closure structure validator result\n { {$pathName} } ", $result) ] ];
 		}
 
-		return [ $pass, $expectations ];
+		if( is_scalar($validation) ) {
+			if( $validation != $data ) {
+				return [ false, [ new FailingExpectationResult($this->validator, "Unexpected value\n { {$pathName} } ", $validation, $data) ] ];
+			}
+
+			return [ true, [ new PassingExpectationResult($this->validator, "Expected value\n { {$pathName} } ", $validation) ] ];
+		}
+
+		return [ true, [] ];
 	}
 
 	/**
