@@ -126,8 +126,9 @@ class HttpRequestTest extends \BaseServerTest {
 		$mockNewInstance->willReturnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
 			$data = json_decode($body, true);
 			$this->assertSame([
-				'sessionid' => '38afes7a8',
-				'sauce'     => 'dog; cat=mouse',
+				'sessionid'  => '38afes7a8',
+				'sauce'      => 'dog; cat=mouse',
+				'session+id' => 'a+b c',
 			], $data['_COOKIE']);
 
 			return $mockResponse;
@@ -136,9 +137,32 @@ class HttpRequestTest extends \BaseServerTest {
 		$req = new HttpRequest(self::$server->getServerRoot() . '/cookieTest', $mockFactory);
 		$req->setCookies([ 'sessionid' => '38afes7a8' ]);
 		$req->setCookie('sauce', 'dog; cat=mouse');
+		$req->setCookie('session+id', 'a+b c');
 
 		$resp = $req->makeRequest();
 		$this->assertSame($mockResponse, $resp);
+	}
+
+	public function testInvalidCookieNames() {
+		$invalid = [ '', 'bad name', 'a=b', 'a;b', 'a,b', "a\r\nX-Injected: 1", "trailing\n", 'caf' . "\u{e9}" ];
+
+		foreach( $invalid as $name ) {
+			$req = new HttpRequest('http://example.com/');
+
+			try {
+				$req->setCookie($name, 'value');
+				$this->fail('setCookie accepted ' . var_export($name, true));
+			} catch( \InvalidArgumentException $e ) {
+				$this->assertStringStartsWith('Invalid cookie name', $e->getMessage());
+			}
+
+			try {
+				$req->setCookies([ 'valid' => 'ok', $name => 'value' ]);
+				$this->fail('setCookies accepted ' . var_export($name, true));
+			} catch( \InvalidArgumentException $e ) {
+				$this->assertStringStartsWith('Invalid cookie name', $e->getMessage());
+			}
+		}
 	}
 
 	public function testCookiesFollowRedirects() {
