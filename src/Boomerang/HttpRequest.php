@@ -283,8 +283,13 @@ class HttpRequest {
 	 * Set outgoing cookies as an array of CookieName => Value
 	 *
 	 * @param array $cookies Cookies to set
+	 * @throws \InvalidArgumentException If a cookie name is not a valid RFC 6265 token.
 	 */
 	public function setCookies( array $cookies ) {
+		foreach( array_keys($cookies) as $key ) {
+			$this->assertValidCookieName((string)$key);
+		}
+
 		$this->cookies = $cookies;
 	}
 
@@ -293,9 +298,21 @@ class HttpRequest {
 	 *
 	 * @param string $key
 	 * @param string $value
+	 * @throws \InvalidArgumentException If the cookie name is not a valid RFC 6265 token.
 	 */
 	public function setCookie( $key, $value ) {
+		$this->assertValidCookieName((string)$key);
+
 		$this->cookies[$key] = $value;
+	}
+
+	/**
+	 * Cookie names are sent as-is, as PHP does not decode them, so they must already be valid tokens.
+	 */
+	private function assertValidCookieName( string $name ) : void {
+		if( preg_match('/^[!#$%&\'*+.^_`|~0-9A-Za-z-]+$/D', $name) !== 1 ) {
+			throw new \InvalidArgumentException("Invalid cookie name '{$name}'");
+		}
 	}
 
 	private function composeUrl( array $parsed_url ) : string {
@@ -359,8 +376,7 @@ class HttpRequest {
 		}
 
 		if( count($this->cookies) > 0 ) {
-			// @todo This does not work without http extension… find a better solution
-			curl_setopt($ch, CURLOPT_COOKIE, http_build_cookie($this->cookies));
+			curl_setopt($ch, CURLOPT_COOKIE, $this->getFlatCookies());
 		}
 
 		curl_setopt($ch, CURLOPT_HEADER, true);
@@ -420,6 +436,20 @@ class HttpRequest {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Gets cookies as a flattened string for cURL $key => $val --> $key=$val; $key2=$val2
+	 *
+	 * Values are percent-encoded, which PHP decodes on receipt. Names are validated when set and sent as-is.
+	 */
+	private function getFlatCookies() : string {
+		$output = [];
+		foreach( $this->cookies as $key => $value ) {
+			$output[] = $key . '=' . rawurlencode((string)$value);
+		}
+
+		return implode('; ', $output);
 	}
 
 	/**
