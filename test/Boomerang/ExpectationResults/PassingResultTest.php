@@ -12,7 +12,7 @@ class PassingResultTest extends TestCase {
 		/**
 		 * @var ValidatorInterface $mockValidator
 		 */
-		$mockValidator = $this->getMockBuilder('Boomerang\\Interfaces\\ValidatorInterface')->getMock();
+		$mockValidator = $this->getMockBuilder('Boomerang\Interfaces\ValidatorInterface')->getMock();
 		$result        = new PassingResult($mockValidator);
 		$this->assertFalse($result->getFail());
 		$this->assertNull($result->getMessage());

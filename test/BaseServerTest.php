@@ -8,7 +8,7 @@ abstract class BaseServerTest extends TestCase {
 	/** @var MockWebServer */
 	protected static $server;
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		self::$server = new MockWebServer;
 		self::$server->start();
 	}

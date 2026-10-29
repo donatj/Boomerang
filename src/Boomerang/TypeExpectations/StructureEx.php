@@ -136,7 +136,7 @@ class StructureEx implements TypeExpectationInterface {
 						$this->validator,
 						"\\Closure threw " . get_class($throwable) . "\n { {$pathName} } ",
 						'(no exception)',
-						$throwable->getMessage()
+						$throwable->getMessage(),
 					);
 				}
 			}
@@ -215,7 +215,7 @@ class StructureEx implements TypeExpectationInterface {
 	/**
 	 * @param mixed $data
 	 */
-	private function getScalarTypeName( $data ) : string {
+	private function getScalarTypeName( $data ): string {
 		$typeName = gettype($data);
 		if( is_string($data) ) {
 			$typeName .= "{" . strlen($data) . "}";

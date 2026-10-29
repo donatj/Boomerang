@@ -10,20 +10,20 @@ use PHPUnit\Framework\TestCase;
 class StructureExTest extends TestCase {
 
 	public function testClosureReturningTruePasses() {
-		$structure = $this->createStructure(function ( $data ) : bool { return true; });
+		$structure = $this->createStructure(function ( $data ): bool { return true; });
 
 		$this->assertTrue($structure->match('test'));
 	}
 
 	public function testClosureReturningFalseFails() {
-		$structure = $this->createStructure(function ( $data ) : bool { return false; });
+		$structure = $this->createStructure(function ( $data ): bool { return false; });
 
 		$this->assertFalse($structure->match('test'));
 		$this->assertInstanceOf(FailingExpectationResult::class, $this->getOnlyExpectation($structure));
 	}
 
 	public function testClosureExceptionBecomesAFailingExpectation() {
-		$structure = $this->createStructure(function ( $data ) : bool {
+		$structure = $this->createStructure(function ( $data ): bool {
 			throw new \RuntimeException('Something went wrong');
 		});
 
@@ -38,7 +38,7 @@ class StructureExTest extends TestCase {
 
 	public function testClosureTypeErrorBecomesAFailingExpectationWithItsPath() {
 		$structure = new StructureEx([
-			'nested' => function ( \stdClass $data ) : bool { return true; },
+			'nested' => function ( \stdClass $data ): bool { return true; },
 		]);
 		$structure->setValidator($this->createValidator());
 
@@ -81,18 +81,18 @@ class StructureExTest extends TestCase {
 		$structure->addInvalidExpectationResult(new \stdClass);
 	}
 
-	private function createStructure( \Closure $validation ) : StructureEx {
+	private function createStructure( \Closure $validation ): StructureEx {
 		$structure = new StructureEx($validation);
 		$structure->setValidator($this->createValidator());
 
 		return $structure;
 	}
 
-	private function createValidator() : ValidatorInterface {
+	private function createValidator(): ValidatorInterface {
 		return $this->createMock(ValidatorInterface::class);
 	}
 
-	private function getOnlyExpectation( StructureEx $structure ) : FailingExpectationResult {
+	private function getOnlyExpectation( StructureEx $structure ): FailingExpectationResult {
 		$expectations = array_values($structure->getExpectationResults());
 
 		$this->assertCount(1, $expectations);

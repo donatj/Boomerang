@@ -16,7 +16,7 @@ class JSONValidatorTest extends TestCase {
 		$json    = new JSONValidator($mock);
 		$results = $json->getExpectationResults();
 		$this->assertCount(1, $results);
-		$this->assertInstanceOf('\\Boomerang\\ExpectationResults\\FailingResult', reset($results));
+		$this->assertInstanceOf('\Boomerang\ExpectationResults\FailingResult', reset($results));
 
 		$mock = $this->_getMockResponse( '[1,2,3]' );
 
@@ -31,7 +31,7 @@ class JSONValidatorTest extends TestCase {
 	 * @return \PHPUnit\Framework\MockObject\MockObject|ResponseInterface
 	 */
 	private function _getMockResponse( $data ) {
-		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\ResponseInterface')->getMock();
+		$mock = $this->getMockBuilder('Boomerang\Interfaces\ResponseInterface')->getMock();
 		$mock->expects($this->any())
 			->method('getBody')
 			->willReturn($data);

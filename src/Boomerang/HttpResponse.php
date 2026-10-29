@@ -46,7 +46,7 @@ class HttpResponse implements HttpResponseInterface {
 	 *
 	 * @param string $s
 	 */
-	private function normalizeHeaders( $s ) : string {
+	private function normalizeHeaders( $s ): string {
 		$s = str_replace([ "\r\n", "\r", "\n" ], [ "\n", "\n", "\r\n" ], $s);
 
 		return trim($s);
@@ -56,7 +56,7 @@ class HttpResponse implements HttpResponseInterface {
 	 * @param string $rawHeaders
 	 * @return string[]
 	 */
-	private function parseHeaders( $rawHeaders ) : array {
+	private function parseHeaders( $rawHeaders ): array {
 		$headers = [];
 		$key     = '';
 

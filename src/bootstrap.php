@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 
 date_default_timezone_set(@date_default_timezone_get()); // feels hackish
 
-function includeIfExists( string $file ) : ?\Composer\Autoload\ClassLoader {
+function includeIfExists( string $file ): ?\Composer\Autoload\ClassLoader {
 	if( !file_exists($file) ) {
 		return null;
 	}
