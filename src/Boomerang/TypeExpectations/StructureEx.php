@@ -201,7 +201,7 @@ class StructureEx implements TypeExpectationInterface {
 				throw new \InvalidArgumentException('Expectation Results must implement ExpectationResultInterface');
 			}
 
-			$this->expectationResults[spl_object_hash($expect)] = $expect;
+			$this->expectationResults[spl_object_id($expect)] = $expect;
 		}
 	}
 
