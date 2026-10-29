@@ -90,6 +90,21 @@ class HttpRequestTest extends \BaseServerTest {
 		}
 	}
 
+	public function testHeadMethod() {
+		// A HEAD response advertises the body length but never sends the body
+		$endpoint = self::$server->getUrlOfResponse(
+			new Response('0123456789', [ 'Content-Length: 10' ]),
+		);
+
+		$req = new HttpRequest($endpoint);
+		$req->setMethod(HttpRequest::HEAD);
+		$resp = $req->makeRequest();
+
+		$this->assertSame(HttpRequest::HEAD, self::$server->getLastRequest()->getRequestMethod());
+		$this->assertSame(200, $resp->getStatus());
+		$this->assertSame('', $resp->getBody());
+	}
+
 	public function testDeprecatedPostMethod() {
 		// , [], [], '', false
 		$mockResponse    = $this->getMockBuilder('Boomerang\HttpResponse')->disableOriginalConstructor()->getMock();

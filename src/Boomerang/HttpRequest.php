@@ -10,6 +10,7 @@ use Boomerang\Factories\HttpResponseFactory;
 class HttpRequest {
 
 	public const GET     = "GET";
+	public const HEAD    = "HEAD";
 	public const POST    = "POST";
 	public const PUT     = "PUT";
 	public const PATCH   = "PATCH";
@@ -373,6 +374,11 @@ class HttpRequest {
 
 		if( $this->body ) {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
+		}
+
+		// Without NOBODY curl waits for the body a HEAD response advertises but never sends
+		if( $this->method === self::HEAD ) {
+			curl_setopt($ch, CURLOPT_NOBODY, true);
 		}
 
 		if( count($this->cookies) > 0 ) {
