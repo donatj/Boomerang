@@ -28,7 +28,8 @@
 		"phpstan/phpstan": "2.2.7",
 		"friendsofphp/php-cs-fixer": "=3.95.27",
 		"squizlabs/php_codesniffer": "^4.0",
-		"corpus/coding-standard": "^0.10"
+		"corpus/coding-standard": "^0.10",
+		"corpus/php-cs-fixer-config": "^0.1.1"
 	},
 	"authors": [
 		{
