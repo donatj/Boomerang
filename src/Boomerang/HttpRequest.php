@@ -309,13 +309,13 @@ class HttpRequest {
 	/**
 	 * Cookie names are sent as-is, as PHP does not decode them, so they must already be valid tokens.
 	 */
-	private function assertValidCookieName( string $name ) : void {
+	private function assertValidCookieName( string $name ): void {
 		if( preg_match('/^[!#$%&\'*+.^_`|~0-9A-Za-z-]+$/D', $name) !== 1 ) {
 			throw new \InvalidArgumentException("Invalid cookie name '{$name}'");
 		}
 	}
 
-	private function composeUrl( array $parsed_url ) : string {
+	private function composeUrl( array $parsed_url ): string {
 		$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
 		$host     = $parsed_url['host'] ?? '';
 		$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
@@ -407,7 +407,7 @@ class HttpRequest {
 	/**
 	 * @param string $endpoint
 	 */
-	private function detectAccept( $endpoint ) : string {
+	private function detectAccept( $endpoint ): string {
 		$url = parse_url($endpoint);
 		if( isset($url['path']) ) {
 			$path = pathinfo($url['path']);
@@ -429,7 +429,7 @@ class HttpRequest {
 	 *
 	 * @return list<string>
 	 */
-	private function getFlatHeaders() : array {
+	private function getFlatHeaders(): array {
 		$output = [];
 		foreach( $this->getHeaders() as $key => $value ) {
 			$output[] = "$key: $value";
@@ -443,7 +443,7 @@ class HttpRequest {
 	 *
 	 * Values are percent-encoded, which PHP decodes on receipt. Names are validated when set and sent as-is.
 	 */
-	private function getFlatCookies() : string {
+	private function getFlatCookies(): string {
 		$output = [];
 		foreach( $this->cookies as $key => $value ) {
 			$output[] = $key . '=' . rawurlencode((string)$value);

@@ -25,7 +25,7 @@ class TestRunner {
 	 * @param list<string> $paths
 	 * @return \Iterator<int|string, \SplFileInfo|string>
 	 */
-	private function getFileListForPaths( array $paths ) : \Iterator {
+	private function getFileListForPaths( array $paths ): \Iterator {
 		$files = new \AppendIterator;
 
 		foreach( $paths as $path ) {
@@ -38,7 +38,7 @@ class TestRunner {
 	/**
 	 * @return \Iterator<int|string, \SplFileInfo|string>
 	 */
-	private function getFileList( string $path ) : \Iterator {
+	private function getFileList( string $path ): \Iterator {
 		if( $real = realpath($path) ) {
 			$path = $real;
 		}

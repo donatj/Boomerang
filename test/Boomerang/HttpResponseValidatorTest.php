@@ -12,7 +12,7 @@ class HttpResponseValidatorTest extends TestCase {
 		/**
 		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
-		$mock  = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
+		$mock  = $this->getMockBuilder('Boomerang\Interfaces\HttpResponseInterface')->getMock();
 		$valid = new HttpResponseValidator($mock);
 		$this->assertSame($mock, $valid->getResponse());
 	}
@@ -21,7 +21,7 @@ class HttpResponseValidatorTest extends TestCase {
 		/**
 		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
-		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
+		$mock = $this->getMockBuilder('Boomerang\Interfaces\HttpResponseInterface')->getMock();
 		$mock->method('getStatus')
 			->willReturn(200);
 
@@ -45,7 +45,7 @@ class HttpResponseValidatorTest extends TestCase {
 		/**
 		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
-		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
+		$mock = $this->getMockBuilder('Boomerang\Interfaces\HttpResponseInterface')->getMock();
 		$mock->method('getHeader')
 			->willReturn('test');
 
@@ -80,7 +80,7 @@ class HttpResponseValidatorTest extends TestCase {
 		/**
 		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
-		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
+		$mock = $this->getMockBuilder('Boomerang\Interfaces\HttpResponseInterface')->getMock();
 		$mock->method('getHeader')
 			->willReturn('thisIsMyTestHeader');
 
@@ -115,7 +115,7 @@ class HttpResponseValidatorTest extends TestCase {
 		/**
 		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
-		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
+		$mock = $this->getMockBuilder('Boomerang\Interfaces\HttpResponseInterface')->getMock();
 		$mock->method('getBody')
 			->willReturn('test');
 
@@ -150,7 +150,7 @@ class HttpResponseValidatorTest extends TestCase {
 		/**
 		 * @var HttpResponseInterface|\PHPUnit\Framework\MockObject\MockObject $mock
 		 */
-		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\HttpResponseInterface')->getMock();
+		$mock = $this->getMockBuilder('Boomerang\Interfaces\HttpResponseInterface')->getMock();
 		$mock->method('getBody')
 			->willReturn('thisIsMyTestHeader');
 

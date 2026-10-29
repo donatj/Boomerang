@@ -61,10 +61,10 @@ class HttpRequestTest extends \BaseServerTest {
 		];
 
 		// , [], [], '', false
-		$mockResponse = $this->getMockBuilder('Boomerang\\HttpResponse')->disableOriginalConstructor()->getMock();
+		$mockResponse = $this->getMockBuilder('Boomerang\HttpResponse')->disableOriginalConstructor()->getMock();
 
 		foreach( $methods as $method ) {
-			$mockFactory     = $this->getMockBuilder('Boomerang\\Factories\\HttpResponseFactory')->getMock();
+			$mockFactory     = $this->getMockBuilder('Boomerang\Factories\HttpResponseFactory')->getMock();
 			$mockNewInstance = $mockFactory->method('newInstance');
 
 			$mockNewInstance->willReturnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse, $method ) {
@@ -92,8 +92,8 @@ class HttpRequestTest extends \BaseServerTest {
 
 	public function testDeprecatedPostMethod() {
 		// , [], [], '', false
-		$mockResponse    = $this->getMockBuilder('Boomerang\\HttpResponse')->disableOriginalConstructor()->getMock();
-		$mockFactory     = $this->getMockBuilder('Boomerang\\Factories\\HttpResponseFactory')->getMock();
+		$mockResponse    = $this->getMockBuilder('Boomerang\HttpResponse')->disableOriginalConstructor()->getMock();
+		$mockFactory     = $this->getMockBuilder('Boomerang\Factories\HttpResponseFactory')->getMock();
 		$mockNewInstance = $mockFactory->method('newInstance');
 
 		$mockNewInstance->willReturnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
@@ -119,8 +119,8 @@ class HttpRequestTest extends \BaseServerTest {
 	}
 
 	public function testSetCookies() {
-		$mockResponse    = $this->getMockBuilder('Boomerang\\HttpResponse')->disableOriginalConstructor()->getMock();
-		$mockFactory     = $this->getMockBuilder('Boomerang\\Factories\\HttpResponseFactory')->getMock();
+		$mockResponse    = $this->getMockBuilder('Boomerang\HttpResponse')->disableOriginalConstructor()->getMock();
+		$mockFactory     = $this->getMockBuilder('Boomerang\Factories\HttpResponseFactory')->getMock();
 		$mockNewInstance = $mockFactory->method('newInstance');
 
 		$mockNewInstance->willReturnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
@@ -166,8 +166,8 @@ class HttpRequestTest extends \BaseServerTest {
 	}
 
 	public function testCookiesFollowRedirects() {
-		$mockResponse    = $this->getMockBuilder('Boomerang\\HttpResponse')->disableOriginalConstructor()->getMock();
-		$mockFactory     = $this->getMockBuilder('Boomerang\\Factories\\HttpResponseFactory')->getMock();
+		$mockResponse    = $this->getMockBuilder('Boomerang\HttpResponse')->disableOriginalConstructor()->getMock();
+		$mockFactory     = $this->getMockBuilder('Boomerang\Factories\HttpResponseFactory')->getMock();
 		$mockNewInstance = $mockFactory->method('newInstance');
 
 		$mockNewInstance->willReturnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
@@ -196,8 +196,8 @@ class HttpRequestTest extends \BaseServerTest {
 					'Set-Cookie: sessionid=38afes7a8; Path=/',
 					'Location: /sauce',
 				],
-				301
-			)
+				301,
+			),
 		);
 
 		$req = new HttpRequest($endpoint, $mockFactory);

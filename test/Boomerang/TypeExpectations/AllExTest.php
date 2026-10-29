@@ -17,7 +17,7 @@ class AllExTest extends TestCase {
 		/**
 		 * @var ValidatorInterface $mockValidator
 		 */
-		$mockValidator = $this->getMockBuilder('Boomerang\\Interfaces\\ValidatorInterface')->getMock();
+		$mockValidator = $this->getMockBuilder('Boomerang\Interfaces\ValidatorInterface')->getMock();
 
 		$x = new AllEx($mockPass);
 		$x->setValidator($mockValidator);
@@ -65,7 +65,7 @@ class AllExTest extends TestCase {
 	 * @return \PHPUnit\Framework\MockObject\MockObject|TypeExpectationInterface
 	 */
 	private function _getTypeExpectationInterface( $bool ) {
-		$mock = $this->getMockBuilder('Boomerang\\Interfaces\\TypeExpectationInterface')->getMock();
+		$mock = $this->getMockBuilder('Boomerang\Interfaces\TypeExpectationInterface')->getMock();
 		$mock->method('match')
 			->willReturn($bool);
 

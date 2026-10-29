@@ -28,7 +28,7 @@ class TestRunnerTest extends TestCase {
 		}
 	}
 
-	private function createSpecFile() : string {
+	private function createSpecFile(): string {
 		$path = tempnam(sys_get_temp_dir(), 'boomerang-');
 
 		if( $path === false ) {
