@@ -118,6 +118,29 @@ class HttpRequestTest extends \BaseServerTest {
 		$this->assertSame($mockResponse, $resp);
 	}
 
+	public function testSetCookies() {
+		$mockResponse    = $this->getMockBuilder('Boomerang\\HttpResponse')->disableOriginalConstructor()->getMock();
+		$mockFactory     = $this->getMockBuilder('Boomerang\\Factories\\HttpResponseFactory')->getMock();
+		$mockNewInstance = $mockFactory->method('newInstance');
+
+		$mockNewInstance->willReturnCallback(function ( $body, $headers, HttpRequest $request ) use ( $mockResponse ) {
+			$data = json_decode($body, true);
+			$this->assertSame([
+				'sessionid' => '38afes7a8',
+				'sauce'     => 'dog; cat=mouse',
+			], $data['_COOKIE']);
+
+			return $mockResponse;
+		});
+
+		$req = new HttpRequest(self::$server->getServerRoot() . '/cookieTest', $mockFactory);
+		$req->setCookies([ 'sessionid' => '38afes7a8' ]);
+		$req->setCookie('sauce', 'dog; cat=mouse');
+
+		$resp = $req->makeRequest();
+		$this->assertSame($mockResponse, $resp);
+	}
+
 	public function testCookiesFollowRedirects() {
 		$mockResponse    = $this->getMockBuilder('Boomerang\\HttpResponse')->disableOriginalConstructor()->getMock();
 		$mockFactory     = $this->getMockBuilder('Boomerang\\Factories\\HttpResponseFactory')->getMock();

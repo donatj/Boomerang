@@ -359,8 +359,7 @@ class HttpRequest {
 		}
 
 		if( count($this->cookies) > 0 ) {
-			// @todo This does not work without http extension… find a better solution
-			curl_setopt($ch, CURLOPT_COOKIE, http_build_cookie($this->cookies));
+			curl_setopt($ch, CURLOPT_COOKIE, $this->getFlatCookies());
 		}
 
 		curl_setopt($ch, CURLOPT_HEADER, true);
@@ -420,6 +419,18 @@ class HttpRequest {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Gets cookies as a flattened string for cURL $key => $val --> $key=$val; $key2=$val2
+	 */
+	private function getFlatCookies() : string {
+		$output = [];
+		foreach( $this->cookies as $key => $value ) {
+			$output[] = rawurlencode((string)$key) . '=' . rawurlencode((string)$value);
+		}
+
+		return implode('; ', $output);
 	}
 
 	/**
