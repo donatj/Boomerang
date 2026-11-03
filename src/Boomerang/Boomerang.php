@@ -142,11 +142,11 @@ class Boomerang {
 			$runner->runTests(function ( $file ) use ( $ui, $verbosity, &$displayed ) {
 				$validators = [];
 				foreach( self::$validators as $validator ) {
-					$hash = spl_object_hash($validator);
+					$id = spl_object_id($validator);
 
-					if( !isset($displayed[$hash]) ) {
+					if( !isset($displayed[$id]) ) {
 						$validators[]     = $validator;
-						$displayed[$hash] = true;
+						$displayed[$id] = true;
 					}
 				}
 
