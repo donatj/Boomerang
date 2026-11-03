@@ -94,6 +94,7 @@ class StructureEx implements TypeExpectationInterface {
 					continue;
 				}
 
+				$pass           = false;
 				$subPathName    = $this->makePathName(array_merge($path, [ $firstIsZero ? $key : (string)$key ]));
 				$expectations[] = new FailingExpectationResult($this->validator, "Missing key\n { {$subPathName} } ", $key);
 			}

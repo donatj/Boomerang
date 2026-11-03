@@ -9,6 +9,22 @@ use PHPUnit\Framework\TestCase;
 
 class StructureExTest extends TestCase {
 
+	public function testMissingKeyFailsEvenWhenAnotherKeyMatches() {
+		$structure = new StructureEx([ 'missing' => 1, 'present' => 2 ]);
+		$structure->setValidator($this->createValidator());
+
+		$this->assertFalse($structure->match([ 'present' => 2 ]));
+		$this->assertCount(2, $structure->getExpectationResults());
+	}
+
+	public function testArrayStructureRejectsScalarData() {
+		$structure = new StructureEx([ 'key' => 1 ]);
+		$structure->setValidator($this->createValidator());
+
+		$this->assertFalse($structure->match('not an array'));
+		$this->assertInstanceOf(FailingExpectationResult::class, $this->getOnlyExpectation($structure));
+	}
+
 	public function testClosureReturningTruePasses() {
 		$structure = $this->createStructure(function ( $data ): bool { return true; });
 
