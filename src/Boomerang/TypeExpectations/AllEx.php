@@ -26,7 +26,7 @@ class AllEx extends StructureEx {
 	 * @param mixed ...$structures
 	 */
 	public function __construct( $structure, ...$structures ) {
-		$this->structures = [ $structure, ...$structures ];
+		$this->structures = array_merge([ $structure ], $structures);
 	}
 
 	/**
