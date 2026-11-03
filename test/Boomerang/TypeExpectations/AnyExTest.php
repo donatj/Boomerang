@@ -54,6 +54,13 @@ class AnyExTest extends TestCase {
 		$this->assertEquals(true, $x->match(true));
 	}
 
+	public function testMissingKeyDoesNotMakeAnAlternativePass() {
+		$x = new AnyEx([ 'required' => 1 ], [ 'other' => 2 ]);
+		$x->setValidator($this->getMockBuilder('Boomerang\Interfaces\ValidatorInterface')->getMock());
+
+		$this->assertFalse($x->match([]));
+	}
+
 	/**
 	 * @param bool $bool
 	 * @return \PHPUnit\Framework\MockObject\MockObject|TypeExpectationInterface
